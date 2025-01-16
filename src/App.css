@@ -1,0 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Qwitcher+Grypen:wght@400;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .color-primary {
+    @apply :;
+  }
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+/* the below two styles are for the react phone number input component - an npm package */
+.PhoneInputInput {
+  padding: 0.25rem 0.75rem;
+  font-size: 17px;
+  color: gray;
+  ontline: none !important;
+  border: 0;
+  border-radius: 10px;
+  background-color: #e2e8f0;
+  outline: none;
+  outline-width: 1px;
+  outline-color: #3b82f6;
+}
+
+.PhoneInputInput:focus {
+  outline-style: solid;
+}
+
+.sign-shadow {
+  box-shadow: 0 2px 8px 2px rgb(0, 0, 0, 0.26);
+}
+
+.modal-shadow {
+  box-shadow: 0 0 5rem 8px rgb(0, 0, 0, 0.46);
+}
+
+/* SCROLLBAR STYLING */
+/* Chrome, Edge, and Safari */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f1015;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: 3px;
+  scrollbar-color: rgba(255, 255, 255, 0.5) rgba(255, 255, 255, 0.8);
+}
