@@ -89,7 +89,7 @@ function HotelDetailsPage() {
             "clipPath": "polygon(0 0, 100vw 0%, 100vw 65vh, 0 85vh)",
           }}
         >
-          <div className="absolute -z-[-9] h-full w-full bg-blue-400 opacity-50 dark:bg-blue-500"></div>
+          <div className="absolute -z-[-9] h-full w-full bg-accent-400 opacity-50 dark:bg-accent-500"></div>
         </div>
       </MaxWidthWrapper>
     );
@@ -124,7 +124,7 @@ function HotelDetailsPage() {
 
           <div className="mt-4 flex items-center justify-center gap-2 border p-2 shadow">
             <button
-              className=":bg-blue-600 mr-2 flex w-[2rem] items-center justify-center rounded bg-blue-600 px-2 py-1 text-xs text-slate-200 shadow transition-all duration-300 disabled:text-slate-200"
+              className=":bg-accent-600 mr-2 flex w-[2rem] items-center justify-center rounded bg-accent-600 px-2 py-1 text-xs text-slate-200 shadow transition-all duration-300 disabled:text-slate-200"
               onClick={() => {
                 setActive("");
                 navigate(`/hotels/${id}`);
@@ -136,7 +136,7 @@ function HotelDetailsPage() {
               (type) => (
                 <button
                   disabled={active === type}
-                  className="flex w-[5rem] items-center justify-center rounded bg-slate-100 px-2 py-1 text-xs text-slate-500 shadow transition-all duration-300 hover:bg-blue-600 hover:text-slate-200 disabled:cursor-not-allowed disabled:bg-blue-600 disabled:text-slate-200"
+                  className="flex w-[5rem] items-center justify-center rounded bg-slate-100 px-2 py-1 text-xs text-slate-500 shadow transition-all duration-300 hover:bg-accent-600 hover:text-slate-200 disabled:cursor-not-allowed disabled:bg-accent-600 disabled:text-slate-200"
                   key={type}
                   onClick={() => handleSearchParams(type)}
                 >
@@ -164,7 +164,7 @@ function HotelDetailsPage() {
             <div className="col-span-3 flex items-center justify-center">
               <Link
                 to="rooms"
-                className="mt-16 flex w-[30rem] items-center justify-center gap-4 rounded bg-gradient-to-r from-blue-800 via-blue-500 to-blue-800 px-6 py-4 text-center text-xl font-bold capitalize text-slate-200 transition-all duration-300 hover:-translate-y-2 hover:scale-105"
+                className="mt-16 flex w-[30rem] items-center justify-center gap-4 rounded bg-gradient-to-r from-accent-800 via-accent-500 to-accent-800 px-6 py-4 text-center text-xl font-bold capitalize text-slate-200 transition-all duration-300 hover:-translate-y-2 hover:scale-105"
               >
                 See More Rooms On this hotel
                 <span className="text-white">&gt;&gt;</span>

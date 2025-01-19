@@ -11,7 +11,7 @@ function Stats({ Icon, title, number }: Props) {
         <span className="text-2xl font-bold">{number}</span>
       </div>
       <div className="flex items-start">
-        <Icon size={50} className="inline-block text-blue-500" />
+        <Icon size={50} className="inline-block text-accent-500" />
       </div>
     </div>
   );

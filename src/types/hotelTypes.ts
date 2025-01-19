@@ -47,5 +47,7 @@ export interface IHotel {
 }
 
 export interface IHotelResponse {
-  data: IHotel & ITimeStamp;
+  data: {
+    hotels: (IHotel & ITimeStamp)[];
+  };
 }

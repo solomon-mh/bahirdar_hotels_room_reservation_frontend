@@ -19,7 +19,7 @@ function SignUpForm({ onSubmitHandler, isPending }: Props) {
       onSubmit={onSubmitHandler}
       className="mt-2 flex w-full flex-col gap-6"
     >
-      <h1 className="text-center text-blue-800 underline">Create an Account</h1>
+      <h1 className="text-center text-accent-800 underline">Create an Account</h1>
 
       <div className="gap-2 sm:flex">
         <label className="flex flex-1 flex-col tracking-wider text-gray-900">
@@ -27,7 +27,7 @@ function SignUpForm({ onSubmitHandler, isPending }: Props) {
           <input
             type="text"
             defaultValue="John"
-            className="mt-2 w-full rounded-xl bg-slate-200 p-1 px-3 outline-1 outline-blue-500 focus:outline"
+            className="mt-2 w-full rounded-xl bg-slate-200 p-1 px-3 outline-1 outline-accent-500 focus:outline"
             placeholder="John"
             required
             {...register("firstName", {
@@ -45,7 +45,7 @@ function SignUpForm({ onSubmitHandler, isPending }: Props) {
           <input
             type="text"
             defaultValue="A."
-            className="mt-2 w-full rounded-xl bg-slate-200 p-1 px-3 outline-1 outline-blue-500 focus:outline"
+            className="mt-2 w-full rounded-xl bg-slate-200 p-1 px-3 outline-1 outline-accent-500 focus:outline"
             placeholder="Doe"
             // required
             {...register("lastName", {
@@ -65,7 +65,7 @@ function SignUpForm({ onSubmitHandler, isPending }: Props) {
         <input
           type="email"
           defaultValue="test@test.com"
-          className="mt-2 w-full rounded-xl bg-slate-200 p-1 px-3 outline-1 outline-blue-500 focus:outline"
+          className="mt-2 w-full rounded-xl bg-slate-200 p-1 px-3 outline-1 outline-accent-500 focus:outline"
           placeholder="test@test.com"
           // required
           {...register("email", {
@@ -85,7 +85,7 @@ function SignUpForm({ onSubmitHandler, isPending }: Props) {
           <input
             type="password"
             defaultValue="test1234"
-            className="mt-2 w-full rounded-xl bg-slate-200 p-1 px-3 outline-1 outline-blue-500 focus:outline"
+            className="mt-2 w-full rounded-xl bg-slate-200 p-1 px-3 outline-1 outline-accent-500 focus:outline"
             placeholder="**********"
             // required
             {...register("password", {
@@ -103,7 +103,7 @@ function SignUpForm({ onSubmitHandler, isPending }: Props) {
           <input
             type="password"
             defaultValue="test1234"
-            className="mt-2 w-full rounded-xl bg-slate-200 p-1 px-3 outline-1 outline-blue-500 focus:outline"
+            className="mt-2 w-full rounded-xl bg-slate-200 p-1 px-3 outline-1 outline-accent-500 focus:outline"
             placeholder="**********"
             // required
             {...register("passwordConfirm", {
@@ -126,14 +126,14 @@ function SignUpForm({ onSubmitHandler, isPending }: Props) {
 
       <button
         disabled={isPending}
-        className="rounded-xl bg-blue-600 px-3 py-1 text-white hover:bg-blue-500 disabled:cursor-not-allowed disabled:bg-blue-400"
+        className="rounded-xl bg-accent-600 px-3 py-1 text-white hover:bg-accent-500 disabled:cursor-not-allowed disabled:bg-accent-400"
         type="submit"
       >
         {isPending ? <SpinnerMini /> : "Sign Up"}
       </button>
       <div>
         have an account?{" "}
-        <Link to="/login" className="text-blue-600 underline">
+        <Link to="/login" className="text-accent-600 underline">
           Sign in
         </Link>
       </div>

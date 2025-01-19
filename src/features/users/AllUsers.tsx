@@ -46,21 +46,21 @@ function AllUsers() {
           <button
             onClick={() => onSearchByRoleHandler("")}
             disabled={activeBtn === ""}
-            className="rounded border bg-blue-600 px-3 text-sm text-white transition-all duration-300 disabled:cursor-not-allowed"
+            className="rounded border bg-accent-600 px-3 text-sm text-white transition-all duration-300 disabled:cursor-not-allowed"
           >
             all
           </button>
           <button
             onClick={() => onSearchByRoleHandler("user")}
             disabled={activeBtn === "user"}
-            className="rounded border px-3 text-sm transition-all duration-300 hover:bg-blue-600 hover:text-white disabled:cursor-not-allowed disabled:bg-blue-700 disabled:text-white"
+            className="rounded border px-3 text-sm transition-all duration-300 hover:bg-accent-600 hover:text-white disabled:cursor-not-allowed disabled:bg-accent-700 disabled:text-white"
           >
             all users
           </button>
           <button
             onClick={() => onSearchByRoleHandler("manager")}
             disabled={activeBtn === "manager"}
-            className="rounded border px-3 text-sm transition-all duration-300 hover:bg-blue-600 hover:text-white disabled:cursor-not-allowed disabled:bg-blue-700 disabled:text-white"
+            className="rounded border px-3 text-sm transition-all duration-300 hover:bg-accent-600 hover:text-white disabled:cursor-not-allowed disabled:bg-accent-700 disabled:text-white"
           >
             all managers
           </button>

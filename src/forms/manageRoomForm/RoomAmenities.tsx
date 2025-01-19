@@ -13,7 +13,7 @@ function RoomAmenities() {
             <input
               type="checkbox"
               value={amenity}
-              className="p-2 accent-blue-600"
+              className="p-2 accent-accent-600"
               {...register("amenities", {
                 validate: (amenities) => {
                   if (!amenities || amenities.length < 3)

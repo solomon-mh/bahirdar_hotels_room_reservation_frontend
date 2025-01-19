@@ -12,7 +12,7 @@ function HotelDetailSummary({ hotel }: { hotel: Hotel }) {
         <div className="m-4 flex flex-col gap-y-4 p-3 lg:flex-row lg:items-center lg:justify-center">
           <p
             style={{ backfaceVisibility: "hidden" }}
-            className="z-10 flex items-center whitespace-pre-line bg-gradient-to-r from-blue-700 via-blue-600 to-blue-400 p-4 text-center text-slate-300 shadow-lg sm:text-xl sm:font-bold md:text-3xl lg:-mr-[20rem] lg:w-[40rem]"
+            className="z-10 flex items-center whitespace-pre-line bg-gradient-to-r from-accent-700 via-accent-600 to-accent-400 p-4 text-center text-slate-300 shadow-lg sm:text-xl sm:font-bold md:text-3xl lg:-mr-[20rem] lg:w-[40rem]"
           >
             {hotel.summary}
           </p>

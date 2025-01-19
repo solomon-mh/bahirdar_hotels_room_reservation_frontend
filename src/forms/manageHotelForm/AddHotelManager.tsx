@@ -40,7 +40,7 @@ function AddHotelManager({ handleSelectedManager }: Props) {
       <div className="flex items-center justify-between gap-3">
         <button
           onClick={handleShowModal}
-          className="flex items-center gap-2 rounded-full bg-blue-700 px-6 py-2 text-xl text-slate-200 transition-all duration-300 hover:scale-105"
+          className="flex items-center gap-2 rounded-full bg-accent-700 px-6 py-2 text-xl text-slate-200 transition-all duration-300 hover:scale-105"
         >
           {/* <SpinnerMini/> */}
           <GrUserManager size={30} />

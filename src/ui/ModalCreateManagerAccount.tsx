@@ -125,7 +125,7 @@ function ModalCreateManagerAccount({ setCreatedManager }: Props) {
       </label>
       <button
         disabled={isPending}
-        className="rounded bg-blue-600 px-3 py-2 text-xl font-bold text-white hover:bg-blue-500 disabled:cursor-not-allowed disabled:bg-blue-400"
+        className="rounded bg-accent-600 px-3 py-2 text-xl font-bold text-white hover:bg-accent-500 disabled:cursor-not-allowed disabled:bg-accent-400"
         type="submit"
       >
         Create Manager Account

@@ -61,7 +61,7 @@ function UsersListModal({ handleSelectManager }: Props) {
             <button
               disabled={isLoading}
               onClick={onButtonClickHandler}
-              className="-ml-16 w-24 rounded-full bg-blue-600 px-3 py-2 text-white disabled:cursor-not-allowed disabled:bg-blue-400"
+              className="-ml-16 w-24 rounded-full bg-accent-600 px-3 py-2 text-white disabled:cursor-not-allowed disabled:bg-accent-400"
             >
               Search
             </button>

@@ -136,7 +136,7 @@ function BookingForm({ roomId }: { roomId: string }) {
     <div className="w-full rounded-lg border bg-slate-300 p-4 opacity-85 shadow-lg">
       {activeBooking?.checkInDate && activeBooking.checkOutDate && (
         <div className="m-2">
-          <p className="w-full rounded-xl bg-blue-600 p-4 text-center text-xl text-slate-200">
+          <p className="w-full rounded-xl bg-accent-600 p-4 text-center text-xl text-slate-200">
             You booked this room from{" "}
             {new Date(activeBooking?.checkInDate).toLocaleDateString()} to{" "}
             {new Date(activeBooking?.checkOutDate).toLocaleDateString()}
@@ -149,7 +149,7 @@ function BookingForm({ roomId }: { roomId: string }) {
           <div className="mb-4 flex items-center justify-center">
             <button
               onClick={() => setShowForm(!showForm)}
-              className="w-full rounded-full bg-blue-600 px-3 py-2 text-xs text-white transition-all duration-200 hover:scale-105"
+              className="w-full rounded-full bg-accent-600 px-3 py-2 text-xs text-white transition-all duration-200 hover:scale-105"
             >
               {showForm ? "close form" : "Book Room for other time"}
             </button>
@@ -160,7 +160,7 @@ function BookingForm({ roomId }: { roomId: string }) {
         currentBookOnRoom.checkOutDate &&
         !activeBooking?.checkInDate && (
           <div className="m-2">
-            <p className="w-full rounded-xl bg-blue-600 p-4 text-center text-xl text-slate-200">
+          <p className="w-full rounded-xl bg-accent-600 p-4 text-center text-xl text-slate-200">
               This Room is booked from{" "}
               {new Date(currentBookOnRoom?.checkInDate).toLocaleDateString()} to{" "}
               {new Date(currentBookOnRoom?.checkOutDate).toLocaleDateString()}{" "}
@@ -174,7 +174,7 @@ function BookingForm({ roomId }: { roomId: string }) {
             <div className="mb-4 flex items-center justify-center">
               <button
                 onClick={() => setShowForm(!showForm)}
-                className="w-full rounded-full bg-blue-600 px-3 py-2 text-xs text-white transition-all duration-200 hover:scale-105"
+              className="w-full rounded-full bg-accent-600 px-3 py-2 text-xs text-white transition-all duration-200 hover:scale-105"
               >
                 {showForm ? "close form" : "Book Room for other time"}
               </button>
@@ -224,7 +224,7 @@ function BookingForm({ roomId }: { roomId: string }) {
 
             <button
               disabled={!isValidDateRange}
-              className="w-full rounded bg-blue-600 px-3 py-2 text-xl uppercase text-slate-100 shadow-xl disabled:cursor-not-allowed disabled:bg-blue-500"
+              className="w-full rounded bg-accent-600 px-3 py-2 text-xl uppercase text-slate-100 shadow-xl disabled:cursor-not-allowed disabled:bg-accent-500"
             >
               Book Room Now
             </button>

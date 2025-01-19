@@ -87,7 +87,7 @@ function DetailSection() {
               <input
                 type="checkbox"
                 value={facility}
-                className="p-2 accent-blue-600"
+                className="p-2 accent-accent-600"
                 {...register("facilities", {
                   validate: (facilities) => {
                     if (!facilities || facilities.length < 3)

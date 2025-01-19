@@ -155,7 +155,7 @@ function AdminDashboard() {
           </h2>
           <Link
             to="/dashboard/hotels"
-            className="flex items-center rounded-full bg-blue-500 px-2 py-1 text-sm text-white transition-all duration-200 hover:scale-105"
+            className="flex items-center rounded-full bg-accent-500 px-2 py-1 text-sm text-white transition-all duration-200 hover:scale-105"
           >
             See more &gt;&gt;
           </Link>

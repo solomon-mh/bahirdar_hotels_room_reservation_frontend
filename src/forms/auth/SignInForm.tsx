@@ -16,7 +16,7 @@ function SignInForm({ onSubmitHandler, isPending }: Props) {
       onSubmit={onSubmitHandler}
       className="mt-2 flex w-full flex-col gap-6"
     >
-      <h1 className="text-center text-blue-800 underline">
+      <h1 className="text-center text-accent-800 underline">
         Log In to Your Account
       </h1>
       <label className="flex flex-1 flex-col tracking-wider text-gray-900">
@@ -24,7 +24,7 @@ function SignInForm({ onSubmitHandler, isPending }: Props) {
         <input
           type="email"
           defaultValue="test@test.com"
-          className="mt-2 w-full rounded-xl bg-slate-200 p-1 px-3 outline-1 outline-blue-500 focus:outline"
+          className="mt-2 w-full rounded-xl bg-slate-200 p-1 px-3 outline-1 outline-accent-500 focus:outline"
           placeholder="test@test.com"
           {...register("email", {
             required: "Please provide your email address",
@@ -42,7 +42,7 @@ function SignInForm({ onSubmitHandler, isPending }: Props) {
         <input
           type="password"
           defaultValue="test1234"
-          className="mt-2 w-full rounded-xl bg-slate-200 p-1 px-3 outline-1 outline-blue-500 focus:outline"
+          className="mt-2 w-full rounded-xl bg-slate-200 p-1 px-3 outline-1 outline-accent-500 focus:outline"
           placeholder="test@test.com"
           {...register("password", {
             required: "Please Provide your password",
@@ -56,20 +56,20 @@ function SignInForm({ onSubmitHandler, isPending }: Props) {
       </label>
       <button
         disabled={isPending}
-        className="rounded-xl bg-blue-600 px-3 py-1 text-white hover:bg-blue-500 disabled:cursor-not-allowed disabled:bg-blue-400"
+        className="rounded-xl bg-accent-600 px-3 py-1 text-white hover:bg-accent-500 disabled:cursor-not-allowed disabled:bg-accent-400"
         type="submit"
       >
         {isPending ? <SpinnerMini /> : "Sign In"}
       </button>
       <div>
         have no account?{" "}
-        <Link to="/signup" className="text-blue-600 underline">
+        <Link to="/signup" className="text-accent-600 underline">
           Create your account
         </Link>
       </div>
 
       <div>
-        <Link to="/forgot-password" className="text-blue-600 underline">
+        <Link to="/forgot-password" className="text-accent-600 underline">
           Forgot Password?
         </Link>
       </div>

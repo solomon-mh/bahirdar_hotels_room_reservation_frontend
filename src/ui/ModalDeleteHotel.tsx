@@ -79,7 +79,7 @@ function ModalDeleteHotel({ hotel }: { hotel: Hotel }) {
               e.preventDefault();
               handleOpenModalWindow();
             }}
-            className="mx-3 rounded-full bg-blue-600 px-8 py-2 text-lg text-slate-200 transition-all duration-300 hover:scale-110 hover:text-slate-200 disabled:cursor-not-allowed disabled:bg-blue-400 disabled:hover:scale-100"
+            className="mx-3 rounded-full bg-accent-600 px-8 py-2 text-lg text-slate-200 transition-all duration-300 hover:scale-110 hover:text-slate-200 disabled:cursor-not-allowed disabled:bg-accent-400 disabled:hover:scale-100"
           >
             Cancel
           </button>

@@ -31,7 +31,7 @@ function TableBody({ headers, data }: Props) {
       <div className="absolute right-4 text-right">
         {data?.role && (
           <>
-            <p className="inline-block rounded bg-blue-800 px-2 py-[2px] text-white">
+            <p className="inline-block rounded bg-accent-800 px-2 py-[2px] text-white">
               {data?.role}
             </p>
             <p className="">{data.role === "manager" && data.hotel}</p>

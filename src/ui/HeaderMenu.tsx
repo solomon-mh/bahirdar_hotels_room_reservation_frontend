@@ -33,7 +33,7 @@ function HeaderMenuAuth() {
       <li>
         <Link
           to="/signup"
-          className="rounded bg-slate-50 px-3 py-2 font-bold uppercase text-blue-800"
+            className="rounded bg-slate-50 px-3 py-2 font-bold uppercase text-accent-800"
         >
           Sign up
         </Link>
@@ -50,7 +50,7 @@ function HeaderMenuCenter() {
       <li>
         <Link
           to="/hotels"
-          className="rounded px-3 py-2 font-bold text-blue-100 underline underline-offset-4"
+          className="rounded px-3 py-2 font-bold text-accent-100 underline underline-offset-4"
         >
           Hotels
         </Link>
@@ -60,7 +60,7 @@ function HeaderMenuCenter() {
           <li>
             <Link
               to="/add-hotel"
-              className="px-3 py-2 font-bold text-blue-100 underline underline-offset-4"
+              className="px-3 py-2 font-bold text-accent-100 underline underline-offset-4"
             >
               Add Hotel
             </Link>

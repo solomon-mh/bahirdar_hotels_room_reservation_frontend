@@ -16,7 +16,7 @@ function Logo({ className = "" }: { className?: string }) {
           className="h-full w-full bg-cover bg-center"
         />
       </div>
-      Hotelify
+      <span className="text-accent-500">Hotelify</span>
     </Link>
   );
 }

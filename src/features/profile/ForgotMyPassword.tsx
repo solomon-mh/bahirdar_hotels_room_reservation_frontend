@@ -63,7 +63,7 @@ function ForgotMyPassword() {
             <>
               <Link
                 to="/"
-                className="flex w-fit items-center gap-2 rounded bg-blue-500 px-3 py-1 text-white"
+                  className="flex w-fit items-center gap-2 rounded bg-accent-500 px-3 py-1 text-white"
               >
                 <IoMdArrowRoundBack />
                 Back to Home

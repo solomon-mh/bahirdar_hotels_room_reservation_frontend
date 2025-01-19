@@ -11,7 +11,7 @@ function RoomTypeFilter({ selectedRoomTypes, onChange }: Props) {
           <label className="mb-2 flex items-center space-x-2" key={type}>
             <input
               type="checkbox"
-              className="rounded accent-blue-600"
+              className="rounded accent-accent-600"
               value={type}
               checked={selectedRoomTypes.includes(type)}
               onChange={onChange}

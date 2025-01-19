@@ -38,12 +38,15 @@ import ProtectAdminRoutes from "./ui/ProtectAdminRoutes";
 import BookRoomPage from "./pages/BookRoomPage";
 import PaymentSuccessPage from "./pages/PaymentSuccessPage";
 import ForgotMyPassword from "./features/profile/ForgotMyPassword";
+import { Provider } from "react-redux";
+import { store } from "./redux/store.js";
 const queryClient = new QueryClient();
 
 function App() {
   const { role, isLoggedIn } = useAuthContext();
 
   return (
+    <Provider store={store}>
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
       <Toaster
@@ -146,7 +149,8 @@ function App() {
 
         </BookingContextProvider>
       </AuthContextProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </Provider>
   );
 }
 

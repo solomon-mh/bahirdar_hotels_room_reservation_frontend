@@ -71,7 +71,7 @@ function RoomsTableBody({ room }: { room: Room }) {
         <div className="col-span-1 col-start-10 flex flex-col items-center gap-1">
           <div className="flex gap-2">
             <Link to={`/dashboard/update-room/${room._id}`}>
-              <MdEdit size={24} className="fill-blue-700" />
+              <MdEdit size={24} className="fill-accent-700" />
             </Link>
             <button
               onClick={() => {
@@ -89,7 +89,7 @@ function RoomsTableBody({ room }: { room: Room }) {
           <Link
             target="_blank"
             to={`/hotels/${hotelId}/rooms/${room._id}`}
-            className="rounded bg-blue-700 p-2 font-semibold text-white"
+            className="rounded bg-accent-700 p-2 font-semibold text-white"
           >
             Details
           </Link>

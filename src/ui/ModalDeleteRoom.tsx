@@ -110,7 +110,7 @@ function ModalDeleteRoom({ room }: { room: Room }) {
                   e.preventDefault();
                   handleOpenModalWindow();
                 }}
-                className="mx-3 rounded-full bg-blue-600 px-8 py-2 text-lg text-slate-200 transition-all duration-300 hover:scale-110 hover:text-slate-200 disabled:cursor-not-allowed disabled:bg-blue-400 disabled:hover:scale-100"
+                className="mx-3 rounded-full bg-accent-600 px-8 py-2 text-lg text-slate-200 transition-all duration-300 hover:scale-110 hover:text-slate-200 disabled:cursor-not-allowed disabled:bg-accent-400 disabled:hover:scale-100"
               >
                 Cancel
               </button>
@@ -119,11 +119,11 @@ function ModalDeleteRoom({ room }: { room: Room }) {
         </>
       ) : (
         <div className="flex flex-col items-center justify-center gap-2">
-          <h2 className="m-4 text-2xl font-bold tracking-wide text-blue-700">
+            <h2 className="m-4 text-2xl font-bold tracking-wide text-accent-700">
             Room Booked Already
           </h2>
           <div className="flex items-center justify-center">
-            <p className="mx-4 mb-3 flex items-center justify-center rounded-xl bg-blue-500 p-4 text-center text-xl leading-10 text-slate-200 shadow-2xl">
+              <p className="mx-4 mb-3 flex items-center justify-center rounded-xl bg-accent-500 p-4 text-center text-xl leading-10 text-slate-200 shadow-2xl">
               The room with room number # {room.roomNumber} is already booked.
               Please contact the user who booked the room or wait until the book
               passes

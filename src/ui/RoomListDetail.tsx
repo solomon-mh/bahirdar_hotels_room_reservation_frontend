@@ -60,7 +60,7 @@ function RoomListDetail() {
       {/* ROOM NUMBER HEADING */}
       <span
         style={{ backfaceVisibility: "hidden" }}
-        className="absolute top-2 -skew-y-6 bg-blue-600 px-5 py-3 text-3xl font-bold capitalize text-slate-100 shadow-lg"
+        className="absolute top-2 -skew-y-6 bg-accent-600 px-5 py-3 text-3xl font-bold capitalize text-slate-100 shadow-lg"
       >{`# ${room.roomNumber} `}</span>
 
       {/* ROOM IMAGE */}
@@ -126,7 +126,7 @@ function RoomListDetail() {
         <div className="mx-auto mb-4 flex flex-wrap items-center justify-center gap-2">
           {room.amenities.map((amenity) => (
             <span
-              className="mb-1 min-w-[5rem] rounded-full bg-blue-500 px-3 py-[.3rem] text-center text-white"
+              className="mb-1 min-w-[5rem] rounded-full bg-accent-500 px-3 py-[.3rem] text-center text-white"
               key={amenity}
             >
               {amenity}
@@ -156,7 +156,7 @@ function RoomListDetail() {
           <BookingForm roomId={room._id} />
         ) : (
           <button
-            className="w-full rounded border-b-2 bg-blue-600 px-3 py-2 text-xl uppercase text-slate-100 shadow-lg"
+              className="w-full rounded border-b-2 bg-accent-600 px-3 py-2 text-xl uppercase text-slate-100 shadow-lg"
             onClick={() =>
               navigate("/login", { state: { from: location.pathname } })
             }

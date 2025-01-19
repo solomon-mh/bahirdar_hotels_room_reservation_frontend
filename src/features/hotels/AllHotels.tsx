@@ -92,7 +92,7 @@ function AllHotels() {
 
         <Link
           to={"/dashboard/add-hotel"}
-          className="mr-2 cursor-pointer rounded-full bg-blue-700 px-4 py-[6px] text-lg text-white transition-all duration-200 hover:scale-105"
+          className="mr-2 cursor-pointer rounded-full bg-accent-700 px-4 py-[6px] text-lg text-white transition-all duration-200 hover:scale-105"
         >
           Add Hotel
         </Link>

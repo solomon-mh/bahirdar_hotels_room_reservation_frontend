@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Select from "react-select";
-import { useHotels } from "../features/hotels/useHotels";
 import HotelsListItem from "../ui/HotelsListItem";
 import StarRatingFilter from "../components/StarRatingFilter";
 import { FaSearch } from "react-icons/fa";
 import LoadingSkeleton from "../ui/LoadingSkeleton";
-import { IoMdArrowRoundBack } from "react-icons/io";
-import MaxWidthWrapper from "../ui/MaxWidthWrapper";
+import { useGetAllHotelIHotelsQuery } from "../redux/api/hotelApi";
 interface Option {
   value: string;
   label: string;
@@ -19,9 +17,7 @@ function HotelsListPage() {
   const { handleSubmit, register } = useForm<{ search: string }>();
   const navigate = useNavigate();
 
-  const { data: { data: { hotels } = {} } = {}, isLoading } = useHotels({
-    selectedStars,
-  });
+  const { data, error, isLoading } = useGetAllHotelIHotelsQuery(searchParams.toString());
 
   const handleSortChange = (selectedOption: Option | null) => {
     const sort = selectedOption!.value;
@@ -49,54 +45,17 @@ function HotelsListPage() {
     );
   };
 
-  // if (isLoading) {
-  //   return (
-  //     <div className="mx-auto flex min-h-screen justify-center lg:w-1/4">
-  //       <div className="mt-5 p-4 lg:mt-12">
-  //         <LoadingSkeleton className="h-3 w-[10rem]" />
-  //         <LoadingSkeleton className="h-3 w-[30rem]" />
-  //         <LoadingSkeleton className="h-3 w-[20rem]" />
-  //         <LoadingSkeleton className="h-3 w-[15rem]" />
-  //         <LoadingSkeleton className="h-3 w-[25rem]" />
-  //         <LoadingSkeleton className="h-3 w-[10rem]" />
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
-  if (!hotels?.length && !isLoading)
-  {
-    return (
-      <div className="mt-5 flex min-h-screen flex-col items-center gap-6 md:mt-12">
-        <Link
-          to="/"
-          className="flex w-fit items-center gap-2 rounded bg-blue-500 px-3 py-1 text-white"
-        >
-          <IoMdArrowRoundBack />
-          Back to Home
-        </Link>
-        <div className="">
-          <p className="text-4xl capitalize text-black/30 lg:text-6xl">
-            404{")"} not hotels found
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <MaxWidthWrapper>
-      <div className="relative mt-1 flex min-h-screen w-full justify-center gap-4">
+    <div className=" relative flex flex-row w-screen px-4 md:px-16 ">
         {/* filter/sort */}
-        <div className="sticky top-4 p-2">
-          <div className="flex flex-col items-center justify-center gap-6 space-y-8 p-2">
+      <div className="sticky h-[80vh] top-4 p-2 shadow-md shadow-accent-100 ">
+        <div className="flex flex-col items-center justify-center gap-6 space-y-8 ">
             <StarRatingFilter
               selectedStars={selectedStars}
               onChange={handleStarsChange}
             />
           </div>
-        </div>
-
+      </div>
         <div className="-mt-6">
           {/* SEARCH */}
           <div className="flex w-full p-6">
@@ -171,17 +130,40 @@ function HotelsListPage() {
                   </div>
                 </div>
               </div>
-            ) : (
-              <section className="min-h-[100vh] rounded-md border-l-2 border-r-2 py-4 shadow-lg">
-                {hotels?.map((hotel, i) => (
-                  <HotelsListItem hotel={hotel} key={i} />
-                ))}
-              </section>
-            )}
-          </div>{" "}
+          ) :
+
+            error ? (
+              <div className="mx-auto w-[69.5vw]">
+                <div className="mx-auto flex min-h-screen w-full justify-center">
+                  <div className="mt-5 p-4 lg:mt-12">
+                    <h1 className="text-2xl text-center">Something went wrong</h1>
+                  </div>
+                </div>
+              </div>
+
+            )
+              : !data?.data.hotels.length ? (
+                <div className="mx-auto w-[69.5vw]">
+                  <div className="mx-auto flex min-h-screen w-full justify-center">
+                    <div className="mt-5 p-4 lg:mt-12">
+                      <h1 className="text-xl text-center">No hotels found</h1>
+                    </div>
+                  </div>
+                </div>
+              ) :
+
+
+                (
+                  <section className="min-h-[100vh] rounded-md border-l-2 border-r-2 py-4 shadow-lg">
+                    {data.data.hotels?.map((hotel, i) => (
+                      <HotelsListItem hotel={hotel} key={i} />
+                    ))}
+                  </section>
+                )}
         </div>
       </div>
-    </MaxWidthWrapper>
+
+    </div>
   );
 }
 

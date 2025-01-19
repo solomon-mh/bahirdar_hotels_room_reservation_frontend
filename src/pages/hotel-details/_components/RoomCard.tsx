@@ -41,7 +41,7 @@ function RoomCard({ room }: { room: Room }) {
             </div>
             <Link
               to={`rooms/${room._id}`}
-              className="rounded bg-blue-700 px-4 py-2 text-slate-200"
+              className="rounded bg-accent-700 px-4 py-2 text-slate-200"
             >
               Book Room Now
             </Link>
@@ -51,7 +51,7 @@ function RoomCard({ room }: { room: Room }) {
         {/* EXPLORE MORE ABOUT ROOM */}
         <Link
           to={`rooms/${room._id}`}
-          className="absolute right-4 top-4 flex h-[40px] w-[40px] items-center justify-center rounded-full border-2 bg-gradient-to-r from-blue-800 via-blue-500 to-blue-400 px-4 py-2 text-slate-100 shadow-xl"
+          className="absolute right-4 top-4 flex h-[40px] w-[40px] items-center justify-center rounded-full border-2 bg-gradient-to-r from-accent-800 via-accent-500 to-accent-400 px-4 py-2 text-slate-100 shadow-xl"
         >
           &gt;&gt;
         </Link>

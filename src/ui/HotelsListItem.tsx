@@ -1,6 +1,7 @@
 import { FaStar, FaRegStar } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { Hotel } from "../types/hotelTypes";
+import { IHotel } from "../types/hotelTypes";
+import { ITimeStamp } from "../types/general";
 
 /*
 {
@@ -33,7 +34,7 @@ import { Hotel } from "../types/hotelTypes";
   }
 */
 
-function HotelsListItem({ hotel }: { hotel: Hotel }) {
+function HotelsListItem({ hotel }: { hotel: (IHotel & ITimeStamp) }) {
   return (
     <div>
       <div className="mx-auto mb-4 flex max-h-[300px] w-[90%] overflow-hidden rounded border p-3 shadow-xl transition-all duration-300 hover:translate-x-1 hover:scale-[1.02]">
@@ -52,7 +53,7 @@ function HotelsListItem({ hotel }: { hotel: Hotel }) {
               {/* HOTEL NAME */}
               <Link
                 to={`/hotels/${hotel._id}`}
-                className="text-2xl font-bold text-blue-600"
+                className="text-2xl font-bold text-accent-600"
               >
                 {hotel.name}
               </Link>
@@ -63,7 +64,7 @@ function HotelsListItem({ hotel }: { hotel: Hotel }) {
               </span>
 
               {/* hotel address */}
-              <p className="text-sm text-slate-500">{hotel.address}</p>
+              <p className="text-sm text-slate-500">{hotel.address.city}</p>
             </div>
 
             {/* num of rooms */}
@@ -110,7 +111,7 @@ function HotelsListItem({ hotel }: { hotel: Hotel }) {
             </div>
             <h3 className="text-gray-5 p-2 text-sm font-light tracking-tight text-slate-500 shadow transition-all duration-200">
               {hotel.numOfRatings ? (
-                <span className="font-bold text-blue-600">
+                <span className="font-bold text-accent-600">
                   total of {hotel.numOfRatings} reviews
                 </span>
               ) : (
@@ -121,14 +122,14 @@ function HotelsListItem({ hotel }: { hotel: Hotel }) {
           <div className="flex flex-col items-end">
             <p className="text-sm font-bold text-slate-500">
               Price / Night:{" "}
-              <span className="text-lg font-bold tracking-tighter text-blue-600">
+              <span className="text-lg font-bold tracking-tighter text-accent-600">
                 {`${hotel.minPricePerNight} ETB`}
               </span>
             </p>
           </div>
           <Link
             to={`/hotels/${hotel._id}`}
-            className="rounded bg-blue-600 p-2 text-white"
+            className="rounded bg-accent-600 p-2 text-white"
           >
             See Details
           </Link>

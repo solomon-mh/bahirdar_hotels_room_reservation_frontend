@@ -19,7 +19,7 @@ body {
   padding: 0.25rem 0.75rem;
   font-size: 17px;
   color: gray;
-  ontline: none !important;
+  outline: none !important;
   border: 0;
   border-radius: 10px;
   background-color: #e2e8f0;

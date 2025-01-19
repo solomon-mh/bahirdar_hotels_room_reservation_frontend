@@ -8,10 +8,9 @@ import { cn } from "../utils/cn";
 function Header() {
   const { isLoggedIn, user } = useAuthContext();
   const { pathname } = useLocation();
-  // console.log(user);
 
   return (
-    <section className="z-50 mx-auto h-full w-full max-w-screen-xl border-b bg-slate-100 px-3 py-2 md:px-20">
+    <section className="z-50 mx-auto h-full w-full bg-accent-50 drop-shadow-md shadow-accent-300 border-b  px-3 py-2 md:px-24">
       <header className="mx-auto flex h-[10vh] items-center justify-between px-6 py-1 opacity-85">
         <Logo />
         <nav>
@@ -21,13 +20,13 @@ function Header() {
                 to="/hotels"
                 className={cn(
                   "rounded px-3 py-2",
-                  pathname === "/hotels" && "text-blue-700",
+                  pathname === "/hotels" && "text-accent-500",
                 )}
               >
                 Hotels
               </Link>
               {pathname === "/hotels" && (
-                <div className="mx-auto h-1 w-1/2 bg-blue-600"></div>
+                <div className="mx-auto h-1 w-1/2 bg-accent-600"></div>
               )}
             </li>
             <li>
@@ -35,13 +34,13 @@ function Header() {
                 to="/about"
                 className={cn(
                   "rounded px-3 py-2",
-                  pathname === "/about" && "text-blue-700",
+                  pathname === "/about" && "text-accent-700",
                 )}
               >
                 About
               </Link>
               {pathname === "/about" && (
-                <div className="mx-auto h-1 w-1/2 bg-blue-600"></div>
+                <div className="mx-auto h-1 w-1/2 bg-accent-600"></div>
               )}
             </li>
             {isLoggedIn ? (
@@ -51,7 +50,7 @@ function Header() {
                     <li>
                       <Link
                         to="/dashboard"
-                        className="flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2 text-white"
+                      className="flex items-center gap-2 rounded-lg bg-accent-600 px-5 py-2 text-white"
                       >
                         Dashboard
                         <FaArrowRight />
@@ -66,7 +65,7 @@ function Header() {
               <li>
                 <Link
                   to="/login"
-                  className="flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2 text-white"
+                    className="flex items-center gap-2 rounded-lg bg-accent-600 px-5 py-2 text-white"
                 >
                   Sign In
                   <FaArrowRight />
