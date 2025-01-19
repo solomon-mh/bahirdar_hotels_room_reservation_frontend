@@ -1,6 +1,6 @@
 import { Hotel } from "./hotelTypes";
 import { Room } from "./roomTypes";
-import { User } from "./userType";
+import { User } from "./userTypes";
 
 export interface Booking{
     id: number;
