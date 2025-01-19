@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { useUsers } from "./useUsers";
 import Spinner from "../../ui/Spinner";
-import { User as IUser } from "../../types/userType";
+import { User as IUser } from "../../types/userTypes";
 function RecentUsers() {
   const { data: { data } = {}, isLoading } = useUsers();
 

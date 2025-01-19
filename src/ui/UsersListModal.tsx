@@ -3,7 +3,7 @@ import { useUsers } from "../features/users/useUsers";
 import Spinner from "./Spinner";
 import UsersListItem from "./UsersListItem";
 import { useSearchParams } from "react-router-dom";
-import { User } from "../types/userType";
+import { User } from "../types/userTypes";
 
 interface Props {
   handleSelectManager: (user: User) => void;

@@ -1,4 +1,4 @@
-import { User } from "../../types/userType";
+import { User } from "../../types/userTypes";
 
 function UsersTable({ user }: { user: User }) {
   return (

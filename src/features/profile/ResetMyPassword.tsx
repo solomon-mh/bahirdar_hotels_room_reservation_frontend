@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import QueryKey from "../../constants/QueryKey";
 import { useAuthContext } from "../../context/AuthContext";
 import Logo from "../../ui/Logo";
-import { ResetPassInterface } from "../../types/userType";
+import { ResetPassInterface } from "../../types/userTypes";
 
 function ResetMyPassword() {
   const { user } = useAuthContext();

@@ -11,7 +11,7 @@ import ModalWindow from "../../ui/ModalWindow";
 import ModalCreateManagerAccount from "../../ui/ModalCreateManagerAccount";
 import UsersListItem from "../../ui/UsersListItem";
 import { Hotel } from "../../types/hotelTypes";
-import { User } from "../../types/userType";
+import { User } from "../../types/userTypes";
 interface Props {
   hotel?: Hotel;
   isAdding: boolean;

@@ -5,7 +5,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import PhoneInputWithCountry from "react-phone-number-input/react-hook-form";
 import parsePhoneNumberFromString from "libphonenumber-js";
 import { useAuthContext } from "../../context/AuthContext";
-import { IUpdateMeForm } from "../../types/userType";
+import { IUpdateMeForm } from "../../types/userTypes";
 function UpdateMeForm() {
   const { user } = useAuthContext();
   const formMethods = useForm<IUpdateMeForm>();

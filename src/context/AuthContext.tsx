@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { createContext, useContext, useState } from "react";
 import LoadingSkeleton from "../ui/LoadingSkeleton";
 import QueryKey from "../constants/QueryKey.js";
-import { User } from "../types/userType.js";
+import { User } from "../types/userTypes.js";
 import { Hotel } from "../types/hotelTypes.js";
 import apiAuth from "../services/apiAuth.js";
 

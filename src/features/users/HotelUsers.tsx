@@ -6,7 +6,7 @@ import Spinner from "../../ui/Spinner";
 import Search from "../../ui/Search";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { User } from "../../types/userType";
+import { User } from "../../types/userTypes";
 
 function HotelUsers() {
   const { register, handleSubmit } = useForm();

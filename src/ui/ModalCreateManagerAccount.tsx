@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import apiUsers from "../services/apiUsers";
 import toast from "react-hot-toast";
 import { useAuthContext } from "../context/AuthContext";
-import { User } from "../types/userType";
+import { User } from "../types/userTypes";
 
 interface Props {
   setCreatedManager: (user: User) => void;

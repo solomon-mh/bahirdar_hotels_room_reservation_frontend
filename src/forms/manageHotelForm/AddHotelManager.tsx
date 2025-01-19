@@ -3,7 +3,7 @@ import UsersListModal from "../../ui/UsersListModal";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import UsersListItem from "../../ui/UsersListItem";
-import { User } from "../../types/userType";
+import { User } from "../../types/userTypes";
 // import SpinnerMini from "../../ui/SpinnerMini";
 interface Props {
   handleSelectedManager: (user: User) => void;

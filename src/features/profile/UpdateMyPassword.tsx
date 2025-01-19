@@ -1,7 +1,7 @@
 import { FormProvider, useForm } from "react-hook-form";
 import SpinnerMini from "../../ui/SpinnerMini";
 import { useUpdateMyPassword } from "./useUpdateMyPassword";
-import { UpdatePasswordForm } from "../../types/userType";
+import { UpdatePasswordForm } from "../../types/userTypes";
 
 
 function UpdateMyPassword() {
