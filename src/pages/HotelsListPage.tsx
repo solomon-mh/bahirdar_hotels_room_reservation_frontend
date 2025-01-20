@@ -7,6 +7,7 @@ import StarRatingFilter from "../components/StarRatingFilter";
 import { FaSearch } from "react-icons/fa";
 import LoadingSkeleton from "../ui/LoadingSkeleton";
 import { useGetAllHotelIHotelsQuery } from "../redux/api/hotelApi";
+import { hotels } from "../data/hotels";
 interface Option {
   value: string;
   label: string;
@@ -17,7 +18,7 @@ function HotelsListPage() {
   const { handleSubmit, register } = useForm<{ search: string }>();
   const navigate = useNavigate();
 
-  const { data, error, isLoading } = useGetAllHotelIHotelsQuery(searchParams.toString());
+  const { data, error, isLoading } = useGetAllHotelIHotelsQuery("");
 
   const handleSortChange = (selectedOption: Option | null) => {
     const sort = selectedOption!.value;
@@ -56,9 +57,9 @@ function HotelsListPage() {
             />
           </div>
       </div>
-        <div className="-mt-6">
+      <div className="-mt-6 w-[80%]">
           {/* SEARCH */}
-          <div className="flex w-full p-6">
+        <div className="flex w-full px-0 p-6">
             <section className="flex flex-1 items-center justify-between gap-x-6 gap-y-4 rounded bg-black/5 p-6">
               <div className="w-full">
                 <Select
@@ -130,19 +131,20 @@ function HotelsListPage() {
                   </div>
                 </div>
               </div>
-          ) :
+          )
+            // :
 
-            error ? (
-              <div className="mx-auto w-[69.5vw]">
-                <div className="mx-auto flex min-h-screen w-full justify-center">
-                  <div className="mt-5 p-4 lg:mt-12">
-                    <h1 className="text-2xl text-center">Something went wrong</h1>
-                  </div>
-                </div>
-              </div>
+            // error ? (
+            //   <div className="mx-auto w-[69.5vw]">
+            //     <div className="mx-auto flex min-h-screen w-full justify-center">
+            //       <div className="mt-5 p-4 lg:mt-12">
+            //         <h1 className="text-2xl text-red-400 text-center">Something went wrong</h1>
+            //       </div>
+            //     </div>
+            //   </div>
 
-            )
-              : !data?.data.hotels.length ? (
+            // )
+            : !hotels.length ? (
                 <div className="mx-auto w-[69.5vw]">
                   <div className="mx-auto flex min-h-screen w-full justify-center">
                     <div className="mt-5 p-4 lg:mt-12">
@@ -154,8 +156,8 @@ function HotelsListPage() {
 
 
                 (
-                  <section className="min-h-[100vh] rounded-md border-l-2 border-r-2 py-4 shadow-lg">
-                    {data.data.hotels?.map((hotel, i) => (
+                <section className="min-h-[100vh] w-full rounded-md border-l-2 border-r-2 py-4 shadow-lg">
+                  {hotels?.map((hotel, i) => (
                       <HotelsListItem hotel={hotel} key={i} />
                     ))}
                   </section>

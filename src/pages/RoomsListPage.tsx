@@ -102,7 +102,7 @@ function RoomsListPage() {
           <div className="flex flex-col items-center justify-center gap-2 p-4">
             <Link
               to={`/hotels/${hotelId}`}
-              className="z-10 w-full text-center font-mono text-4xl font-semibold tracking-tighter text-accent-600 opacity-95"
+              className="z-10 w-full text-center font-mono text-4xl font-semibold tracking-tighter text-accent-500 opacity-95"
             >
               {isLoadingHotel ? <SpinnerMini /> : hotel?.hotel.name}
             </Link>

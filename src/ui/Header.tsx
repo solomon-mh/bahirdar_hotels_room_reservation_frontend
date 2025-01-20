@@ -26,7 +26,7 @@ function Header() {
                 Hotels
               </Link>
               {pathname === "/hotels" && (
-                <div className="mx-auto h-1 w-1/2 bg-accent-600"></div>
+                <div className="mx-auto h-1 w-1/2 bg-accent-500"></div>
               )}
             </li>
             <li>
@@ -40,7 +40,7 @@ function Header() {
                 About
               </Link>
               {pathname === "/about" && (
-                <div className="mx-auto h-1 w-1/2 bg-accent-600"></div>
+                <div className="mx-auto h-1 w-1/2 bg-accent-500"></div>
               )}
             </li>
             {isLoggedIn ? (
@@ -50,7 +50,7 @@ function Header() {
                     <li>
                       <Link
                         to="/dashboard"
-                      className="flex items-center gap-2 rounded-lg bg-accent-600 px-5 py-2 text-white"
+                      className="flex items-center gap-2 rounded-lg bg-accent-500 px-5 py-2 text-white"
                       >
                         Dashboard
                         <FaArrowRight />
@@ -65,7 +65,7 @@ function Header() {
               <li>
                 <Link
                   to="/login"
-                    className="flex items-center gap-2 rounded-lg bg-accent-600 px-5 py-2 text-white"
+                    className="flex items-center gap-2 rounded-lg bg-accent-500 px-5 py-2 text-white"
                 >
                   Sign In
                   <FaArrowRight />

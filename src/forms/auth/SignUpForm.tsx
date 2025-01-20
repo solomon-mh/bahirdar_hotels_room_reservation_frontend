@@ -126,14 +126,14 @@ function SignUpForm({ onSubmitHandler, isPending }: Props) {
 
       <button
         disabled={isPending}
-        className="rounded-xl bg-accent-600 px-3 py-1 text-white hover:bg-accent-500 disabled:cursor-not-allowed disabled:bg-accent-400"
+        className="rounded-xl bg-accent-500 px-3 py-1 text-white hover:bg-accent-500 disabled:cursor-not-allowed disabled:bg-accent-400"
         type="submit"
       >
         {isPending ? <SpinnerMini /> : "Sign Up"}
       </button>
       <div>
         have an account?{" "}
-        <Link to="/login" className="text-accent-600 underline">
+        <Link to="/login" className="text-accent-500 underline">
           Sign in
         </Link>
       </div>

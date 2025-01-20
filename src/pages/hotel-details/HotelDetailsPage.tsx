@@ -6,10 +6,7 @@ import {
 } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import SwiperCore from "swiper";
-// import "swiper/swiper-bundle.css";
-// import "swiper/css";
 import { Navigation, Autoplay } from "swiper/modules";
-import { useHotel } from "../../features/hotels/useHotel";
 import Spinner from "../../ui/Spinner";
 import { useEffect, useState } from "react";
 import QueryKey from "../../constants/QueryKey";
@@ -24,6 +21,8 @@ import {
   HotelDetailSummary,
   RoomCard,
 } from "./_components";
+import { useGetHotelByIdQuery } from "../../redux/api/hotelApi";
+import { hotels } from "../../data/hotels";
 
 function HotelDetailsPage() {
   SwiperCore.use([Navigation, Autoplay]);
@@ -34,11 +33,11 @@ function HotelDetailsPage() {
   const { id } = useParams() as { id: string };
 
   const {
-    data: { data: { data: hotel } = {} } = {},
+    data: { data } = {},
     isLoading,
     isError,
     error,
-  } = useHotel({ id });
+  } = useGetHotelByIdQuery(id as string);
 
   const { data: { data: { rooms } = {} } = {}, isLoading: isLoadingRooms } =
     useQuery({
@@ -70,7 +69,7 @@ function HotelDetailsPage() {
       }
 
 
-      navigate("/hotels");
+      // navigate("/hotels");
     }
   }, [error, isError, navigate])
 
@@ -94,10 +93,13 @@ function HotelDetailsPage() {
       </MaxWidthWrapper>
     );
   }
-  if (!hotel?.hotel)
-    return <div>Hotel not found</div>;
+  // if (!hotel?.hotel)
+  //   return <div>Hotel not found</div>;
 
 
+  const hotel = {
+    hotel: hotels.find((hotel) => hotel.id === Number(id)),
+  }
   return (
     <div className="flex flex-col gap-5 space-y-10 p-4">
       {/* HERO SECTION */}
@@ -124,7 +126,7 @@ function HotelDetailsPage() {
 
           <div className="mt-4 flex items-center justify-center gap-2 border p-2 shadow">
             <button
-              className=":bg-accent-600 mr-2 flex w-[2rem] items-center justify-center rounded bg-accent-600 px-2 py-1 text-xs text-slate-200 shadow transition-all duration-300 disabled:text-slate-200"
+              className=":bg-accent-500 mr-2 flex w-[2rem] items-center justify-center rounded bg-accent-500 px-2 py-1 text-xs text-slate-200 shadow transition-all duration-300 disabled:text-slate-200"
               onClick={() => {
                 setActive("");
                 navigate(`/hotels/${id}`);
@@ -136,7 +138,7 @@ function HotelDetailsPage() {
               (type) => (
                 <button
                   disabled={active === type}
-                  className="flex w-[5rem] items-center justify-center rounded bg-slate-100 px-2 py-1 text-xs text-slate-500 shadow transition-all duration-300 hover:bg-accent-600 hover:text-slate-200 disabled:cursor-not-allowed disabled:bg-accent-600 disabled:text-slate-200"
+                  className="flex w-[5rem] items-center justify-center rounded bg-slate-100 px-2 py-1 text-xs text-slate-500 shadow transition-all duration-300 hover:bg-accent-500 hover:text-slate-200 disabled:cursor-not-allowed disabled:bg-accent-500 disabled:text-slate-200"
                   key={type}
                   onClick={() => handleSearchParams(type)}
                 >

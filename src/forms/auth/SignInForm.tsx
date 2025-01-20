@@ -56,20 +56,20 @@ function SignInForm({ onSubmitHandler, isPending }: Props) {
       </label>
       <button
         disabled={isPending}
-        className="rounded-xl bg-accent-600 px-3 py-1 text-white hover:bg-accent-500 disabled:cursor-not-allowed disabled:bg-accent-400"
+        className="rounded-xl bg-accent-500 px-3 py-1 text-white hover:bg-accent-500 disabled:cursor-not-allowed disabled:bg-accent-400"
         type="submit"
       >
         {isPending ? <SpinnerMini /> : "Sign In"}
       </button>
       <div>
         have no account?{" "}
-        <Link to="/signup" className="text-accent-600 underline">
+        <Link to="/signup" className="text-accent-500 underline">
           Create your account
         </Link>
       </div>
 
       <div>
-        <Link to="/forgot-password" className="text-accent-600 underline">
+        <Link to="/forgot-password" className="text-accent-500 underline">
           Forgot Password?
         </Link>
       </div>

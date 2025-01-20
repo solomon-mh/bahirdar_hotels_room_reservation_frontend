@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IHotel, IHotelResponse } from "../../types/hotelTypes";
-import { CreateResponse } from "../../types/general";
+import { CreateResponse, ITimeStamp } from "../../types/general";
 import { BASE_URL } from "../../utils/url";
 
 enum Tags {
@@ -20,7 +20,10 @@ export const hotelApi = createApi({
       },
       providesTags: [Tags.HOTELS],
     }),
-    getHotelIHotelById: builder.query<IHotelResponse, string>({
+    getHotelById: builder.query<
+      { data: { hotel: IHotel & ITimeStamp } },
+      string
+    >({
       query: (id) => `/${id}`,
       providesTags: [Tags.HOTEL],
     }),
@@ -57,6 +60,6 @@ export const {
   useCreateHotelIHotelMutation,
   useDeleteHotelIHotelMutation,
   useGetAllHotelIHotelsQuery,
-  useGetHotelIHotelByIdQuery,
+  useGetHotelByIdQuery,
   useUpdateHotelIHotelMutation,
 } = hotelApi;

@@ -116,7 +116,7 @@ function ManageHotelForm({
     <>
       <FormProvider {...formMethods}>
         <div className="flex items-center justify-center p-3">
-          <h1 className="min-w-[30rem] cursor-pointer rounded-full bg-accent-600 px-6 py-2 text-center text-2xl font-bold uppercase text-white shadow-xl">
+          <h1 className="min-w-[30rem] cursor-pointer rounded-full bg-accent-500 px-6 py-2 text-center text-2xl font-bold uppercase text-white shadow-xl">
             {isInUpdateMode ? "update hotel" : "Add Hotel"}
           </h1>
         </div>
@@ -193,7 +193,7 @@ function ManageHotelForm({
                         setShow("haveAccount");
                         setManagerHaveAccount(true);
                       }}
-                          className="my-4 mr-4 rounded bg-slate-500 px-4 py-2 text-xs text-slate-200 transition-all duration-300 hover:bg-accent-600 hover:text-slate-200"
+                          className="my-4 mr-4 rounded bg-slate-500 px-4 py-2 text-xs text-slate-200 transition-all duration-300 hover:bg-accent-500 hover:text-slate-200"
                     >
                       yes have an account
                     </button>
@@ -203,7 +203,7 @@ function ManageHotelForm({
                         setShow("haveNoAccount");
                         setManagerHaveAccount(false);
                       }}
-                          className="my-4 ml-4 rounded bg-slate-500 px-4 py-2 text-xs text-slate-200 transition-all duration-300 hover:bg-accent-600 hover:text-slate-200"
+                          className="my-4 ml-4 rounded bg-slate-500 px-4 py-2 text-xs text-slate-200 transition-all duration-300 hover:bg-accent-500 hover:text-slate-200"
                     >
                       no, have no account
                     </button>
@@ -213,7 +213,7 @@ function ManageHotelForm({
             </div>
             <button
               type="submit"
-                  className="w-full rounded bg-accent-800 px-3 py-2 text-white transition-all duration-300 hover:bg-accent-700 disabled:cursor-not-allowed disabled:bg-accent-600"
+                  className="w-full rounded bg-accent-800 px-3 py-2 text-white transition-all duration-300 hover:bg-accent-700 disabled:cursor-not-allowed disabled:bg-accent-500"
               disabled={
                 isAdding ||
                 isUpdating ||

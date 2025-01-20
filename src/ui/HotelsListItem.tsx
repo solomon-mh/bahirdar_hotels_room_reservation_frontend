@@ -34,6 +34,8 @@ import { ITimeStamp } from "../types/general";
   }
 */
 
+
+
 function HotelsListItem({ hotel }: { hotel: (IHotel & ITimeStamp) }) {
   return (
     <div>
@@ -53,7 +55,7 @@ function HotelsListItem({ hotel }: { hotel: (IHotel & ITimeStamp) }) {
               {/* HOTEL NAME */}
               <Link
                 to={`/hotels/${hotel._id}`}
-                className="text-2xl font-bold text-accent-600"
+                className="text-2xl font-bold text-accent-500"
               >
                 {hotel.name}
               </Link>
@@ -111,7 +113,7 @@ function HotelsListItem({ hotel }: { hotel: (IHotel & ITimeStamp) }) {
             </div>
             <h3 className="text-gray-5 p-2 text-sm font-light tracking-tight text-slate-500 shadow transition-all duration-200">
               {hotel.numOfRatings ? (
-                <span className="font-bold text-accent-600">
+                <span className="font-bold text-accent-500">
                   total of {hotel.numOfRatings} reviews
                 </span>
               ) : (
@@ -122,14 +124,14 @@ function HotelsListItem({ hotel }: { hotel: (IHotel & ITimeStamp) }) {
           <div className="flex flex-col items-end">
             <p className="text-sm font-bold text-slate-500">
               Price / Night:{" "}
-              <span className="text-lg font-bold tracking-tighter text-accent-600">
+              <span className="text-lg font-bold tracking-tighter text-accent-500">
                 {`${hotel.minPricePerNight} ETB`}
               </span>
             </p>
           </div>
           <Link
-            to={`/hotels/${hotel._id}`}
-            className="rounded bg-accent-600 p-2 text-white"
+            to={`/hotels/${hotel.id}`}
+            className="rounded text-slate-100 bg-accent-500 p-2 text-white"
           >
             See Details
           </Link>

@@ -16,7 +16,7 @@ function ModalAddRoom({ hotel }: { hotel: Hotel }) {
         <Link
           to={`/hotels/${hotel._id}`}
           target="blank"
-          className="m-3 mt-4 flex items-center justify-center gap-2 p-3 text-3xl font-extrabold tracking-widest text-accent-600 underline"
+          className="m-3 mt-4 flex items-center justify-center gap-2 p-3 text-3xl font-extrabold tracking-widest text-accent-500 underline"
         >
           Welcome to {hotel.name}
         </Link>
@@ -29,7 +29,7 @@ function ModalAddRoom({ hotel }: { hotel: Hotel }) {
       </div>
       {/* 
           <div className='flex justify-center items-center m-4'>
-            <button className="bg-accent-600 text">Want to add more room</button>
+            <button className="bg-accent-500 text">Want to add more room</button>
           </div> */}
     </ModalWindow>
   );

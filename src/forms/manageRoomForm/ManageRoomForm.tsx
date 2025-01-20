@@ -74,7 +74,7 @@ function ManageRoomForm({
   return (
     <FormProvider {...formMethods}>
       <div className="flex items-center justify-center p-3">
-        <h1 className="min-w-[30rem] cursor-pointer rounded-full bg-accent-600 px-6 py-2 text-center text-2xl font-bold text-white shadow-xl">
+        <h1 className="min-w-[30rem] cursor-pointer rounded-full bg-accent-500 px-6 py-2 text-center text-2xl font-bold text-white shadow-xl">
           {isInUpdateMode ? "Update Add" : "Add Room"}
         </h1>
       </div>
@@ -110,7 +110,7 @@ function ManageRoomForm({
 
           <button
             type="submit"
-              className="w-full rounded bg-accent-800 px-3 py-2 text-white transition-all duration-300 hover:bg-accent-700 disabled:cursor-not-allowed disabled:bg-accent-600"
+              className="w-full rounded bg-accent-800 px-3 py-2 text-white transition-all duration-300 hover:bg-accent-700 disabled:cursor-not-allowed disabled:bg-accent-500"
             disabled={isAdding || isUpdating}
           >
             {isAdding || isUpdating ? <SpinnerMini /> : "Save Room"}

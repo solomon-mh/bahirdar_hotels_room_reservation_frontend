@@ -32,7 +32,7 @@ function Search({
         <button
           type="submit"
           disabled={isLoading}
-          className="-ml-20 w-[8rem] rounded-full bg-accent-600 px-3 py-2 text-white disabled:cursor-not-allowed disabled:bg-accent-400"
+          className="-ml-20 w-[8rem] rounded-full bg-accent-500 px-3 py-2 text-white disabled:cursor-not-allowed disabled:bg-accent-400"
         >
           Search
         </button>

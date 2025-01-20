@@ -34,7 +34,7 @@ function AllBookings({ hotelId = '' }) {
           <Link
             onClick={() => setActive("all")}
             to="/dashboard/bookings"
-            className="rounded bg-accent-600 px-3 text-sm text-white"
+            className="rounded bg-accent-500 px-3 text-sm text-white"
           >
             all
           </Link>
