@@ -5,10 +5,10 @@ import { useDeleteRoom } from "../features/rooms/useDeleteRoom";
 import { useBookingsOnRoom } from "../features/bookings/useBookingsOnRoom";
 import Spinner from "./Spinner";
 import { useEffect, useState } from "react";
-import { Room } from "../types/roomTypes";
+import { IRoom } from "../types/roomTypes";
 import { Booking } from "../types/bookingTypes";
 
-function ModalDeleteRoom({ room }: { room: Room }) {
+function ModalDeleteRoom({ room }: { room: IRoom }) {
   const { handleOpenModalWindow } = useAuthContext();
   const [isRoomAlreadyBooked, setIsRoomAlreadyBooked] = useState(false);
 
@@ -17,14 +17,14 @@ function ModalDeleteRoom({ room }: { room: Room }) {
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm<Room>();
+  } = useForm<IRoom>();
 
   const { mutate, isPending } = useDeleteRoom();
 
   const {
     data: { data: { bookings: allBookingsOnThisRoom = [] } = {} } = {},
     isLoading,
-  } = useBookingsOnRoom({ roomId: room._id });
+  } = useBookingsOnRoom({ roomId: room._id as string });
 
   useEffect(() => {
     if (!isLoading)
@@ -50,7 +50,7 @@ function ModalDeleteRoom({ room }: { room: Room }) {
         message: "Please write the correct name of the hotel",
       });
     }
-    mutate(room._id, {
+    mutate(room._id as string, {
       onSuccess: () => {
         handleOpenModalWindow();
       },

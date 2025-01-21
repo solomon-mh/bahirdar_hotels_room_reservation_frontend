@@ -1,7 +1,7 @@
-import { Hotel } from "../../../types/hotelTypes";
+import { IHotel } from "../../../types/hotelTypes";
 import MaxWidthWrapper from "../../../ui/MaxWidthWrapper";
 
-function HotelDetailFacilities({ hotel }: { hotel: Hotel }) {
+function HotelDetailFacilities({ hotel }: { hotel: IHotel }) {
   return (
     <div>
       <MaxWidthWrapper>

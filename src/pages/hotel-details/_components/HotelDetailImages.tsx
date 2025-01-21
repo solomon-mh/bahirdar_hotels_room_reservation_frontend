@@ -1,8 +1,8 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import MaxWidthWrapper from "../../../ui/MaxWidthWrapper";
-import { Hotel } from "../../../types/hotelTypes";
+import { IHotel } from "../../../types/hotelTypes";
 
-function HotelDetailImages({ hotel }: { hotel: Hotel }) {
+function HotelDetailImages({ hotel }: { hotel: IHotel }) {
   return (
     <div>
       <MaxWidthWrapper>
@@ -37,7 +37,7 @@ function HotelDetailImages({ hotel }: { hotel: Hotel }) {
                   },
                 }}
               >
-                {hotel?.hotelImages?.map((image, i) => (
+                {hotel?.hotelImages?.filter(image => typeof image === "string").map((image, i) => (
                   <SwiperSlide key={image}>
                     <div className="flex justify-center">
                       <img
@@ -52,14 +52,23 @@ function HotelDetailImages({ hotel }: { hotel: Hotel }) {
             </div>
           ) : (
             <div className="flex items-center justify-center">
-              {hotel?.hotelImages?.map((image, i) => (
-                <div key={image} className="flex justify-center">
+                {hotel?.hotelImages?.map((image, i) => (
+
+                  typeof image === "string"
+                    ?
+                    < div key={image} className="flex justify-center" >
                   <img
                     src={image}
                     alt={`hotel-image-[${i + 1}]`}
                     className="h-[300px] w-[400px] object-cover object-center"
-                  />
-                </div>
+                      />
+                    </div>
+                    :
+                    <div className="flex">
+                      <div className="flex h-[300px] w-[400px]">
+
+                      </div>
+                    </div>
               ))}
             </div>
           )}

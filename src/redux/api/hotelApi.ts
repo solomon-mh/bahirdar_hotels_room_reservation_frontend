@@ -12,11 +12,12 @@ export const hotelApi = createApi({
   tagTypes: [Tags.HOTELS, Tags.HOTEL],
   baseQuery: fetchBaseQuery({
     baseUrl: `${BASE_URL}/hotels`,
+    credentials: "include",
   }),
   endpoints: (builder) => ({
-    getAllHotelIHotels: builder.query<IHotelResponse, string | undefined>({
+    getAllHotels: builder.query<IHotelResponse, string | undefined>({
       query: (params) => {
-        return params ? `/?${params}` : "/";
+        return params ? `/` : "/";
       },
       providesTags: [Tags.HOTELS],
     }),
@@ -27,26 +28,25 @@ export const hotelApi = createApi({
       query: (id) => `/${id}`,
       providesTags: [Tags.HOTEL],
     }),
-    createHotelIHotel: builder.mutation<CreateResponse, IHotel>({
-      query: (newHotelIHotel) => ({
+    createHotel: builder.mutation<CreateResponse, FormData>({
+      query: (newHotel) => ({
         url: "/",
         method: "POST",
-        body: newHotelIHotel,
+        body: newHotel,
       }),
       invalidatesTags: [Tags.HOTELS],
     }),
-    updateHotelIHotel: builder.mutation<
-      CreateResponse,
-      { id: string; data: IHotel }
-    >({
-      query: ({ id, data }) => ({
-        url: `/${id}`,
-        method: "PUT",
-        body: data,
-      }),
-      invalidatesTags: [Tags.HOTELS, Tags.HOTEL],
-    }),
-    deleteHotelIHotel: builder.mutation<CreateResponse, string>({
+    updateHotel: builder.mutation<CreateResponse, { id: string; data: IHotel }>(
+      {
+        query: ({ id, data }) => ({
+          url: `/${id}`,
+          method: "PUT",
+          body: data,
+        }),
+        invalidatesTags: [Tags.HOTELS, Tags.HOTEL],
+      },
+    ),
+    deleteHotel: builder.mutation<CreateResponse, string>({
       query: (id) => ({
         url: `/${id}`,
         method: "DELETE",
@@ -57,9 +57,9 @@ export const hotelApi = createApi({
 });
 
 export const {
-  useCreateHotelIHotelMutation,
-  useDeleteHotelIHotelMutation,
-  useGetAllHotelIHotelsQuery,
+  useCreateHotelMutation,
+  useDeleteHotelMutation,
+  useGetAllHotelsQuery,
   useGetHotelByIdQuery,
-  useUpdateHotelIHotelMutation,
+  useUpdateHotelMutation,
 } = hotelApi;

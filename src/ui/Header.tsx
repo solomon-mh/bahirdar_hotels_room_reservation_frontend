@@ -50,7 +50,7 @@ function Header() {
                     <li>
                       <Link
                         to="/dashboard"
-                      className="flex items-center gap-2 rounded-lg bg-accent-500 px-5 py-2 text-white"
+                      className="flex items-center text-slate-100 gap-2 rounded-lg bg-accent-500 px-5 py-2 text-white"
                       >
                         Dashboard
                         <FaArrowRight />

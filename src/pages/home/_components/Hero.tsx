@@ -28,10 +28,10 @@ function Hero() {
     <section className="relative w-full">
       <MaxWidthWrapper className="my-12 space-y-10">
         <div className="flex flex-col items-center justify-center text-center">
-          <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
+          <h1 className="mb-4 text-3xl font-extrabold leading-none tracking-tight text-accent-500 md:text-4xl lg:text-5xl">
             Experience Bahir Dar : Your Gateway to Lakeside Bliss
           </h1>
-          <p className="mb-6 text-lg font-normal text-gray-500 sm:px-16 lg:text-xl xl:px-48">
+          <p className="mb-6 text-lg font-normal text-slate-700 sm:px-16 lg:text-xl xl:px-48">
             Discover Bahir Dar’s charm—book your stay effortlessly and embrace
             Ethiopia’s stunning lakeside city. From Lake Tana views to cozy
             retreats, our platform connects you to the best accommodations,
@@ -40,7 +40,7 @@ function Hero() {
           </p>
           <Link
             to="/hotels"
-            className="inline-flex items-center justify-center rounded-lg bg-accent-700 px-5 py-3 text-center text-base font-medium text-white hover:bg-accent-800 focus:ring-4 focus:ring-accent-300"
+            className="inline-flex items-center justify-center text-slate-100 rounded-lg bg-accent-500/90 px-5 py-3 text-center text-base font-medium text-white hover:bg-accent-500 focus:ring-4 focus:ring-accent-300"
           >
             Explore more hotels <FaArrowRightLong className="ml-2" />
           </Link>

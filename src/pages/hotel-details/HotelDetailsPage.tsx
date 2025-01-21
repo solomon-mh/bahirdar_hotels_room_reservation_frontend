@@ -22,7 +22,7 @@ import {
   RoomCard,
 } from "./_components";
 import { useGetHotelByIdQuery } from "../../redux/api/hotelApi";
-import { hotels } from "../../data/hotels";
+import NotFoundPage from "../utils/NotFoundPage";
 
 function HotelDetailsPage() {
   SwiperCore.use([Navigation, Autoplay]);
@@ -33,7 +33,7 @@ function HotelDetailsPage() {
   const { id } = useParams() as { id: string };
 
   const {
-    data: { data } = {},
+    data: { data: { hotel } = {} } = {},
     isLoading,
     isError,
     error,
@@ -93,29 +93,28 @@ function HotelDetailsPage() {
       </MaxWidthWrapper>
     );
   }
-  // if (!hotel?.hotel)
-  //   return <div>Hotel not found</div>;
+  if (!hotel)
+    return <NotFoundPage>
+      <div>Hotel not found</div>;
+    </NotFoundPage>
 
 
-  const hotel = {
-    hotel: hotels.find((hotel) => hotel.id === Number(id)),
-  }
   return (
     <div className="flex flex-col gap-5 space-y-10 p-4">
       {/* HERO SECTION */}
-      <HotelDetailHero hotel={hotel?.hotel} />
+      <HotelDetailHero hotel={hotel} />
 
       {/* HOTEL DESCRIPTION */}
-      <HotelDetailDescription hotel={hotel.hotel} />
+      <HotelDetailDescription hotel={hotel} />
 
       {/* HOTEL SUMMARY */}
-      <HotelDetailSummary hotel={hotel.hotel} />
+      <HotelDetailSummary hotel={hotel} />
 
       {/* HOTEL FACILITIES */}
-      <HotelDetailFacilities hotel={hotel.hotel} />
+      <HotelDetailFacilities hotel={hotel} />
 
       {/* HOTEL IMAGE */}
-      <HotelDetailImages hotel={hotel.hotel} />
+      <HotelDetailImages hotel={hotel} />
 
       {/* HOTEL ROOMS */}
       <MaxWidthWrapper>

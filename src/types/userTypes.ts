@@ -1,4 +1,4 @@
-import { Gender } from "../enums/gederEnum";
+import { Gender } from "../enums/genderEnum";
 import { Role } from "../enums/roleEnum";
 import { IAddress } from "./addressTypes";
 import { Booking } from "./bookingTypes";
@@ -54,6 +54,7 @@ export interface IUser {
   dateOfBirth: Date;
   gender: Gender;
   email: string;
+  isOnboarding: boolean;
   phoneNumber: string;
   role: Role;
   profilePicture: string;

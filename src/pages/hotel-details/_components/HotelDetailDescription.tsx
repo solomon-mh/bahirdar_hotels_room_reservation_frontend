@@ -1,7 +1,7 @@
-import { Hotel } from "../../../types/hotelTypes";
+import { IHotel } from "../../../types/hotelTypes";
 import MaxWidthWrapper from "../../../ui/MaxWidthWrapper";
 
-function HotelDetailDescription({ hotel }: { hotel: Hotel }) {
+function HotelDetailDescription({ hotel }: { hotel: IHotel }) {
   return (
     <MaxWidthWrapper>
       <div className="my-5 flex flex-col items-center justify-center space-y-5 p-4">

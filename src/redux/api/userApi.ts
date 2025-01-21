@@ -1,36 +1,44 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IUser, IUserResponse } from "../../types/userTypes";
-import { CreateResponse } from "../../types/general";
+import { CreateResponse, ITimeStamp } from "../../types/general";
 import { BASE_URL } from "../../utils/url";
 
-enum Tags {
+export enum UserTags {
   USERS = "users",
   USER = "user",
 }
 export const userApi = createApi({
   reducerPath: "userApi",
-  tagTypes: [Tags.USERS, Tags.USER],
+  tagTypes: [UserTags.USERS, UserTags.USER],
   baseQuery: fetchBaseQuery({
     baseUrl: `${BASE_URL}/users`,
+    credentials: "include",
   }),
   endpoints: (builder) => ({
-    getAllUsers: builder.query<IUserResponse, string | undefined>({
+    getAllUsers: builder.query<
+      { data: (IUser & ITimeStamp)[] },
+      string | undefined
+    >({
       query: (params) => {
         return params ? `/?${params}` : "/";
       },
-      providesTags: [Tags.USERS],
+      providesTags: [UserTags.USERS],
     }),
     getUserById: builder.query<IUserResponse, string>({
       query: (id) => `/${id}`,
-      providesTags: [Tags.USER],
+      providesTags: [UserTags.USER],
     }),
     createUser: builder.mutation<CreateResponse, IUser>({
       query: (newUser) => ({
         url: "/",
         method: "POST",
-        body: newUser,
+        body: {
+          ...newUser,
+          password: "test1234",
+          passwordConfirm: "test1234",
+        },
       }),
-      invalidatesTags: [Tags.USERS],
+      invalidatesTags: [UserTags.USERS],
     }),
     updateUser: builder.mutation<CreateResponse, { id: string; data: IUser }>({
       query: ({ id, data }) => ({
@@ -38,14 +46,18 @@ export const userApi = createApi({
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: [Tags.USERS, Tags.USER],
+      invalidatesTags: [UserTags.USERS, UserTags.USER],
     }),
     deleteUser: builder.mutation<CreateResponse, string>({
       query: (id) => ({
         url: `/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: [Tags.USERS, Tags.USER],
+      invalidatesTags: [UserTags.USERS, UserTags.USER],
+    }),
+    getCurrentUser: builder.query<{ data: IUser }, void>({
+      query: () => "/current-user",
+      providesTags: [UserTags.USER],
     }),
   }),
 });
@@ -56,4 +68,5 @@ export const {
   useGetAllUsersQuery,
   useGetUserByIdQuery,
   useUpdateUserMutation,
+  useGetCurrentUserQuery,
 } = userApi;

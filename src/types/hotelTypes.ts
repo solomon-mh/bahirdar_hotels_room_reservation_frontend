@@ -51,3 +51,15 @@ export interface IHotelResponse {
     hotels: (IHotel & ITimeStamp)[];
   };
 }
+
+export interface IAddHotel {
+  name: string;
+  hotelStar?: number;
+  imageCover: string;
+  hotelImages: string[] | File[];
+  address: IAddress;
+  summary: string;
+  description: string;
+  facilities: string[];
+  manager: string | IUser;
+}

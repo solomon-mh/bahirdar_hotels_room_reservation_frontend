@@ -6,11 +6,11 @@ interface Props {
 function SortBy({ handleChange, options }: Props) {
   return (
     <select
-      className="rounded-full px-4 py-2 transition-all duration-200 hover:scale-105 hover:cursor-pointer active:scale-105"
+      className="rounded-full  border   border-accent-500 px-4 py-2 transition-all duration-200 hover:scale-105 hover:cursor-pointer active:scale-105"
       onChange={handleChange}
     >
       {options.map((option, i) => (
-        <option key={i} value={option.value}>
+        <option className="py-1" key={i} value={option.value}>
           {option.label}
         </option>
       ))}

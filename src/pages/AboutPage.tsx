@@ -5,8 +5,8 @@ function About() {
         <p className="flex flex-1 flex-col gap-8 text-xl leading-7 tracking-wide md:order-1">
           <span className="">
             At{" "}
-            <span className="text-xl font-extrabold tracking-tighter text-accent-800">
-              Bahir Dar Hotel Booking Website
+            <span className="text-xl font-extrabold hover:underline tracking-tighter text-accent-500">
+              Hotelify
             </span>
             , we&rsquo;re committed to provide you with the best possible
             experience for planning and booking your dream getaway.
@@ -32,8 +32,8 @@ function About() {
             With easy navigation, secure payment options, and dedicated customer
             support, we strive to make your journey seamless and memorable.
             <br /> Your next unforgettable adventure awaits with{" "}
-            <span className="text-lg font-normal tracking-tighter text-accent-800">
-              BahirDar Hotel Booking Website
+            <span className="text-lg font-normal hover:underline tracking-tighter text-accent-500">
+              Hotelify
             </span>
             .
           </span>

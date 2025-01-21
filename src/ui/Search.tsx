@@ -20,22 +20,22 @@ function Search({
       )}
       onSubmit={onSearchHandler}
     >
-      <div className="flex flex-row rounded-full shadow-lg">
+      <div className="flex flex-row rounded-full shadow-gray-400 shadow-lg">
         <input
           type="search"
           disabled={isLoading}
           autoFocus
-          className="rounded-full bg-slate-200 px-3 py-2 focus:outline-none disabled:cursor-not-allowed"
+          className="rounded-full w-[18rem] bg-slate-100 px-6 text-slate-900 py-2 focus:outline-none disabled:cursor-not-allowed"
           placeholder="Search"
           {...register("search")}
         />
-        <button
+        {/* <button
           type="submit"
           disabled={isLoading}
-          className="-ml-20 w-[8rem] rounded-full bg-accent-500 px-3 py-2 text-white disabled:cursor-not-allowed disabled:bg-accent-400"
+          className="-ml-20 w-[8rem] rounded-full text-slate-100 bg-accent-500 px-3 py-2 text-white disabled:cursor-not-allowed disabled:bg-accent-400"
         >
           Search
-        </button>
+        </button> */}
       </div>
     </form>
   );

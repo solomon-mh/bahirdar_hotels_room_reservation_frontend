@@ -1,7 +1,7 @@
-import { Hotel } from "../../../types/hotelTypes";
+import { IHotel } from "../../../types/hotelTypes";
 import MaxWidthWrapper from "../../../ui/MaxWidthWrapper";
 
-function HotelDetailSummary({ hotel }: { hotel: Hotel }) {
+function HotelDetailSummary({ hotel }: { hotel: IHotel }) {
   return (
     <MaxWidthWrapper>
       <div className="my-5 flex flex-col items-center justify-center space-y-10 p-4">
@@ -18,7 +18,7 @@ function HotelDetailSummary({ hotel }: { hotel: Hotel }) {
           </p>
           <div className="mx-auto h-[20rem] md:w-[30rem]">
             <img
-              src={hotel.hotelImages[1]}
+              src={hotel.hotelImages[1] as string}
               alt=""
               className="h-full w-full object-cover object-center"
             />

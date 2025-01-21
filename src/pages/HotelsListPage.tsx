@@ -6,8 +6,7 @@ import HotelsListItem from "../ui/HotelsListItem";
 import StarRatingFilter from "../components/StarRatingFilter";
 import { FaSearch } from "react-icons/fa";
 import LoadingSkeleton from "../ui/LoadingSkeleton";
-import { useGetAllHotelIHotelsQuery } from "../redux/api/hotelApi";
-import { hotels } from "../data/hotels";
+import { useGetAllHotelsQuery } from "../redux/api/hotelApi";
 interface Option {
   value: string;
   label: string;
@@ -18,7 +17,7 @@ function HotelsListPage() {
   const { handleSubmit, register } = useForm<{ search: string }>();
   const navigate = useNavigate();
 
-  const { data, error, isLoading } = useGetAllHotelIHotelsQuery("");
+  const { data, error, isLoading } = useGetAllHotelsQuery("");
 
   const handleSortChange = (selectedOption: Option | null) => {
     const sort = selectedOption!.value;
@@ -132,19 +131,22 @@ function HotelsListPage() {
                 </div>
               </div>
           )
-            // :
+            :
 
-            // error ? (
-            //   <div className="mx-auto w-[69.5vw]">
-            //     <div className="mx-auto flex min-h-screen w-full justify-center">
-            //       <div className="mt-5 p-4 lg:mt-12">
-            //         <h1 className="text-2xl text-red-400 text-center">Something went wrong</h1>
-            //       </div>
-            //     </div>
-            //   </div>
+            error ? (
+              <div className="mx-auto w-[69.5vw]">
+                <div className="mx-auto flex min-h-screen w-full justify-center">
+                  <div className="mt-5 p-4 lg:mt-12">
+                    <h1 className="text-2xl text-red-400 text-center">Something went wrong</h1>
+                  </div>
+                </div>
+              </div>
 
-            // )
-            : !hotels.length ? (
+            )
+              :
+              !data?.data.hotels.length
+                ?
+                (
                 <div className="mx-auto w-[69.5vw]">
                   <div className="mx-auto flex min-h-screen w-full justify-center">
                     <div className="mt-5 p-4 lg:mt-12">
@@ -157,7 +159,7 @@ function HotelsListPage() {
 
                 (
                 <section className="min-h-[100vh] w-full rounded-md border-l-2 border-r-2 py-4 shadow-lg">
-                  {hotels?.map((hotel, i) => (
+                    {data.data.hotels?.map((hotel, i) => (
                       <HotelsListItem hotel={hotel} key={i} />
                     ))}
                   </section>
