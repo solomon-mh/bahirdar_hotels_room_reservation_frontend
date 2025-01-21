@@ -1,5 +1,6 @@
-import { useCreateRoom } from "./useCreateRoom";
+import { toast } from "react-toastify";
 import ManageRoomForm from "../../forms/manageRoomForm/ManageRoomForm";
+import { useCreateRoomMutation } from "../../redux/api/rooms";
 
 /*
   {
@@ -31,13 +32,34 @@ import ManageRoomForm from "../../forms/manageRoomForm/ManageRoomForm";
 */
 
 function AddRoom() {
-  const { mutate, isPending } = useCreateRoom();
 
+  const [createRoom, { isLoading }] = useCreateRoomMutation()
   const onSubmitHandler = (room: FormData) => {
-    mutate(room);
+    try
+    {
+
+      createRoom(room).unwrap().then(() => {
+        toast.success("Room added succefully")
+      }).catch((err) => {
+        if ('data' in err)
+        {
+          const { message } = err.data as { message: string }
+          toast.error(message || "Failed to add room")
+        }
+        else
+        {
+          toast.error(JSON.stringify(err, null, 2))
+        }
+      })
+    }
+    catch (err)
+    {
+      console.error(err)
+      toast.error("Cannot add room please try again")
+    }
   };
 
-  return <ManageRoomForm onSubmit={onSubmitHandler} isAdding={isPending} />;
+  return <ManageRoomForm onSubmit={onSubmitHandler} isAdding={isLoading} />;
 }
 
 export default AddRoom;
