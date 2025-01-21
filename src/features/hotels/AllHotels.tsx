@@ -1,18 +1,18 @@
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import HotelTable from "./HotelTable";
 import HotelTableHeader from "./HotelTableHeader";
-import { useHotels } from "./useHotels";
 import Spinner from "../../ui/Spinner";
 import { useForm } from "react-hook-form";
 import Search from "../../ui/Search";
 import SortBy from "../../ui/SortBy";
+import { useGetAllHotelsQuery } from "../../redux/api/hotelApi";
 
 function AllHotels() {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const { data: { data: { hotels } = {} } = {}, isLoading } = useHotels();
+  const { data: { data: { hotels } = {} } = {}, isLoading } = useGetAllHotelsQuery("");
 
   const onSearchHandler = handleSubmit((data) => {
     if (!data?.search)
@@ -92,7 +92,7 @@ function AllHotels() {
 
         <Link
           to={"/dashboard/add-hotel"}
-          className="mr-2 cursor-pointer rounded-full bg-accent-700 px-4 py-[6px] text-lg text-white transition-all duration-200 hover:scale-105"
+          className="mr-2 cursor-pointer rounded-md text-slate-100 bg-accent-500 px-4 py-[6px] text-lg text-white transition-all duration-200 hover:scale-105"
         >
           Add Hotel
         </Link>
@@ -103,7 +103,7 @@ function AllHotels() {
       {isLoading ? (
         <Spinner />
       ) : hotels?.length && hotels?.length > 0 ? (
-        hotels.map((hotel) => <HotelTable key={hotel.id} hotel={hotel} />)
+          hotels.map((hotel) => <HotelTable key={hotel._id} hotel={hotel} />)
       ) : (
         <div>There are not hotels found</div>
       )}

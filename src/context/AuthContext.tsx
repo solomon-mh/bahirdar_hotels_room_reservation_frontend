@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useState } from "react";
 import LoadingSkeleton from "../ui/LoadingSkeleton";
 import { IUser } from "../types/userTypes.js";
-import { Hotel } from "../types/hotelTypes.js";
+import { IHotel } from "../types/hotelTypes.js";
 import { useGetCurrentUserQuery } from "../redux/api/userApi.js";
 
 interface Props {
@@ -14,8 +14,8 @@ export interface AuthContextType {
   handleOpenModal: () => void;
   user: IUser | null;
   role: string | null;
-  currentHotel: Hotel | null;
-  setCurrentHotelHandler: (hotel: Hotel) => void;
+  currentHotel: IHotel | null;
+  setCurrentHotelHandler: (hotel: IHotel) => void;
   handleOpenModalWindow: () => void;
   openModalWindow: boolean;
   handleSetUserOnLogout: () => void;
@@ -35,7 +35,7 @@ const AuthContext = createContext<AuthContextType>({
 
 function AuthContextProvider({ children }: Props) {
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [currentHotel, setCurrentHotel] = useState<Hotel | null>(null);
+  const [currentHotel, setCurrentHotel] = useState<IHotel | null>(null);
   const [openModalWindow, setOpenModalWindow] = useState(false);
 
   // TODO: send request to the '/auth/validateToken' route to check if user is loggedIn or not.
@@ -72,7 +72,7 @@ function AuthContextProvider({ children }: Props) {
     setOpenModalWindow(!openModalWindow);
   };
 
-  const setCurrentHotelHandler = (hotel: Hotel) => {
+  const setCurrentHotelHandler = (hotel: IHotel) => {
     setCurrentHotel(hotel);
   };
 

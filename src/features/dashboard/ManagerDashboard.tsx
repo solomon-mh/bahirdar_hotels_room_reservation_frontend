@@ -9,7 +9,6 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 import BookingCard from "../bookings/BookingCard";
-import { useCurrentHotel } from "./useCurrentHotel";
 import { useAuthContext } from "../../context/AuthContext";
 import CustomLabeledPieChart from "../stats/CustomLabeledPieChart";
 import AreaChartBox from "../stats/AreaChartBox";
@@ -22,13 +21,10 @@ import {
 } from "../../data/stat-data";
 import BarChartBox from "../stats/BarChartBox";
 import LineChartBox from "../stats/LineChartBox";
-import ModalAddRoom from "../../ui/ModalAddRoom";
 import LoadingSkeleton from "../../ui/LoadingSkeleton";
 import MaxWidthWrapper from "../../ui/MaxWidthWrapper";
-import { useQuery } from "@tanstack/react-query";
-import QueryKey from "../../constants/QueryKey";
-import { apiAdmin } from "../../services/apiAdmin";
 import { useEffect } from "react";
+import { useGetAllHotelsQuery } from "../../redux/api/hotelApi";
 
 const RecentlyBookedRooms = [
   {
@@ -61,17 +57,12 @@ function ManagerDashboard() {
   const navigate = useNavigate();
   const { setCurrentHotelHandler, currentHotel } = useAuthContext();
 
-  const { hotel, isLoading, isError } = useCurrentHotel();
 
-  const { data: { data } = {}, isLoading: isLoadingHotelStats } = useQuery({
-    queryKey: [QueryKey.HOTEL_STATS],
-    queryFn: () => apiAdmin.getHotelStats(currentHotel?._id || ""),
-    enabled: !!currentHotel?._id,
-  });
+  const { data: { data: { hotels } = {} } = {}, error, isLoading: isLoadingHotelStats } = useGetAllHotelsQuery("")
 
 
   useEffect(() => {
-    if (isError)
+    if (error)
     {
       toast.error(
         "Something went very wrong when fetching a hotel data : Please try again.",
@@ -79,14 +70,14 @@ function ManagerDashboard() {
       navigate("/");
     }
 
-    if (hotel)
+    if (hotels?.length)
     {
-      setCurrentHotelHandler(hotel.hotel);
+      setCurrentHotelHandler(hotels[0]);
     }
 
-  }, [isError, hotel, navigate, setCurrentHotelHandler]);
+  }, [error, hotels, navigate, setCurrentHotelHandler]);
 
-  if (isLoading || isLoadingHotelStats)
+  if (isLoadingHotelStats)
   {
     return (
       <div className="mx-auto flex min-h-screen justify-center">
@@ -101,9 +92,14 @@ function ManagerDashboard() {
       </div>
     );
   }
-  if (!data) return null;
+  if (currentHotel) return null;
 
-  const { numBookings, numReviews, numRooms, numUsers } = data;
+  const { numBookings, numReviews, numRooms, numUsers } = {
+    numBookings: 23,
+    numReviews: 21,
+    numRooms: 3,
+    numUsers: 9
+  };
 
   const managerStats = [
     {
@@ -223,7 +219,7 @@ function ManagerDashboard() {
           {/* <BookingTable bookings={RecentBooks} bookingHeaders={bookingHeaders} /> */}
         </section>
       </div>
-      {Array.isArray(hotel?.hotel.rooms) && hotel?.hotel.rooms.length < 1 && <ModalAddRoom hotel={hotel.hotel} />}
+      {/* {Array.isArray(hotel.rooms) && hotel?.hotel.rooms.length < 1 && <ModalAddRoom hotel={hotel.hotel} />} */}
     </>
   );
 }

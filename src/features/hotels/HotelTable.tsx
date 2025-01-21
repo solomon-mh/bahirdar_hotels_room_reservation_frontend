@@ -1,22 +1,9 @@
-import { MdDeleteOutline, MdEdit } from "react-icons/md";
 import { GoDash } from "react-icons/go";
 import { Link } from "react-router-dom";
-import { useAuthContext } from "../../context/AuthContext";
-import ModalWindow from "../../ui/ModalWindow";
-import ModalDeleteHotel from "../../ui/ModalDeleteHotel";
-import { useEffect, useState } from "react";
-import { Hotel } from "../../types/hotelTypes";
+import { IHotel } from "../../types/hotelTypes";
+import { ITimeStamp } from "../../types/general";
 
-function HotelTable({ hotel }: { hotel: Hotel }) {
-  const { handleOpenModalWindow, openModalWindow } = useAuthContext();
-  const [hotelToBeDeleted, setHotelToBeDeleted] = useState<Hotel | null>(null);
-
-  useEffect(() => {
-    if (!openModalWindow && hotelToBeDeleted?.name)
-    {
-      setHotelToBeDeleted(null);
-    }
-  }, [openModalWindow, hotelToBeDeleted]);
+function HotelTable({ hotel }: { hotel: IHotel & ITimeStamp }) {
 
   return (
     <>
@@ -30,7 +17,7 @@ function HotelTable({ hotel }: { hotel: Hotel }) {
         </div>
         <div className="col-span-1 col-start-2">{hotel.name}</div>
         <div className="col-span-1 col-start-3">{`${hotel.hotelStar} ⭐ Hotel`}</div>
-        <div className="col-span-1 col-start-4">{hotel.address}</div>
+        <div className="col-span-1 col-start-4">{hotel.address.city}</div>
         <div className="col-span-1 col-start-5">
           {hotel.numOfRooms > 0 ? `${hotel.numOfRooms} Rooms` : <GoDash />}
         </div>
@@ -47,39 +34,23 @@ function HotelTable({ hotel }: { hotel: Hotel }) {
         <div className="col-span-1 col-start-9 flex">
           {hotel.facilities && hotel.facilities.slice(0, 3).join(", ")}
         </div>
-        <div className="col-span-1 col-start-10 flex flex-col items-center gap-1">
-          <div className="flex gap-2">
+        <div className="col-span-1 col-start-10 flex flex-row justify-center items-center gap-1">
+          {/* <div className="flex  gap-2">
             <Link to={`/dashboard/update-hotel/${hotel._id}`}>
               <MdEdit size={24} className="fill-accent-700" />
             </Link>
-            <button
-              onClick={() => {
-                setHotelToBeDeleted(hotel);
-                handleOpenModalWindow();
-              }}
-              className="disabled:cursor-not-allowed disabled:bg-slate-300 disabled:opacity-65"
-            >
-              <MdDeleteOutline
-                size={24}
-                className="fill-red-600 disabled:cursor-not-allowed disabled:fill-red-400"
-              />
-            </button>
-          </div>
+
+          </div> */}
           <Link
             target="blank"
             to={`/hotels/${hotel._id}`}
-            className="rounded bg-accent-700 p-2 font-semibold text-white"
+            className="rounded text-slate-100 bg-accent-500 p-2 font-semibold text-white"
           >
             Details
           </Link>
         </div>
       </div>
 
-      {hotelToBeDeleted?.name && (
-        <ModalWindow>
-          <ModalDeleteHotel hotel={hotelToBeDeleted} />
-        </ModalWindow>
-      )}
     </>
   );
 }

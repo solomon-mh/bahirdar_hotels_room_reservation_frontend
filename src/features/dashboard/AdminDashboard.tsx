@@ -12,10 +12,6 @@ import {
   hotelUserBookingMonthlyStatusData,
   lineChartData,
 } from "../../data/stat-data";
-import { useQuery } from "@tanstack/react-query";
-import QueryKey from "../../constants/QueryKey";
-import { apiAdmin } from "../../services/apiAdmin";
-import LoadingSkeleton from "../../ui/LoadingSkeleton";
 import { FaUsersLine } from "react-icons/fa6";
 import { LiaHotelSolid } from "react-icons/lia";
 import { MdOutlineBedroomParent } from "react-icons/md";
@@ -51,26 +47,8 @@ const Hotels = [
 ];
 
 function AdminDashboard() {
-  const { data: { data } = {}, isLoading } = useQuery({
-    queryKey: [QueryKey.COUNT_ALL_DOCS],
-    queryFn: apiAdmin.getCountDocs,
-  });
 
-  if (isLoading) {
-    return (
-      <div className="mx-auto flex min-h-screen justify-center">
-        <div className="mt-5 p-4 lg:mt-12">
-          <LoadingSkeleton className="h-3 w-[10rem] bg-gray-50 dark:bg-gray-300" />
-          <LoadingSkeleton className="h-3 w-[30rem] bg-gray-50 dark:bg-gray-300" />
-          <LoadingSkeleton className="h-3 w-[20rem] bg-gray-50 dark:bg-gray-300" />
-          <LoadingSkeleton className="h-3 w-[15rem] bg-gray-50 dark:bg-gray-300" />
-          <LoadingSkeleton className="h-3 w-[25rem] bg-gray-50 dark:bg-gray-300" />
-          <LoadingSkeleton className="h-3 w-[10rem] bg-gray-50 dark:bg-gray-300" />
-        </div>
-      </div>
-    );
-  }
-  const { numUsers, numHotels, numRooms, numBookings, numReviews } = data;
+  const { numUsers = 23, numHotels = 12, numRooms = 98, numBookings = 38, numReviews = 123 } = {};
 
   const countData = [
     {
