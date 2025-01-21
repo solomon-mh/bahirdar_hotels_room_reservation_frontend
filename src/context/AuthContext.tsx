@@ -1,11 +1,9 @@
 /* eslint-disable react-refresh/only-export-components */
-import { useQuery } from "@tanstack/react-query";
 import React, { createContext, useContext, useState } from "react";
 import LoadingSkeleton from "../ui/LoadingSkeleton";
-import QueryKey from "../constants/QueryKey.js";
-import { User } from "../types/userTypes.js";
+import { IUser } from "../types/userTypes.js";
 import { Hotel } from "../types/hotelTypes.js";
-import apiAuth from "../services/apiAuth.js";
+import { useGetCurrentUserQuery } from "../redux/api/userApi.js";
 
 interface Props {
   children: React.ReactNode
@@ -14,7 +12,7 @@ export interface AuthContextType {
   isLoggedIn: boolean;
   isOpenModal: boolean;
   handleOpenModal: () => void;
-  user: User | null;
+  user: IUser | null;
   role: string | null;
   currentHotel: Hotel | null;
   setCurrentHotelHandler: (hotel: Hotel) => void;
@@ -42,15 +40,7 @@ function AuthContextProvider({ children }: Props) {
 
   // TODO: send request to the '/auth/validateToken' route to check if user is loggedIn or not.
   // and then get user
-  const {
-    data: res,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: [QueryKey.USER],
-    queryFn: apiAuth.getCurrentUser,
-    retry: false,
-  });
+  const { data: { data } = {}, isLoading, isError } = useGetCurrentUserQuery();
 
   if (isLoading)
   {
@@ -68,7 +58,7 @@ function AuthContextProvider({ children }: Props) {
     );
   }
 
-  let user = res?.data?.user || null;
+  let user = data || null;
 
   const handleSetUserOnLogout = () => {
     user = null;
@@ -101,6 +91,7 @@ function AuthContextProvider({ children }: Props) {
         handleSetUserOnLogout,
       }}
     >
+
       {children}
     </AuthContext.Provider>
   );
