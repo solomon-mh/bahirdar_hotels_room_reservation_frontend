@@ -1,28 +1,27 @@
 import { useFormContext } from "react-hook-form";
 import { HOTEL_FACILITIES } from "../../constants/HotelFacilities";
-import { Hotel } from "../../types/hotelTypes";
+import { IAddHotel } from "../../types/hotelTypes";
 
 function DetailSection() {
   const {
     register,
     formState: { errors },
-  } = useFormContext<Hotel>();
+  } = useFormContext<IAddHotel>();
 
   return (
     <div className="flex flex-col gap-4">
       {/* NAME */}
-      <label className="">
-        Name
+      <div className="flex flex-col gap-1 ">
+        <label htmlFor="name">Name</label>
         <input
           type="text"
           defaultValue="Addis International Hotel"
-          className="w-full rounded-full border bg-slate-200 px-3 py-2 hover:outline-none"
+          className="w-full rounded-md border bg-slate-200 px-3 py-2 focus-visible:outline-accent-500 hover:outline-none"
           placeholder="abc international hotel"
           {...register("name", {
             required: "Hotel name is required",
-
             minLength: {
-              value: 5,
+              value: 3,
               message: "Hotel name should be at least 5 characters",
             },
           })}
@@ -32,32 +31,82 @@ function DetailSection() {
             {errors.name.message}
           </p>
         )}
-      </label>
+      </div>
 
       {/* ADDRESS */}
-      <label className="">
-        Address
-        <input
-          type="text"
-          defaultValue="Bahir Dar, Amhara, 16km from the main straight"
-          className="w-full rounded-full border bg-slate-200 px-3 py-2 hover:outline-none"
-          placeholder="Bahir Dar, Amhara, 16km from the main straight"
-          {...register("address", {
-            required: "Hotel address is required",
-          })}
-        />
-        {errors.address && (
-          <p className="text-sm font-normal text-red-700">
-            {errors.address.message}
-          </p>
-        )}
-      </label>
 
-      {/* STAR RATING */}
-      <label>
-        Hotel Star
+      <div className="flex md:flex-row flex-col gap-4 w-full">
+        <div className="flex flex-col flex-1 gap-1 ">
+          <label className="px-2" htmlFor="city">
+            City
+          </label>
+          <input
+            type="text"
+            defaultValue="Bahir Dar"
+            className="rounded-md border   focus-visible:outline-accent-500 bg-slate-200 px-3 py-2 hover:outline-none"
+            placeholder="Bahir Dar, Amhara, 16km from the main straight"
+            {...register("address.city", {
+              required: "Hotel address is required",
+            })}
+          />
+          {errors.address?.city && (
+            <p className="text-sm font-normal text-red-700">
+              {errors.address.city.message}
+            </p>
+          )}
+        </div>
+        <div className="flex flex-col flex-1 gap-1 ">
+          <label className="px-2" htmlFor="sub-city">
+            Sub-City
+          </label>
+          <input
+            type="text"
+            id="sub-city"
+            defaultValue="felege hiwot"
+            className="rounded-md border   focus-visible:outline-accent-500 bg-slate-200 px-3 py-2 hover:outline-none"
+            placeholder="Bahir Dar, Amhara, 16km from the main straight"
+            {...register("address.subcity", {
+              required: "Hotel sub-city is required",
+            })}
+          />
+          {errors.address?.subcity && (
+            <p className="text-sm font-normal text-red-700">
+              {errors.address.subcity.message}
+            </p>
+          )}
+        </div>
+        <div className="flex flex-col flex-1 gap-1 ">
+          <label className="px-2" htmlFor="street">
+            Street
+          </label>
+          <input
+            type="text"
+            defaultValue="street 003"
+            className="rounded-md border   focus-visible:outline-accent-500 bg-slate-200 px-3 py-2 hover:outline-none"
+            placeholder="Bahir Dar, Amhara, 16km from the main straight"
+            {...register("address.street")}
+          />
+        </div>
+        <div className="flex flex-col flex-1 gap-1 ">
+          <label className="px-2" htmlFor="woreda">
+            Wereda
+          </label>
+          <input
+            type="text"
+            id="woreda"
+            defaultValue="Woreda 01"
+            className="rounded-md border   focus-visible:outline-accent-500 bg-slate-200 px-3 py-2 hover:outline-none"
+            placeholder="Bahir Dar, Amhara, 16km from the main straight"
+            {...register("address.woreda")}
+          />
+        </div>
+      </div>
+
+
+      <div className="flex gap-1 flex-col">
+        <label htmlFor="hotel-start">Hotel Start</label>
         <select
-          className="w-full rounded-full border bg-slate-200 px-3 py-2 hover:outline-none"
+          className="w-full rounded-md border bg-slate-200 px-3 py-2 focus-visible:outline-accent-500 hover:outline-none"
           {...register("hotelStar", {
             required: "Star rating is required",
             min: { value: 1, message: "Star rating should be at least 1" },
@@ -75,15 +124,14 @@ function DetailSection() {
             {errors.hotelStar.message}
           </p>
         )}
-      </label>
+      </div>
 
-      {/* HOTEL FACILITIES */}
 
-      <div>
+      <div className="flex flex-col gap-1">
         <h1 className="text-xl font-bold">Hotel Facilities</h1>
-        <div className="grid grid-cols-5 gap-4">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4  gap-4">
           {HOTEL_FACILITIES.map((facility) => (
-            <label key={facility} className="flex flex-1 items-center gap-2">
+            <label key={facility} className="flex flex-1 items-center gap-1 ">
               <input
                 type="checkbox"
                 value={facility}
@@ -115,7 +163,7 @@ function DetailSection() {
         <input
           type="text"
           defaultValue="5-star hotel located in the heart of Addis Ababa, Ethiopia"
-          className="w-full rounded-full border bg-slate-200 px-3 py-2 hover:outline-none"
+          className="w-full rounded-md border bg-slate-200 px-3 py-2 focus-visible:outline-accent-500 hover:outline-none"
           placeholder="hotel summary"
           {...register("summary", {
             required: "A hotel must have a summary",

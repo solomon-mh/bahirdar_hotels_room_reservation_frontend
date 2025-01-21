@@ -1,13 +1,13 @@
-import { User } from "../../types/userTypes";
+import { IUser } from "../../types/userTypes";
 
-function UsersTable({ user }: { user: User }) {
+function UsersTable({ user }: { user: IUser }) {
   return (
     <div className="m-2 grid grid-cols-6 items-center gap-3 overflow-hidden border-b border-r border-slate-200 text-sm shadow">
       {/* USER */}
       <div className="col-span-1 col-start-1">
         <img
           className="h-12 w-12 object-cover"
-          src={user.photo}
+          src={user.profilePicture}
           alt={`${user.firstName}'s photo`}
         />
       </div>

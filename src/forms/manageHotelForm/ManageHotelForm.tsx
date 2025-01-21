@@ -1,17 +1,15 @@
 import { FormProvider, useForm } from "react-hook-form";
-
 import DetailSection from "./DetailSection";
 import ImageSection from "./ImageSection";
 import { useEffect, useState } from "react";
-import AddHotelManager from "./AddHotelManager";
 import Spinner from "../../ui/Spinner";
-import { useAuthContext } from "../../context/AuthContext";
 import SpinnerMini from "../../ui/SpinnerMini";
-import ModalWindow from "../../ui/ModalWindow";
-import ModalCreateManagerAccount from "../../ui/ModalCreateManagerAccount";
-import UsersListItem from "../../ui/UsersListItem";
 import { Hotel } from "../../types/hotelTypes";
-import { User } from "../../types/userTypes";
+import { SelectManager } from "./SelectManagerDrawer";
+import { IAddress } from "../../types/addressTypes";
+import CreateUserDialog from "./CreateUserDialog";
+import { IUser } from "../../types/userTypes";
+import toast from "react-hot-toast";
 interface Props {
   hotel?: Hotel;
   isAdding: boolean;
@@ -28,32 +26,11 @@ function ManageHotelForm({
   hotel,
   isInUpdateMode = false,
 }: Props) {
-  const { role, handleOpenModalWindow, openModalWindow } = useAuthContext();
 
-  const [managerHaveAccount, setManagerHaveAccount] = useState(true);
-  const [selectedManager, setSelectedManager] = useState<User | null>(null);
-  const [createdManager, setCreatedManager] = useState<User | null>(null);
 
-  const [show, setShow] = useState("");
-
-  const formMethods = useForm<Hotel & { facilities: string[], imageCoverFile: string, hotelImagesFiles: string[], manager: string, isInUpdateMode: boolean }>();
-  const { handleSubmit, reset, setValue } = formMethods;
-
-  const handleSelectedManager = (data: User) => {
-    setSelectedManager(data);
-  };
-
-  useEffect(() => {
-    if (createdManager?._id)
-    {
-      setSelectedManager(createdManager);
-      setValue("manager", createdManager._id);
-    } else if (selectedManager?.id)
-    {
-      setValue("manager", selectedManager._id);
-      setCreatedManager(selectedManager);
-    }
-  }, [createdManager, openModalWindow, setValue, selectedManager]);
+  const [seledtedManager, setSelectedManager] = useState<IUser | null>(null);
+  const formMethods = useForm<Hotel & { address: IAddress, facilities: string[], imageCoverFile: string, hotelImagesFiles: string[], manager: string, isInUpdateMode: boolean }>();
+  const { handleSubmit, reset, setValue } = formMethods; 
 
   // IF IN UPDATE MODE RESET THE HOTEL DATA TO THE FORM
   useEffect(() => {
@@ -70,18 +47,24 @@ function ManageHotelForm({
 
     formData.append("name", data.name);
     formData.append("description", data.description);
-    formData.append("address", data.address);
-    formData.append("hotelStar", data.hotelStar.toString());
+    formData.append("hotelStar", data.hotelStar);
     formData.append("summary", data.summary);
+    formData.append("address[city]", data.address.city);
+    formData.append("address[subcity]", data.address.subcity);
+    formData.append("address[street]", data.address.street);
+    formData.append("address[woreda]", data.address.woreda);
+    if (seledtedManager?._id)
+      formData.append("manager", seledtedManager._id);
+    else
+    {
+      toast.error("Please select manger manager not selected yet")
+      return;
+    }
 
     data.facilities.forEach((facility, i) => {
       formData.append(`facilities[${i}]`, facility);
     });
 
-    if (typeof data.manager === "string")
-    {
-      formData.append("manager", data.manager);
-    }
 
     if (hotel?.imageCover)
     {
@@ -105,10 +88,6 @@ function ManageHotelForm({
         formData.append(`hotelImagesFiles`, image);
       });
 
-    // if (hotel) {
-    //   formData.append("_id", hotel._id);
-    // }
-
     onSubmit(formData);
   });
 
@@ -116,7 +95,7 @@ function ManageHotelForm({
     <>
       <FormProvider {...formMethods}>
         <div className="flex items-center justify-center p-3">
-          <h1 className="min-w-[30rem] cursor-pointer rounded-full bg-accent-500 px-6 py-2 text-center text-2xl font-bold uppercase text-white shadow-xl">
+          <h1 className="min-w-[30rem] cursor-pointer rounded-full bg-accent-400 text-slate-100 px-6 py-2 text-center text-2xl font-bold uppercase text-white shadow-xl">
             {isInUpdateMode ? "update hotel" : "Add Hotel"}
           </h1>
         </div>
@@ -133,50 +112,7 @@ function ManageHotelForm({
           >
             <div>
               <DetailSection />
-              <ImageSection />
-              {role === "admin" && isInUpdateMode ? (
-                <AddHotelManager
-                  handleSelectedManager={handleSelectedManager}
-                />
-              ) : (
-                role === "admin" &&
-                managerHaveAccount &&
-                show === "haveAccount" && (
-                  <AddHotelManager
-                    handleSelectedManager={handleSelectedManager}
-                  />
-                )
-              )}
-              {role === "admin" &&
-                !managerHaveAccount &&
-                show === "haveNoAccount" && (
-                  <div className="mt-6 flex items-center justify-between gap-4">
-                    <button
-                      type="button"
-                      onClick={handleOpenModalWindow}
-                        className="flex items-center gap-2 rounded-full bg-accent-700 px-6 py-2 text-xl text-slate-200 transition-all duration-300 hover:scale-105"
-                    >
-                      Create Manager Account
-                    </button>
-
-                    {createdManager?._id ? (
-                      <div className="overflow-hidden rounded-full bg-slate-300 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:translate-x-2">
-                        <UsersListItem
-                          user={createdManager}
-                          onClick={() => { }}
-                        />
-                      </div>
-                    ) : !createdManager?._id ? (
-                      <p className="text-sm font-normal text-red-400">
-                        Please select the manager of the hotel. a hotel must
-                        have a manager
-                      </p>
-                    ) : (
-                      // this empty div is for styling purpose justify around
-                      <div></div>
-                    )}
-                  </div>
-                )}
+                  <ImageSection />
 
               {!isInUpdateMode && (
                 <>
@@ -187,38 +123,27 @@ function ManageHotelForm({
                       then.
                     </p>
 
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setShow("haveAccount");
-                        setManagerHaveAccount(true);
-                      }}
-                          className="my-4 mr-4 rounded bg-slate-500 px-4 py-2 text-xs text-slate-200 transition-all duration-300 hover:bg-accent-500 hover:text-slate-200"
-                    >
-                      yes have an account
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setShow("haveNoAccount");
-                        setManagerHaveAccount(false);
-                      }}
-                          className="my-4 ml-4 rounded bg-slate-500 px-4 py-2 text-xs text-slate-200 transition-all duration-300 hover:bg-accent-500 hover:text-slate-200"
-                    >
-                      no, have no account
-                    </button>
+
                   </div>
                 </>
-              )}
+                  )}
+                  <div className="flex gap-4 items-center">
+                    <SelectManager
+                      selectedManager={seledtedManager}
+                      setSelectedManager={setSelectedManager}
+                    />
+                    <span>
+                      {seledtedManager ? seledtedManager.firstName + " " + seledtedManager.lastName : "No manager selected yet"}
+                    </span>
+                    <CreateUserDialog />
+                  </div>
             </div>
             <button
               type="submit"
-                  className="w-full rounded bg-accent-800 px-3 py-2 text-white transition-all duration-300 hover:bg-accent-700 disabled:cursor-not-allowed disabled:bg-accent-500"
+                  className="w-full rounded bg-accent-500/90 hover:bg-accent-500 text-slate-100 px-3 py-2 text-white transition-all duration-300 disabled:cursor-not-allowed disabled:bg-accent-500"
               disabled={
                 isAdding ||
-                isUpdating ||
-                ((!selectedManager?._id || !createdManager?.id) &&
-                  !isInUpdateMode) // we want this condition only in adding mode | isInUpdateMode is false by default
+                isUpdating // we want this condition only in adding mode | isInUpdateMode is false by default
               }
             >
               {isAdding || isUpdating ? <SpinnerMini /> : "Save Hotel"}
@@ -227,13 +152,7 @@ function ManageHotelForm({
         )}
       </FormProvider>
 
-      {openModalWindow && (
-        <ModalWindow>
-          <div className="h-[70vh]">
-            <ModalCreateManagerAccount setCreatedManager={setCreatedManager} />
-          </div>
-        </ModalWindow>
-      )}
+
     </>
   );
 }

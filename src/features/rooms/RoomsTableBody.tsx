@@ -1,24 +1,4 @@
-/*
- {
-          _id: '6693cdbc295dc5119b718701',
-          roomNumber: '101',
-          roomType: 'double',
-          pricePerNight: 200,
-          isAvailable: true,
-          amenities: [ 'TV', 'AC' ],
-          capacity: 1,
-          description: 'This is a single room',
-          images: [
-            
-              'http://res.cloudinary.com/dvp1mjhd9/image/upload/v1719767826/dpdcizouxqvmwiubmhel.jpg', 
-              'http://res.cloudinary.com/dvp1mjhd9/image/upload/v1719767828/jccr0lowxldhrotudni2.jpg'
-          ],
-          hotel: '668ced40c8a56b00ec4b58da',
-          createdAt: '2024-07-14T13:08:12.692Z',
-          updatedAt: '2024-07-14T13:08:12.692Z',
-          id: '6693cdbc295dc5119b718701'
-        },
-*/
+
 
 import { MdDeleteOutline, MdEdit } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -26,13 +6,14 @@ import { useAuthContext } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
 import ModalWindow from "../../ui/ModalWindow";
 import ModalDeleteRoom from "../../ui/ModalDeleteRoom";
-import { Room } from "../../types/roomTypes";
+import { IRoom } from "../../types/roomTypes";
+import { ITimeStamp } from "../../types/general";
 
-function RoomsTableBody({ room }: { room: Room }) {
-  const { user, handleOpenModalWindow, openModalWindow } = useAuthContext();
-  const [roomToBeDeleted, setRoomToBeDeleted] = useState<Room | null>(null);
+function RoomsTableBody({ room }: { room: IRoom & ITimeStamp }) {
+  const { currentHotel, handleOpenModalWindow, openModalWindow } = useAuthContext();
+  const [roomToBeDeleted, setRoomToBeDeleted] = useState<IRoom | null>(null);
 
-  const hotelId = user?.hotel?._id;
+  const hotelId = currentHotel?._id;
 
   useEffect(() => {
     if (!openModalWindow && roomToBeDeleted?._id)
@@ -65,7 +46,7 @@ function RoomsTableBody({ room }: { room: Room }) {
         {/* <div className="col-span-1 col-start-7">{`${room.description} person`}</div> */}
         {/* AMENITIES */}
         <div className="col-span-2 col-start-7 flex">
-          {room.amenities && room.amenities.slice(0, 3).join(", ")}
+          {room.roomFacilities && room.roomFacilities.slice(0, 3).join(", ")}
         </div>
         <div className="col-span-1 col-start-9">{`${room.isAvailable}`}</div>
         <div className="col-span-1 col-start-10 flex flex-col items-center gap-1">

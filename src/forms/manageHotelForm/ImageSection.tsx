@@ -15,6 +15,7 @@ function ImageSection() {
   const handleDeleteHotelImages = (e: React.MouseEvent<HTMLButtonElement>, image: string) => {
     e.preventDefault();
 
+
     setValue(
       "hotelImages",
       existingHotelImagesUrl.filter((img) => img !== image),
@@ -73,6 +74,7 @@ function ImageSection() {
             <input
               type="file"
               accept="image/*"
+              
               // hidden
               className="hover:cursor-pointer"
               {...register("imageCoverFile", {
@@ -82,7 +84,7 @@ function ImageSection() {
               })}
             />
             {errors.imageCoverFile && (
-              <p className="text-sm font-normal text-red-700">
+              <p className="text-sm font-normal text-red-500">
                 {errors.imageCoverFile.message}
               </p>
             )}
@@ -98,21 +100,24 @@ function ImageSection() {
                 images )
               </span>
             )}
+
+
             <input
               type="file"
               accept="image/*"
               disabled={10 - existingHotelImagesUrl?.length <= 0}
               className="hover:cursor-pointer"
               multiple
+
               {...register("hotelImagesFiles", {
                 validate: (hotelImagesFiles) => {
                   const numOfTotalImages =
                     (hotelImagesFiles?.length || 0) +
                     (existingHotelImagesUrl?.length || 0);
 
-                  if (numOfTotalImages < 2)
+                  if (numOfTotalImages < 1)
                   {
-                    return "A hotel must have at least 2 additional images";
+                    return "A hotel must have at least 1 additional images";
                   }
 
                   if (numOfTotalImages > 10)
@@ -125,7 +130,7 @@ function ImageSection() {
               })}
             />
             {errors.hotelImagesFiles && (
-              <p className="text-sm font-normal text-red-700">
+              <p className="text-sm font-normal text-red-500">
                 {errors.hotelImagesFiles.message}
               </p>
             )}
