@@ -2,7 +2,7 @@ import { useFormContext } from "react-hook-form";
 import { AMENITIES } from "../../constants/RoomAmenities";
 
 function RoomAmenities() {
-  const { register, formState: { errors } } = useFormContext<{ amenities: string[] }>();
+  const { register, formState: { errors } } = useFormContext<{ roomFacilities: string[] }>();
 
   return (
     <div>
@@ -14,11 +14,11 @@ function RoomAmenities() {
               type="checkbox"
               value={amenity}
               className="p-2 accent-accent-600"
-              {...register("amenities", {
-                validate: (amenities) => {
-                  if (!amenities || amenities.length < 3)
+              {...register("roomFacilities", {
+                validate: (roomFacilities) => {
+                  if (!roomFacilities || roomFacilities.length < 3)
                   {
-                    return "a room should have at least 3 amenities";
+                    return "a room should have at least 3 roomFacilities";
                   }
                   return true;
                 },
@@ -28,9 +28,9 @@ function RoomAmenities() {
           </label>
         ))}
       </div>
-      {errors.amenities && (
+      {errors.roomFacilities && (
         <p className="text-sm font-normal text-red-700">
-          {errors.amenities.message}
+          {errors.roomFacilities.message}
         </p>
       )}
     </div>

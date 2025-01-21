@@ -11,11 +11,12 @@ import {
   RoomType,
 } from "./index";
 import { FormProvider, useForm } from "react-hook-form";
-import { Room } from "../../types/roomTypes";
+import { IRoom } from "../../types/roomTypes";
+// import { useAuthContext } from "../../context/AuthContext";
 
 interface Props {
   onSubmit: (room: FormData) => void;
-  room?: Room,
+  room?: IRoom,
   isLoading?: boolean,
   isAdding?: boolean,
   isUpdating?: boolean,
@@ -29,8 +30,10 @@ function ManageRoomForm({
   isUpdating,
   isInUpdateMode = false,
 }: Props) {
-  const formMethods = useForm<Room & { RoomImageFiles: FileList }>();
-  const { handleSubmit, reset, setValue } = formMethods;
+
+  // const { currentHotel } = useAuthContext()
+  const formMethods = useForm<IRoom & { RoomImageFiles: FileList, "isInUpdateMode": boolean }>();
+  const { handleSubmit, reset, setValue, formState: { errors } } = formMethods;
 
   // RESET THE ROOM TO BE UPDATED
   useEffect(() => {
@@ -46,18 +49,18 @@ function ManageRoomForm({
 
     formData.append("roomNumber", data.roomNumber);
     formData.append("roomType", data.roomType);
-    formData.append("pricePerNight", data.pricePerNight);
-    formData.append("capacity", data.capacity);
+    formData.append("pricePerNight", data.pricePerNight.toString());
+    formData.append("capacity", data.capacity.toString());
     formData.append("description", data.description);
-
-    data.amenities.forEach((amenity, i) => {
-      formData.append(`amenities[${i}]`, amenity);
+    formData.append("hotel", "678fd33c84843004f747be22")
+    data.roomFacilities.forEach((amenity, i) => {
+      formData.append(`roomFacilities[${i}]`, amenity);
     });
 
     if (data?.RoomImageFiles)
     {
       Array.from(data.RoomImageFiles).forEach((image) => {
-        formData.append("RoomImageFiles", image);
+        formData.append("images", image);
       });
     }
 
@@ -74,7 +77,7 @@ function ManageRoomForm({
   return (
     <FormProvider {...formMethods}>
       <div className="flex items-center justify-center p-3">
-        <h1 className="min-w-[30rem] cursor-pointer rounded-full bg-accent-500 px-6 py-2 text-center text-2xl font-bold text-white shadow-xl">
+        <h1 className="min-w-[30rem] cursor-pointer rounded-full text-slate-100 bg-accent-500 px-6 py-2 text-center text-2xl font-bold text-white shadow-xl">
           {isInUpdateMode ? "Update Add" : "Add Room"}
         </h1>
       </div>
@@ -84,10 +87,19 @@ function ManageRoomForm({
         <form
           onSubmit={onSubmitHandler}
           className="m-auto flex flex-col gap-8 rounded bg-slate-100 p-10 shadow-lg"
-        >
+          >
+
+            <pre>
+              {
+                [errors._id?.message, errors.RoomImageFiles?.message, errors.capacity?.message, errors.description?.message, errors.images?.message, errors.hotel?.message, errors.pricePerNight?.message, errors.capacity?.message].join(',')
+              }
+            </pre>
+
           <div className="flex flex-col gap-4">
             {/* ROOM NUMBER */}
-            <RoomNumber />
+              <RoomNumber />
+
+
 
             {/* ROOM TYPE */}
             <RoomType />
@@ -110,7 +122,7 @@ function ManageRoomForm({
 
           <button
             type="submit"
-              className="w-full rounded bg-accent-800 px-3 py-2 text-white transition-all duration-300 hover:bg-accent-700 disabled:cursor-not-allowed disabled:bg-accent-500"
+              className="w-full rounded bg-accent-500/90 px-3 py-2 text-slate-100 transition-all duration-300 hover:bg-accent-500 disabled:cursor-not-allowed disabled:bg-accent-600"
             disabled={isAdding || isUpdating}
           >
             {isAdding || isUpdating ? <SpinnerMini /> : "Save Room"}
