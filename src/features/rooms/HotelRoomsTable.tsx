@@ -1,72 +1,126 @@
 import { Link } from "react-router-dom";
-import RoomsTableHeading from "./RoomsTableHeading";
-import Spinner from "../../ui/Spinner";
-import RoomsTableBody from "./RoomsTableBody";
-import { useQuery } from "@tanstack/react-query";
-import QueryKey from "../../constants/QueryKey";
-import apiRooms from "../../services/apiRooms";
-import { useAuthContext } from "../../context/AuthContext";
+import { useGetAllRoomsQuery } from "../../redux/api/rooms";
+import LoadingPage from "../../pages/utils/LoadingPage";
+import NotFoundPage from "../../pages/utils/NotFoundPage";
+import { TableHead, TableHeader, Table, TableBody, TableRow, TableCell } from "../../components/ui/table";
+import { Eye } from "lucide-react";
 
-/*
-{
-    status: 'success',
-    message: 'get all routes',
-    numOfRooms: 6,
-    data: {
-      rooms: Array(6) [
-        {
-          _id: '6693cdbc295dc5119b718701',
-          roomNumber: '101',
-          roomType: 'double',
-          pricePerNight: 200,
-          isAvailable: true,
-          amenities: [ 'TV', 'AC' ],
-          capacity: 1,
-          description: 'This is a single room',
-          images: [
-            
-              'http://res.cloudinary.com/dvp1mjhd9/image/upload/v1719767826/dpdcizouxqvmwiubmhel.jpg', 
-              'http://res.cloudinary.com/dvp1mjhd9/image/upload/v1719767828/jccr0lowxldhrotudni2.jpg'
-          ],
-          hotel: '668ced40c8a56b00ec4b58da',
-          createdAt: '2024-07-14T13:08:12.692Z',
-          updatedAt: '2024-07-14T13:08:12.692Z',
-          id: '6693cdbc295dc5119b718701'
-        },
- */
 
 function HotelRoomsTable() {
-  const { user } = useAuthContext();
 
-  const { data: { data: { rooms } = {} } = {}, isLoading } = useQuery({
-    queryKey: [QueryKey.ROOMS, user?.hotel?._id],
-    queryFn: () => apiRooms.getAllRoomsOnHotel({ hotelId: user?.hotel?._id || "" }),
-  });
+  const { data: { data: rooms } = {}, isLoading, error } = useGetAllRoomsQuery("")
 
   return (
-    <div className="grid w-full grid-cols-1 bg-white">
-      <div className="flex items-center justify-between p-6">
+    <div className=" h-[80vh] px-4 w-full flex flex-col items-center justify-start bg-slate-100/50">
+      <div className="flex w-full items-center justify-between px-6 py-2 bg-slate-200/40">
         <h1 className="p-4 uppercase">
           <Link to="/dashboard/bookings">All Rooms</Link>
         </h1>
-        <div></div>
-        <div></div>
-        <div></div>
         <Link
           to={"/dashboard/add-room"}
-          className="mr-2 cursor-pointer rounded-full bg-accent-700 px-4 py-[6px] text-lg text-white transition-all duration-200 hover:scale-105"
+          className="mr-2 cursor-pointer rounded-md bg-accent-500 text-slate-100 px-4 py-[6px] text-lg text-white transition-all duration-200 hover:scale-105"
         >
           Add Room
         </Link>
       </div>
-      <RoomsTableHeading />
-      {isLoading ? (
-        <Spinner />
-      ) : rooms?.length && rooms?.length > 0 ? (
-        rooms?.map((room, i) => <RoomsTableBody room={room} key={i} />)
-      ) : (
-        <div>There are not rooms found in this hotel</div>
-      )}
+
+      <div className="flex w-full bg-slate-100/70 p-4 ">
+        {
+          isLoading ?
+            <LoadingPage />
+            :
+            error ?
+              <NotFoundPage>
+                <p>
+                  {
+                    JSON.stringify(error, null, 2)
+                  }
+                </p>
+              </NotFoundPage>
+              :
+              !rooms?.length
+                ?
+                <NotFoundPage>
+                  <p>Rooms not found to this hotel</p>
+                </NotFoundPage>
+                :
+                <Table >
+                  <TableHeader className=" py-4 bg-slate-200/70">
+                    <TableHead>
+                      Room
+                    </TableHead>
+                    <TableHead>
+                      Number
+                    </TableHead>
+                    <TableHead>
+                      Type
+                    </TableHead>
+                    <TableHead>
+                      Price / Night
+                    </TableHead>
+                    <TableHead>
+                      Capacity
+                    </TableHead>
+                    <TableHead>
+                      Amenities
+                    </TableHead>
+                    <TableHead>
+                      Is Available
+                    </TableHead>
+                    <TableHead>
+                      Action
+                    </TableHead>
+                  </TableHeader>
+                  <TableBody>
+                    {
+                      rooms.map(room => (
+                        <TableRow className="hover:bg-slate-200/60">
+                          <TableHead>
+                            {
+                              room.images[0] ?
+                                <img
+                                  src={room.images[0]}
+                                  alt="Room image"
+                                  className="h-[50px] w-[100px] object-fit"
+                                />
+                                :
+                                <div className=" grid place-items-center  h-[50px] w-[100px]">
+                                  <span className="text-slate-500">No image</span>
+                                </div>
+                            }
+                          </TableHead>
+                          <TableCell>
+                            {room.roomNumber}
+                          </TableCell>
+                          <TableCell>
+                            {room.roomType}
+                          </TableCell>
+                          <TableCell>
+                            {room.pricePerNight}
+                          </TableCell>
+                          <TableCell>
+                            {room.capacity}
+                          </TableCell>
+                          <TableCell>
+                            {
+                              room.roomFacilities.join(",")
+                            }
+                          </TableCell>
+                          <TableCell>
+                            {room.isAvailable ? "Available" : "Reserved"}
+                          </TableCell>
+                          <TableCell>
+                            <Eye />
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    }
+                  </TableBody>
+                </Table>
+
+        }
+      </div>
+
     </div>
   );
 }
