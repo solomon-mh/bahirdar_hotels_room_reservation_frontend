@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
-import { AuthContextProvider, useAuthContext } from "./context/AuthContext.jsx";
+import { useAuthContext } from "./context/AuthContext.jsx";
 import { BookingContextProvider } from "./context/BookingContext.jsx";
 import AppLayout from "./ui/AppLayout";
 import AddHotel from "./features/hotels/AddHotel";
@@ -38,15 +38,14 @@ import ProtectAdminRoutes from "./ui/ProtectAdminRoutes";
 import BookRoomPage from "./pages/BookRoomPage";
 import PaymentSuccessPage from "./pages/PaymentSuccessPage";
 import ForgotMyPassword from "./features/profile/ForgotMyPassword";
-import { Provider } from "react-redux";
-import { store } from "./redux/store.js";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const queryClient = new QueryClient();
 
 function App() {
   const { role, isLoggedIn } = useAuthContext();
 
   return (
-    <Provider store={store}>
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
       <Toaster
@@ -69,8 +68,9 @@ function App() {
           },
         }}
       />
-      <AuthContextProvider>
-        <BookingContextProvider>
+
+      <BookingContextProvider>
+        <ToastContainer />
           <BrowserRouter>
             <Routes>
               {/* HOME ROUTES */}
@@ -116,7 +116,7 @@ function App() {
                   </ProtectAdminRoutes>
                 }
               >
-                <Route index element={<Dashboard />} />
+              <Route index element={<Dashboard />} />
                 {role === "admin" ? (
                   <>
                     <Route path="hotels" element={<AllHotels />} />
@@ -147,10 +147,8 @@ function App() {
             </Routes>
           </BrowserRouter>
 
-        </BookingContextProvider>
-      </AuthContextProvider>
-      </QueryClientProvider>
-    </Provider>
+      </BookingContextProvider>
+    </QueryClientProvider>
   );
 }
 

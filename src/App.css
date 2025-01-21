@@ -63,3 +63,8 @@ body {
   scrollbar-width: 3px;
   scrollbar-color: rgba(255, 255, 255, 0.5) rgba(255, 255, 255, 0.8);
 }
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
