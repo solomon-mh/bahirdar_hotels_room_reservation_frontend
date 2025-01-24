@@ -9,32 +9,25 @@ import { useLoginMutation } from "../../redux/api/authApi";
 import { ILogin } from "../../types/authTypes";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { useAuthContext } from "../../context/AuthContext";
 
 function SigninPage() {
   const navigate = useNavigate();
+  const { setUser } = useAuthContext()
 
   const { register, handleSubmit, formState: { errors } } = useForm<ILogin>();
   const [showPassword, setShowPassword] = useState(false);
 
   const [login, { isLoading }] = useLoginMutation()
   const onSubmitHandler = handleSubmit((data) => {
-    try
-    {
-
-      login(data).unwrap().then((response) => {
-        navigate("/dashboard")
-        toast.success(response.message);
-      }).catch((error) => {
-        toast.error(error.data.message || "Something went wrong");
-      });
-    }
-    catch (err)
-    {
-      console.log(err)
-      toast.error("Something went wrong");
-    }
-  });
-
+    login(data).unwrap().then((response) => {
+      setUser(response.data)
+      navigate("/dashboard/hotels")
+      toast.success(response.message);
+    }).catch((error) => {
+      toast.error(error.data.message || "Something went wrong");
+    });
+  })
   return (
     <div className="flex min-h-screen items-center justify-center">
       <div className="  rounded-xl p-4 py-6 shadow-2xl sm:mx-auto sm:w-[25rem] lg:mt-4">
@@ -101,7 +94,7 @@ function SigninPage() {
             </label>
             <button
               disabled={isLoading}
-              className="rounded-xl bg-accent-500 px-3 py-2 text-white hover:bg-accent-500 disabled:cursor-not-allowed disabled:bg-accent-400"
+              className="rounded-xl bg-accent-500 px-3 py-2 text-slate-100 hover:bg-accent-500 disabled:cursor-not-allowed disabled:bg-accent-400"
               type="submit"
             >
               {isLoading ? <SpinnerMini /> : "Sign In"}
