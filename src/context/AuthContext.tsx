@@ -1,13 +1,13 @@
-/* eslint-disable react-refresh/only-export-components */
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import LoadingSkeleton from "../ui/LoadingSkeleton";
-import { IUser } from "../types/userTypes.js";
-import { IHotel } from "../types/hotelTypes.js";
-import { useGetCurrentUserQuery } from "../redux/api/userApi.js";
+import { IUser } from "../types/userTypes";
+import { IHotel } from "../types/hotelTypes";
+import { useGetCurrentUserQuery } from "../redux/api/userApi";
 
 interface Props {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
+
 export interface AuthContextType {
   isLoggedIn: boolean;
   isOpenModal: boolean;
@@ -19,30 +19,44 @@ export interface AuthContextType {
   handleOpenModalWindow: () => void;
   openModalWindow: boolean;
   handleSetUserOnLogout: () => void;
+  setUser: (data: IUser | null) => void;
 }
-const AuthContext = createContext<AuthContextType>({
-  isLoggedIn: false,
-  isOpenModal: false,
-  handleOpenModal: () => { },
-  user: null,
-  role: null,
-  currentHotel: null,
-  setCurrentHotelHandler: () => { },
-  handleOpenModalWindow: () => { },
-  openModalWindow: false,
-  handleSetUserOnLogout: () => { },
-});
 
-function AuthContextProvider({ children }: Props) {
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const AuthContextProvider: React.FC<Props> = ({ children }) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [currentHotel, setCurrentHotel] = useState<IHotel | null>(null);
   const [openModalWindow, setOpenModalWindow] = useState(false);
+  const [user, setUser] = useState<IUser | null>(null);
 
-  // TODO: send request to the '/auth/validateToken' route to check if user is loggedIn or not.
-  // and then get user
-  const { data: { data } = {}, isLoading, isError } = useGetCurrentUserQuery();
+  const { data: { data } = {}, isLoading, isError, error } = useGetCurrentUserQuery();
 
-  if (isLoading)
+  useEffect(() => {
+    if (data) setUser(data);
+  }, []);
+  useEffect(() => {
+    if (data)
+    {
+      setUser(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (isError)
+    {
+      setUser(null);
+    }
+  }, [isError]);
+
+  const handleSetUserOnLogout = () => setUser(null);
+  const handleOpenModal = () => setIsOpenModal((prev) => !prev);
+  const handleOpenModalWindow = () => setOpenModalWindow((prev) => !prev);
+  const setCurrentHotelHandler = (hotel: IHotel) => setCurrentHotel(hotel);
+
+
+
+  if (isLoading || (!user && !isError))
   {
     return (
       <div className="mx-auto flex min-h-screen justify-center lg:w-1/4">
@@ -58,52 +72,46 @@ function AuthContextProvider({ children }: Props) {
     );
   }
 
-  let user = data || null;
-
-  const handleSetUserOnLogout = () => {
-    user = null;
-  };
-
-  const handleOpenModal = () => {
-    setIsOpenModal((prev) => !prev);
-  };
-
-  const handleOpenModalWindow = () => {
-    setOpenModalWindow(!openModalWindow);
-  };
-
-  const setCurrentHotelHandler = (hotel: IHotel) => {
-    setCurrentHotel(hotel);
-  };
-
-  return (
-    <AuthContext.Provider
-      value={{
-        isLoggedIn: !isError,
-        isOpenModal,
-        handleOpenModal,
-        user,
-        role: user?.role || null,
-        currentHotel: currentHotel,
-        setCurrentHotelHandler,
-        handleOpenModalWindow,
-        openModalWindow,
-        handleSetUserOnLogout,
-      }}
-    >
-
-      {children}
-    </AuthContext.Provider>
-  );
-}
-
-const useAuthContext = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined)
+  if (!error || (error && 'status' in error && error.status === 401))
   {
-    throw new Error("useAuthContext must be used within a AuthContextProvider");
+  // setUser(null);
+
+    return (
+      <AuthContext.Provider
+        value={{
+          isLoggedIn: !isError,
+          isOpenModal,
+          handleOpenModal,
+          user,
+          role: user?.role || null,
+          currentHotel,
+          setCurrentHotelHandler,
+          handleOpenModalWindow,
+          openModalWindow,
+          handleSetUserOnLogout,
+          setUser,
+        }}
+      >
+        {children}
+      </AuthContext.Provider>
+    );
+  }
+  else
+    return (
+      <div className="mx-auto flex min-h-screen justify-center lg:w-1/4">
+        <div className="mt-5 p-4 lg:mt-12">
+          <h1 className="text-red-500">Error fetching user data</h1>
+          <p>{JSON.stringify(error, null, 2)}</p>
+        </div>
+      </div>
+    );
+};
+
+export const useAuthContext = (): AuthContextType => {
+  const context = useContext(AuthContext);
+  if (!context)
+  {
+    throw new Error("useAuthContext must be used within an AuthContextProvider");
   }
   return context;
 };
-
-export { AuthContextProvider, useAuthContext };
