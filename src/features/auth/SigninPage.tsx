@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import SpinnerMini from "../../ui/SpinnerMini";
@@ -12,7 +11,6 @@ import { useState } from "react";
 import { useAuthContext } from "../../context/AuthContext";
 
 function SigninPage() {
-  const navigate = useNavigate();
   const { setUser } = useAuthContext()
 
   const { register, handleSubmit, formState: { errors } } = useForm<ILogin>();
@@ -22,7 +20,10 @@ function SigninPage() {
   const onSubmitHandler = handleSubmit((data) => {
     login(data).unwrap().then((response) => {
       setUser(response.data)
-      navigate("/dashboard/hotels")
+      if (response.data.role === "admin")
+        window.location.href = "/dashboard"
+      else
+        window.location.href = "/dashboard/hotels"
       toast.success(response.message);
     }).catch((error) => {
       toast.error(error.data.message || "Something went wrong");
@@ -46,9 +47,7 @@ function SigninPage() {
               <span className="ml-2 font-normal md:text-xl">Email</span>
               <input
                 type="email"
-                defaultValue="admin@test.com"
                 className="mt-2 w-full rounded-md py-2 bg-slate-200  px-3 outline-1 outline-accent-500 focus:outline"
-                placeholder="admin@test.com"
                 {...register("email", {
                   required: "Please provide your email address",
                   pattern: {
