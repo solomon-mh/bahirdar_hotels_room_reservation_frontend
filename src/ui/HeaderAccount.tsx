@@ -1,52 +1,58 @@
 
-// import { useState } from "react";
 import HeaderAccountMenu from "./HeaderAccountMenu";
 import { useAuthContext } from "../context/AuthContext";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useOnClickOutside } from "../hooks/useOnClickOutside";
-import { createPortal } from "react-dom";
+import { CircleUserRound } from "lucide-react";
+import { Role } from "../enums/roleEnum";
 
 function HeaderAccount() {
-  const { user, isOpenModal, handleOpenModal } = useAuthContext();
+  const { user, } = useAuthContext();
+  const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
   const iconRef = useRef(null);
-  const refElemet = document.querySelector("#modal")
-  useOnClickOutside({ handler: handleOpenModal, refs: [menuRef, iconRef] });
+  useOnClickOutside({
+    handler: () => {
+      setIsOpen(false);
+    }, refs: [menuRef, iconRef]
+  });
 
   return (
     <div className="relative z-50">
       <div
         ref={iconRef}
-        onClick={handleOpenModal}
+        onClick={() => setIsOpen(prev => !prev)}
         className="flex items-center justify-center gap-2 hover:cursor-pointer"
       >
+        <li>
+          {user?.role === Role.MANAGER && user?.hotel?.name || "No Hotel"}
+        </li>
+        <span className="text-sm font-semibold text-black/50">
+          {user?.role}
+        </span>
         <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-slate-50">
-          {user?.photo ? (
+          {user?.profilePicture ? (
             <img
               className="h-full w-full object-cover object-center"
-              src={user?.photo}
+              src={user?.profilePicture}
               alt=""
             />
-          ) : (
-            <span className="text-black">
-              {`${user?.firstName.charAt(0).toUpperCase()}${user?.lastName.charAt(0).toUpperCase()}`}
-            </span>
-          )}
+          ) :
+            (
+              <CircleUserRound />
+            )}
         </div>
       </div>
-      {isOpenModal
-        ? refElemet && createPortal(
+      {isOpen &&
           <>
             <div
               ref={menuRef}
-              className="absolute right-12 top-16 z-[100] mt-2 w-[13rem] rounded-md border-2 border-black/10 bg-white text-black/50 shadow-lg"
+          className="absolute right-2 top-5 z-[100] mt-2 w-[13rem] rounded-md border-2 border-black/10 bg-white text-black/50 shadow-lg"
             >
               <HeaderAccountMenu />
             </div>
-          </>,
-          refElemet,
-        )
-        : null}
+        </>
+      }
     </div>
   );
 }

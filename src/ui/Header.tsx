@@ -13,6 +13,11 @@ function Header() {
     <section className="z-50 mx-auto h-full w-full bg-accent-50 drop-shadow-md shadow-accent-300 border-b  px-3 py-2 md:px-24">
       <header className="mx-auto flex h-[10vh] items-center justify-between px-6 py-1 opacity-85">
         <Logo />
+        <div className="flex items-center gap-2">
+          <h2>
+            {isLoggedIn ? `Welcome, ${user!.firstName}` : "Welcome to Hotelify"}
+          </h2>
+        </div>
         <nav>
           <ul className="flex items-center justify-between md:gap-4 lg:gap-6">
             <li>
@@ -57,7 +62,10 @@ function Header() {
                       </Link>
                     </li>
                   ))}
+
+
                 <li>
+
                   <HeaderAccount />
                 </li>
               </>
@@ -65,7 +73,7 @@ function Header() {
               <li>
                 <Link
                   to="/login"
-                    className="flex items-center gap-2 rounded-lg bg-accent-500 px-5 py-2 text-white"
+                    className="flex items-center gap-2 rounded-lg bg-accent-500 px-5 py-2 text-slate-100"
                 >
                   Sign In
                   <FaArrowRight />

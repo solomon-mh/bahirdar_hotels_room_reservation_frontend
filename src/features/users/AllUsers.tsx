@@ -1,18 +1,17 @@
-import { Link, useSearchParams } from "react-router-dom";
-import UsersTable from "./UsersTable";
-import UserTableHeader from "./UserTableHeader";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Search from "../../ui/Search";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useGetAllUsersQuery, userApi, UserTags } from "../../redux/api/userApi";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/table";
 
 function AllUsers() {
   const { register, handleSubmit } = useForm();
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeBtn, setActiveBtn] = useState("");
-
+  const navigate = useNavigate()
   const { data: { data: users } = {}, isLoading } = useGetAllUsersQuery(searchParams.toString());
 
   const onSearchHandler = handleSubmit((data) => {
@@ -89,10 +88,56 @@ function AllUsers() {
           )
           :
           (
-            <>
-              <UserTableHeader />
-              {users.map((user, i) => <UsersTable user={user} key={i} />)}
-            </>
+            <div className="flex p-4 flex-col gap-2">
+
+              <Table className="shadow-md shadow-red-300">
+                <TableHeader className="bg-slate-200">
+                  <TableHead>Profile</TableHead>
+                  <TableHead>First Name</TableHead>
+                  <TableHead>Last Name</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Phone number</TableHead>
+                  <TableHead>Role</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableHeader>
+                <TableBody className="divide-y divide-gray-200">
+                  {
+                    users?.map((user) => (
+                      <TableRow>
+                        <TableCell>
+                          {
+                            user?.profilePicture
+                              ? <img
+                                src={user?.profilePicture}
+                                alt="profile"
+                                className="w-7 h-7 rounded-full"
+                              />
+                              : <div className="w-7 h-7 grid place-items-center" >
+                                No profile picture
+                              </div>
+                          }
+                        </TableCell>
+                        <TableCell>{user?.firstName}</TableCell>
+                        <TableCell>{user?.lastName}</TableCell>
+                        <TableCell>{user?.email}</TableCell>
+                        <TableCell>{user?.phoneNumber}</TableCell>
+                        <TableCell>{user?.role}</TableCell>
+                        <TableCell>
+                          <button
+                            className="text-accent-500 hover:underline"
+                            onClick={() => {
+                              navigate(`/dashboard/users/${user._id}`)
+                            }}
+                          >
+                            View
+                          </button>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  }
+                </TableBody>
+              </Table>
+            </div>
           )
       }
     </div>
@@ -100,22 +145,3 @@ function AllUsers() {
 }
 
 export default AllUsers;
-
-/*
-{
-    status: 'success',
-    results: 7,
-    data: {
-      users: Array(7) [
-        {
-          _id: '668ce22aa5b16ed846c21a18',
-          firstName: 'admin',
-          lastName: 'TestF',
-          email: 'admin@test.com',
-          role: 'admin',
-          phoneNumber: '0908005801',
-          createdAt: '2024-07-09T07:09:30.494Z',
-          updatedAt: '2024-07-09T07:09:30.494Z',
-          __v: 0
-        },
-*/
