@@ -114,14 +114,23 @@ export default function BookingForm({
                     <label className="block text-sm font-medium text-gray-700">
                         Number of Nights
                     </label>
-                    <p className="mt-1 font-semibold">{numOfNights}</p>
+                    <p className="mt-1 font-semibold">
+                        {!!numOfNights && <span>
+                            {numOfNights} night{numOfNights > 1 && "s"}
+                        </span>
+                        }
+                    </p>
                 </div>
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700">
                         Total Price
                     </label>
-                    <p className="mt-1 font-semibold">${totalPrice.toFixed(2)}</p>
+                    <p className="mt-1 font-semibold">
+                        {
+                            !!totalPrice && `$${totalPrice.toFixed(2)}`
+                        }
+                    </p>
                 </div>
             </div>
             <AvailableDatesTable />
