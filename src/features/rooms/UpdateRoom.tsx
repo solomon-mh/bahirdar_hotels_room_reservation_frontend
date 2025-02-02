@@ -1,22 +1,29 @@
-import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
-import QueryKey from "../../constants/QueryKey";
-import apiRooms from "../../services/apiRooms";
+import { useNavigate, useParams } from "react-router-dom";
 import ManageRoomForm from "../../forms/manageRoomForm/ManageRoomForm";
-import { useUpdateRoom } from "./useUpdateRoom";
+import { useGetRoomByIdQuery, useUpdateRoomMutation } from "../../redux/api/rooms";
+import toast from "react-hot-toast";
 
 function UpdateRoom() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { data: { data: room } = {}, isLoading } = useGetRoomByIdQuery(id as string);
 
-  const { data: { data: { room } = {} } = {}, isLoading } = useQuery({
-    queryKey: [QueryKey.ROOM, id],
-    queryFn: () => apiRooms.getRoom({ id: id! }),
-  });
 
-  const { mutate, isPending } = useUpdateRoom();
+  const [updateRoom, { isLoading: isUpdating }] = useUpdateRoomMutation()
 
   const handleUpdateRoom = (formData:FormData) => {
-    mutate(formData);
+    updateRoom({ id: id!, data: formData }).unwrap().then(() => {
+      toast.success("Room updated successfully")
+      navigate("/dashboard/rooms/" + id)
+    }).catch((error) => {
+      if ('data' in error)
+      {
+        toast.error(error.data.message || "Something went wrong please try again")
+      } else
+      {
+        toast.error("An error occurred please try again")
+      }
+    })
   };
 
   return (
@@ -24,7 +31,7 @@ function UpdateRoom() {
       onSubmit={handleUpdateRoom}
       room={room}
       isLoading={isLoading}
-      isUpdating={isPending}
+      isUpdating={isUpdating}
       isInUpdateMode={true}
     />
   );

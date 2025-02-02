@@ -10,7 +10,7 @@ function RoomType() {
     <label>
       Room Type
       <select
-        className="w-full rounded-full border bg-slate-200 px-3 py-2 hover:outline-none"
+        className="w-full rounded-md border bg-slate-200 px-3 py-2 hover:outline-none"
         {...register("roomType", {
           required: "room type is required",
         })}

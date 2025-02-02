@@ -4,14 +4,15 @@ import ImageSection from "./ImageSection";
 import { useEffect, useState } from "react";
 import Spinner from "../../ui/Spinner";
 import SpinnerMini from "../../ui/SpinnerMini";
-import { Hotel } from "../../types/hotelTypes";
+import { IHotel } from "../../types/hotelTypes";
 import { SelectManager } from "./SelectManagerDrawer";
 import { IAddress } from "../../types/addressTypes";
 import CreateUserDialog from "./CreateUserDialog";
 import { IUser } from "../../types/userTypes";
 import toast from "react-hot-toast";
+import { useGetUserByIdQuery } from "../../redux/api/userApi";
 interface Props {
-  hotel?: Hotel;
+  hotel?: IHotel;
   isAdding: boolean;
   isLoading?: boolean;
   isUpdating?: boolean;
@@ -28,16 +29,36 @@ function ManageHotelForm({
 }: Props) {
 
 
+  const { data: { data: user } = {}, error } = useGetUserByIdQuery(hotel?.manager as string || '', { skip: !hotel?.manager });
   const [seledtedManager, setSelectedManager] = useState<IUser | null>(null);
-  const formMethods = useForm<Hotel & { address: IAddress, facilities: string[], imageCoverFile: string, hotelImagesFiles: string[], manager: string, isInUpdateMode: boolean }>();
+  const formMethods = useForm<IHotel & { address: IAddress, facilities: string[], imageCoverFile: string, hotelImagesFiles: string[], manager: string, isInUpdateMode: boolean }>();
   const { handleSubmit, reset, setValue } = formMethods; 
+
+  useEffect(() => {
+    if (error)
+    {
+      toast.error("An error occurred while fetching the manager");
+    }
+    if (user)
+    {
+      setSelectedManager(user);
+    }
+  }, [error, user]);
 
   // IF IN UPDATE MODE RESET THE HOTEL DATA TO THE FORM
   useEffect(() => {
     // FIXME: SOMETIMES THE FUNCTION NOT TRIGGERED
     if (hotel)
     {
-      reset(hotel);
+      reset({
+        ...hotel,
+        manager: typeof hotel.manager === 'string' ? hotel.manager : hotel.manager?._id || '',
+        address: hotel.address || { city: '', subcity: '', street: '', woreda: '' },
+        facilities: hotel.facilities || [],
+        imageCoverFile: '',
+        hotelImagesFiles: [],
+        isInUpdateMode
+      });
       setValue("isInUpdateMode", isInUpdateMode);
     }
   }, [reset, hotel, isInUpdateMode, setValue]);
@@ -47,7 +68,7 @@ function ManageHotelForm({
 
     formData.append("name", data.name);
     formData.append("description", data.description);
-    formData.append("hotelStar", data.hotelStar);
+    formData.append("hotelStar", data.hotelStar?.toString() || '');
     formData.append("summary", data.summary);
     formData.append("address[city]", data.address.city);
     formData.append("address[subcity]", data.address.subcity);
@@ -92,7 +113,7 @@ function ManageHotelForm({
   });
 
   return (
-    <>
+    <div className="flex flex-col p-4">
       <FormProvider {...formMethods}>
         <div className="flex items-center justify-center p-3">
           <h1 className="min-w-[30rem] cursor-pointer rounded-full bg-accent-400 text-slate-100 px-6 py-2 text-center text-2xl font-bold uppercase text-white shadow-xl">
@@ -153,7 +174,7 @@ function ManageHotelForm({
       </FormProvider>
 
 
-    </>
+    </div>
   );
 }
 

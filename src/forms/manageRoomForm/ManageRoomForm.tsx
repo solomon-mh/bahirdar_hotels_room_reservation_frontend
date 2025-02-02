@@ -12,6 +12,8 @@ import {
 } from "./index";
 import { FormProvider, useForm } from "react-hook-form";
 import { IRoom } from "../../types/roomTypes";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 // import { useAuthContext } from "../../context/AuthContext";
 
 interface Props {
@@ -31,9 +33,10 @@ function ManageRoomForm({
   isInUpdateMode = false,
 }: Props) {
 
-  // const { currentHotel } = useAuthContext()
+  const navigate = useNavigate()
+
   const formMethods = useForm<IRoom & { RoomImageFiles: FileList, "isInUpdateMode": boolean }>();
-  const { handleSubmit, reset, setValue, formState: { errors } } = formMethods;
+  const { handleSubmit, reset, setValue } = formMethods;
 
   // RESET THE ROOM TO BE UPDATED
   useEffect(() => {
@@ -77,9 +80,17 @@ function ManageRoomForm({
   return (
     <FormProvider {...formMethods}>
       <div className="flex items-center justify-center p-3">
-        <h1 className="min-w-[30rem] cursor-pointer rounded-full text-slate-100 bg-accent-500 px-6 py-2 text-center text-2xl font-bold text-white shadow-xl">
-          {isInUpdateMode ? "Update Add" : "Add Room"}
-        </h1>
+        <div className="w-full relative flex items-center justify-center cursor-pointer rounded-sm text-slate-800 px-6 py-2 text-center text-2xl font-bold text-white shadow-xl">
+          <button
+            className="absolute left-4"
+            onClick={() => navigate(room?._id ? "/dashboard/rooms/" + room._id : "/dashboard/rooms")}
+          >
+            <ArrowLeft size={20} />
+          </button>
+          <h1>
+            {isInUpdateMode ? "Update Room" : "Add Room"}
+          </h1>
+        </div>
       </div>
       {isLoading ? (
         <Spinner />
@@ -88,13 +99,6 @@ function ManageRoomForm({
           onSubmit={onSubmitHandler}
           className="m-auto flex flex-col gap-8 rounded bg-slate-100 p-10 shadow-lg"
           >
-
-            <pre>
-              {
-                [errors._id?.message, errors.RoomImageFiles?.message, errors.capacity?.message, errors.description?.message, errors.images?.message, errors.hotel?.message, errors.pricePerNight?.message, errors.capacity?.message].join(',')
-              }
-            </pre>
-
           <div className="flex flex-col gap-4">
             {/* ROOM NUMBER */}
               <RoomNumber />

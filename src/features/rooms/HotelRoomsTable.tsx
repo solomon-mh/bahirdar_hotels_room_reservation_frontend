@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useGetAllRoomsQuery } from "../../redux/api/rooms";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
@@ -8,6 +8,7 @@ import { Eye } from "lucide-react";
 
 function HotelRoomsTable() {
 
+  const navigate = useNavigate()
   const { data: { data: rooms } = {}, isLoading, error } = useGetAllRoomsQuery("")
 
   return (
@@ -110,7 +111,15 @@ function HotelRoomsTable() {
                             {room.isAvailable ? "Available" : "Reserved"}
                           </TableCell>
                           <TableCell>
-                            <Eye />
+                            <button
+                              className="p-2 text-accent-500 rounded-md"
+                              onClick={() => {
+                                if (room._id)
+                                  navigate(`/dashboard/rooms/${room._id}`)
+                              }}
+                            >
+                              <Eye />
+                            </button>
                           </TableCell>
                         </TableRow>
                       ))
