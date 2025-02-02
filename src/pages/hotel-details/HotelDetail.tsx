@@ -24,7 +24,7 @@ import {
 import { useGetHotelByIdQuery } from "../../redux/api/hotelApi";
 import NotFoundPage from "../utils/NotFoundPage";
 
-function HotelDetailsPage() {
+function HotelDetail() {
   SwiperCore.use([Navigation, Autoplay]);
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -178,4 +178,4 @@ function HotelDetailsPage() {
   );
 }
 
-export default HotelDetailsPage;
+export default HotelDetail;

@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { ILogin } from "../../types/authTypes";
-import { CreateResponse } from "../../types/general";
+import { CreateResponse, ITimeStamp } from "../../types/general";
 import { BASE_URL } from "../../utils/url";
+import { IUser } from "../../types/userTypes";
 
 enum Tags {
   AUTHS = "auths",
@@ -15,14 +16,23 @@ export const authApi = createApi({
     credentials: "include",
   }),
   endpoints: (builder) => ({
-    login: builder.mutation<CreateResponse, ILogin>({
+    login: builder.mutation<
+      CreateResponse & { data: IUser & ITimeStamp },
+      ILogin
+    >({
       query: (loginData) => ({
         url: "/login",
         method: "POST",
         body: loginData,
       }),
     }),
+    logout: builder.mutation<CreateResponse, void>({
+      query: () => ({
+        url: "/logout",
+        method: "POST",
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation } = authApi;
+export const { useLoginMutation, useLogoutMutation } = authApi;
