@@ -34,9 +34,9 @@ const RoomDetail = () => {
     };
 
     return (
-        <div className="min-h-screen w-[80vw] bg-gray-100 p-6">
+        <div className="min-h-screen p-10 w-[80vw] flex flex-col gap-4 bg-gray-100 p-6">
 
-            <div className="flex items-center py-4 pl-10 md:pl-20 ">
+            <div className="flex items-center shadow-md p-2  ">
                 <button
                     onClick={() => {
                         if (user?.role === Role.MANAGER || user?.role === Role.ADMIN)
@@ -83,7 +83,7 @@ const RoomDetail = () => {
                             )
                             :
 
-                            <div className="max-w-5xl relative mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+                            <div className="w-full relative mx-auto bg-white shadow-md rounded-lg overflow-hidden">
                                 {
                                     user?.role === Role.MANAGER || user?.role === Role.ADMIN
                                         ?
