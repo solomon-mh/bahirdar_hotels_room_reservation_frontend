@@ -8,7 +8,7 @@ import { useCreateRoomMutation } from "../../redux/api/rooms";
     roomType: 'single',
     pricePerNight: '350',
     capacity: '3',
-    description: 
+    description:
       'The room is cozy, with a comfortable bed and a view of the city skyline.',
     amenities: [ 'Wi-Fi', 'Room Service', 'Desk and Chair' ],
     RoomImageFiles: FileList {
