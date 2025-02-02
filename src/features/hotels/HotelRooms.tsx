@@ -96,10 +96,17 @@ const RoomList = () => {
                                                 }
                                                 }
 
-                                                className="  px-4 py-2 rounded text-accent-500 hover:underline transition">
+                                                className="  px-4 py-2 rounded text-accent-500 hover:underline transition"
+                                            >
                                                 View Details
                                             </button>
-                                            <button className="bg-accent-500/90 text-slate-100 px-4 py-2 rounded hover:bg-accent-500 transition">
+                                            <button
+                                                onClick={() => {
+                                                    if (room.hotel && room._id)
+                                                        navigate("/hotels/" + room.hotel + "/rooms/" + room?._id + "/book"); // Example route
+                                                }}
+                                                className="bg-accent-500/90 text-slate-100 px-4 py-2 rounded hover:bg-accent-500 transition"
+                                            >
                                                 Book Now
                                             </button>
                                         </div>
