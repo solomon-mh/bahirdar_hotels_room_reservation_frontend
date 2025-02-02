@@ -1,3 +1,4 @@
+
 export interface CreateResponse {
   status: string;
   message: string;
@@ -15,3 +16,5 @@ export interface ITimeStamp {
   createdAt: string;
   updatedAt: string;
 }
+
+

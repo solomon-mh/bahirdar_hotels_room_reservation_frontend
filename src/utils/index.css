@@ -1,14 +1,10 @@
+
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* 
-h1{
-    color: #fa1b95;
-    font-size: 2rem;
-    font-weight: 700;
-    text-align: center;
-    margin-top: 2rem;
-} */
 
 

@@ -23,7 +23,6 @@ import Settings from "./features/settings/Settings";
 import {
   AboutPage,
   HomePage,
-  HotelDetailsPage,
   HotelsListPage,
   SigninPage,
   SignupPage,
@@ -40,6 +39,14 @@ import PaymentSuccessPage from "./pages/PaymentSuccessPage";
 import ForgotMyPassword from "./features/profile/ForgotMyPassword";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import UserDetail from "./features/users/UserDetail.js";
+import HotelsPage from "./features/hotels/HotelsPage.js";
+import HotelDetailPage from "./features/hotels/HotelDetailPage.js";
+import { HotelDetail } from "./features/hotels/components/HotelDetail.js";
+import RoomDetail from "./features/hotels/RoomDetail.js";
+import PublicHotelDetailPage from "./pages/hotel-details/HotelDetailPage.js";
+import RoomList from "./features/hotels/HotelRooms.js";
+import BookingPage from "./features/bookings/BookingPage.js";
 const queryClient = new QueryClient();
 
 function App() {
@@ -78,7 +85,13 @@ function App() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="about" element={<AboutPage />} />
                 <Route path="hotels" element={<HotelsListPage />} />
-                <Route path="hotels/:id" element={<HotelDetailsPage />} />
+              <Route path="hotels/:hotelId" element={<PublicHotelDetailPage />} >
+                <Route index element={<HotelDetail />} />
+                <Route path="rooms" element={<RoomList />} />
+              </Route>
+              <Route path="hotels/:hotelId/rooms/:roomId" element={<RoomDetail />} />
+              <Route path="hotels/:hotelId/rooms/:roomId/book" element={<BookingPage />} />
+
                 <Route path="hotels/:hotelId/rooms" element={<RoomsListPage />}>
                   <Route path=":roomId" element={<RoomListDetail />} />
                 </Route>
@@ -119,17 +132,27 @@ function App() {
               <Route index element={<Dashboard />} />
                 {role === "admin" ? (
                   <>
-                    <Route path="hotels" element={<AllHotels />} />
+                  <Route path="hotels" element={<HotelsPage />} >
+                    <Route index element={<AllHotels />} />
                     <Route path="add-hotel" element={<AddHotel />} />
-                    <Route path="update-hotel/:id" element={<UpdateHotel />} />
+                    <Route path=":hotelId" element={<HotelDetailPage />} >
+                      <Route index element={<HotelDetail />} />
+                      <Route path="rooms" element={<HotelRoomsTable />} />
+                      <Route path="add-room" element={<AddRoom />} />
+                      <Route path="update-room/:hotelId" element={<UpdateRoom />} />
+                    </Route>
+                    <Route path=":hotelId/edit" element={<UpdateHotel />} />
+                  </Route>
                     <Route path="bookings" element={<AllBookings />} />
-                    <Route path="users" element={<AllUsers />} />
+                  <Route path="users" element={<AllUsers />} />
+                  <Route path="users/:hotelId" element={<UserDetail />} />
                   </>
                 ) : role === "manager" ? (
                   <>
                     <Route path="rooms" element={<HotelRoomsTable />} />
+                    <Route path="rooms/:roomId" element={<RoomDetail />} />
                     <Route path="add-room" element={<AddRoom />} />
-                    <Route path="update-room/:id" element={<UpdateRoom />} />
+                    <Route path="rooms/edit/:roomId" element={<UpdateRoom />} />
                     <Route path="users" element={<HotelUsers />} />
                     <Route path="bookings" element={<HotelBookings />} />
                     <Route path="settings" element={<Settings />} />

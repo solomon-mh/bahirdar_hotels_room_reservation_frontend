@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
-import { useGetAllRoomsQuery } from "../../redux/api/rooms";
+import { useGetAllRoomsQuery } from "../../redux/api/roomsApi";
 
 
 const RoomList = () => {

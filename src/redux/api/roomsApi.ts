@@ -21,7 +21,7 @@ export const roomApi = createApi({
       },
       providesTags: [RoomTags.ROOMS],
     }),
-    getRoomById: builder.query<{ data: { room: IRoom & ITimeStamp } }, string>({
+    getRoomById: builder.query<{ data: IRoom & ITimeStamp }, string>({
       query: (id) => `/${id}`,
       providesTags: [RoomTags.ROOM],
     }),
@@ -33,10 +33,13 @@ export const roomApi = createApi({
       }),
       invalidatesTags: [RoomTags.ROOMS],
     }),
-    updateRoom: builder.mutation<CreateResponse, { id: string; data: IRoom }>({
+    updateRoom: builder.mutation<
+      CreateResponse,
+      { id: string; data: FormData }
+    >({
       query: ({ id, data }) => ({
         url: `/${id}`,
-        method: "PUT",
+        method: "PATCH",
         body: data,
       }),
       invalidatesTags: [RoomTags.ROOMS, RoomTags.ROOM],

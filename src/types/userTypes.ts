@@ -3,7 +3,7 @@ import { Role } from "../enums/roleEnum";
 import { IAddress } from "./addressTypes";
 import { Booking } from "./bookingTypes";
 import { ITimeStamp } from "./general";
-import { Hotel } from "./hotelTypes";
+import { Hotel, IHotel } from "./hotelTypes";
 
 export interface User {
   id?: string;
@@ -57,6 +57,7 @@ export interface IUser {
   isOnboarding: boolean;
   phoneNumber: string;
   role: Role;
+  hotel?: IHotel;
   profilePicture: string;
   address: IAddress;
 }

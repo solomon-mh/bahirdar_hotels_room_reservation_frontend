@@ -5,7 +5,7 @@ import { useCreateBookingMutation } from "../../redux/api/bookingApi";
 import { BookingStatus } from "../../enums/bookingStatusEnum";
 import { toast } from "react-toastify";
 import { useAuthContext } from "../../context/AuthContext";
-import { useGetRoomByIdQuery } from "../../redux/api/rooms";
+import { useGetRoomByIdQuery } from "../../redux/api/roomsApi";
 import { ArrowLeft } from "lucide-react";
 import SubHeader from "../../components/SubHeader";
 

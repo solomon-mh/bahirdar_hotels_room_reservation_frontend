@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IUser, IUserResponse } from "../../types/userTypes";
+import { IUser } from "../../types/userTypes";
 import { CreateResponse, ITimeStamp } from "../../types/general";
 import { BASE_URL } from "../../utils/url";
 
@@ -15,16 +15,13 @@ export const userApi = createApi({
     credentials: "include",
   }),
   endpoints: (builder) => ({
-    getAllUsers: builder.query<
-      { data: (IUser & ITimeStamp)[] },
-      string | undefined
-    >({
+    getAllUsers: builder.query<{ data: (IUser & ITimeStamp)[] },string | undefined>({
       query: (params) => {
         return params ? `/?${params}` : "/";
       },
       providesTags: [UserTags.USERS],
     }),
-    getUserById: builder.query<IUserResponse, string>({
+    getUserById: builder.query<{ data: IUser }, string>({
       query: (id) => `/${id}`,
       providesTags: [UserTags.USER],
     }),

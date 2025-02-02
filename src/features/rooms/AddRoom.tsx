@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import ManageRoomForm from "../../forms/manageRoomForm/ManageRoomForm";
-import { useCreateRoomMutation } from "../../redux/api/rooms";
+import { useCreateRoomMutation } from "../../redux/api/roomsApi";
 
 /*
   {

@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import ManageRoomForm from "../../forms/manageRoomForm/ManageRoomForm";
-import { useGetRoomByIdQuery, useUpdateRoomMutation } from "../../redux/api/rooms";
+import { useGetRoomByIdQuery, useUpdateRoomMutation } from "../../redux/api/roomsApi";
 import toast from "react-hot-toast";
 
 function UpdateRoom() {

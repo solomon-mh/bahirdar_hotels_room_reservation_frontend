@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { roomSchema } from "../schema/roomSchema";
 import { RoomType } from "../../enums/roomTypeEnum";
-import { useCreateRoomMutation } from "../../redux/api/rooms";
+import { useCreateRoomMutation } from "../../redux/api/roomsApi";
 import { toast } from "react-toastify";
 import { IRoom } from "../../types/roomTypes";
 import { AMENITIES } from "../../constants/RoomAmenities";

@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetRoomByIdQuery } from "../../redux/api/rooms";
+import { useGetRoomByIdQuery } from "../../redux/api/roomsApi";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import { ArrowLeft, Pen } from "lucide-react";
 import ImageSlider from "../../components/Slider";

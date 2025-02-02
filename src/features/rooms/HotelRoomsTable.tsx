@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useGetAllRoomsQuery } from "../../redux/api/rooms";
+import { useGetAllRoomsQuery } from "../../redux/api/roomsApi";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
 import { TableHead, TableHeader, Table, TableBody, TableRow, TableCell } from "../../components/ui/table";

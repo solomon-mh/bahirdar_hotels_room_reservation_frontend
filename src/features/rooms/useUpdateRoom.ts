@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import apiRooms from "../../services/apiRooms";
+import { useNavigate, useParams } from "react-router-dom";
 import QueryKey from "../../constants/QueryKey";
+import apiRooms from "../../services/apiRooms";
 
 export const useUpdateRoom = () => {
   const { id } = useParams();

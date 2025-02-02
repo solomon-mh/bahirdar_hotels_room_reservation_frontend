@@ -1,4 +1,4 @@
-import HotelDetailsPage from "./hotel-details/HotelDetailsPage";
+import HotelDetailsPage from "./hotel-details/HotelDetail";
 import HomePage from "./home/HomePage";
 import HotelsListPage from "./HotelsListPage";
 import AboutPage from "./AboutPage";

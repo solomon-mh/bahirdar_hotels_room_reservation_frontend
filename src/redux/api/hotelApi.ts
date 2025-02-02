@@ -36,16 +36,17 @@ export const hotelApi = createApi({
       }),
       invalidatesTags: [Tags.HOTELS],
     }),
-    updateHotel: builder.mutation<CreateResponse, { id: string; data: IHotel }>(
-      {
-        query: ({ id, data }) => ({
-          url: `/${id}`,
-          method: "PUT",
-          body: data,
-        }),
-        invalidatesTags: [Tags.HOTELS, Tags.HOTEL],
-      },
-    ),
+    updateHotel: builder.mutation<
+      CreateResponse,
+      { id: string; data: FormData }
+    >({
+      query: ({ id, data }) => ({
+        url: `/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: [Tags.HOTELS, Tags.HOTEL],
+    }),
     deleteHotel: builder.mutation<CreateResponse, string>({
       query: (id) => ({
         url: `/${id}`,
