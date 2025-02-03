@@ -17,10 +17,10 @@ function SideBar({ menus }: Props) {
             <li key={i}>
               <Link
                 key={menu.title}
-                className={"flex items-center gap-3 rounded-sm px-5 py-2 hover:text-slate-100 hover:bg-accent-400 " + (pathname === menu.url ? " bg-accent-500 text-slate-100" : "")}
+                className={"flex items-center gap-3 rounded-sm px-5 py-2 hover:text-slate-100 hover:bg-accent-400 " + (((pathname === "/dashboard" && pathname === menu.url) || (menu.url !== "/dashboard" && pathname.startsWith(menu.url))) ? " bg-accent-500 text-slate-100" : "")}
                 to={menu.url}
               >
-                <span className={"text-accent-500" + (((pathname === "/dashboard" && pathname === menu.url) || (pathname !== "/dashboard" && pathname.startsWith(menu.url))) ? " text-slate-100" : "")}>
+                <span className={"text-accent-500" + (((pathname === "/dashboard" && pathname === menu.url) || (menu.url !== "/dashboard" && pathname.startsWith(menu.url))) ? " text-slate-100" : "")}>
                   {menu.Icon}
                 </span>
                 <span>{menu.title}</span>
