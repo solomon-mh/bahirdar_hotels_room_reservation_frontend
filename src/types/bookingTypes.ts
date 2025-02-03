@@ -37,6 +37,9 @@ export interface IBooking {
   checkOut: Date;
   status: BookingStatus;
   createdAt?: Date;
+  numOfNights?: number;
+  totalPrice?: number;
+  pricePerNight?: number;
   updatedAt?: Date;
 }
 

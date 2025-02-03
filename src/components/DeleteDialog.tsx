@@ -3,13 +3,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+export type FeatureDeleteActionType = () => [unknown, { isLoading: boolean }]
 interface Props {
-    useDelete: () => [unknown, { isLoading: boolean }];
+    useDelete: FeatureDeleteActionType;
     feature: string;
     featureId: string;
 }
 export default function DeleteFeature({ useDelete, feature, featureId }: Props) {
-    const [deleteFeature, { isLoading }] = useDelete() as [(id: string) => Promise<unknown>, { isLoading: boolean }];
+    const [deleteFeature, { isLoading, }] = useDelete() as [(id: string) => Promise<unknown>, { isLoading: boolean }];
     const [isOpen, setIsOpen] = useState(false);
 
     const navigate = useNavigate();
@@ -41,8 +42,8 @@ export default function DeleteFeature({ useDelete, feature, featureId }: Props) 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <button className="px-4 py-2 bg-slate-100 border  border-red-500 text-white rounded-md hover:border-2">
-                    Delete Hotel
+                <button className="px-4 py-1  border bg-[#34343400] border-red-500 text-red-500 hover:bg-red-500 rounded-md hover:text-slate-100">
+                    Delete {feature}
                 </button>
             </DialogTrigger>
             <DialogContent className="max-w-sm bg-slate-200">

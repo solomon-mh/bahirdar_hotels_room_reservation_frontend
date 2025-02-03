@@ -4,6 +4,7 @@ import { IBooking } from "../../types/bookingTypes";
 import { DatePicker } from "../../forms/components/datePicker";
 import AvailableDatesTable from "./AvDates";
 import { addDays } from "date-fns";
+import { calculateNumOfNights } from "../../utils/numOfNights";
 
 export default function BookingForm({
     onSubmit,
@@ -22,18 +23,9 @@ export default function BookingForm({
     const checkInDate = watch("checkIn");
     const checkOutDate = watch("checkOut");
 
-    // Calculate number of nights
-    const calculateNumOfNights = () => {
-        if (checkInDate && checkOutDate)
-        {
-            const checkIn = new Date(checkInDate).getTime();
-            const checkOut = new Date(checkOutDate).getTime();
-            return Math.max(0, (checkOut - checkIn) / (1000 * 60 * 60 * 24));
-        }
-        return 0;
-    };
 
-    const numOfNights = calculateNumOfNights();
+
+    const numOfNights = calculateNumOfNights(checkInDate.toString(), checkOutDate.toString());
     const totalPrice = numOfNights * pricePerNight;
 
     const today = new Date();

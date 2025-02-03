@@ -39,7 +39,7 @@ const adminMenus = [
 const managerMenus = [
   {
     title: "Home",
-    url: "",
+    url: "/dashboard",
     Icon: <HiOutlineHome size={20} />,
   },
   {
@@ -77,13 +77,13 @@ function DashboardLayout() {
   }, [isLoggedIn, navigate]);
 
   return (
-    <div className="mx-auto flex max-w-[120rem] bg-black">
+    <div className="mx-auto flex gap-2 max-w-[120rem] bg-black">
       {role === "admin" ? (
         <SideBar menus={adminMenus} />
       ) : role === "manager" ? (
         <SideBar menus={managerMenus} />
       ) : null}
-      <div className="flex h-screen w-[calc(100vw-260px)] flex-col bg-slate-50  text-gray-700">
+      <div className="flex min-h-screen gap-2 w-[calc(100vw-260px)] flex-col bg-slate-50  text-gray-700">
         <DashboardHeader />
         <main className="overflow-auto">
           <Outlet />

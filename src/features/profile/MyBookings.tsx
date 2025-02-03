@@ -1,110 +1,74 @@
-import { useQuery } from "@tanstack/react-query";
-import { useAuthContext } from "../../context/AuthContext";
-import formatDate from "../../utils/formatDate";
-import QueryKey from "../../constants/QueryKey";
-import apiBookings from "../../services/apiBookings";
-import Spinner from "../../ui/Spinner";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/table";
+import LoadingPage from "../../pages/utils/LoadingPage";
+import NotFoundPage from "../../pages/utils/NotFoundPage";
+import { useGetAllBookingsQuery } from "../../redux/api/bookingApi";
 
-function MyBookings() {
-  const { user } = useAuthContext();
+const MyBookings = () => {
 
-  const { data: { data: { bookings } = {} } = {}, isLoading } = useQuery({
-    queryKey: [QueryKey.BOOKINGS, user?._id],
-    queryFn: () => apiBookings.getAllMyBookings({ userId: user?._id || "" }),
-  });
+  const { data: { data: bookings } = {}, isLoading, error } = useGetAllBookingsQuery("")
 
-  if (isLoading) return <Spinner />;
-  // console.log(user.bookings.length);
 
-  if (bookings?.length && bookings.length < 1)
+  if (isLoading)
   {
     return (
-      <div className="flex h-full items-center justify-center">
-        <div className="flex flex-col items-center gap-2">
-          <span className="text-4xl font-medium text-gray-500 uppercase">You have no bookings yet.</span>
-          <span className="border-4 rounded-full border-slate-500 w-1/2"></span>
-          {/* <span className="text-9xl text-white">🤷</span> */}
-        </div>
-      </div>
-    );
+      <LoadingPage />
+    )
+  }
+
+  if (error)
+  {
+    return (
+      <NotFoundPage>
+        <p className="text-red-400">Something went wrong. Please try again later.</p>
+        <pre>
+          {
+            JSON.stringify(error, null, 2)
+          }
+        </pre>
+      </NotFoundPage>
+    )
+  }
+
+  if (!bookings?.length)
+  {
+    return (
+      <NotFoundPage>
+        <p className="text-red-400">No bookings found.</p>
+      </NotFoundPage>
+    )
   }
 
   return (
-    <div className="">
-      <div className="mb-2 grid grid-cols-10 items-center gap-2 border-b border-slate-200 bg-slate-200 p-3">
-        <div className="col-span-2 col-start-1">Hotel</div>
-        <div className="col-span-1 col-start-3">Room</div>
-        <div className="col-span-2 col-start-5">checkInDate</div>
-        <div className="col-span-2 col-start-7">pricePerNight</div>
-        <div className="col-span-1 col-start-9">totalPrice</div>
-        <div className="col-span-1 col-start-10"></div>
-      </div>
-
-      {bookings?.map((booking, i) => (
-        <div
-          key={i}
-          className="mb-1 grid grid-cols-10 items-center gap-3 border-b border-slate-200 p-3 text-sm shadow"
-        >
-          {/* HOTEL NAME */}
-          <div className="col-span-2 col-start-1 flex items-center gap-2">
-            <img
-              className="h-12 w-12 object-cover"
-              src={booking.hotel.imageCover}
-              alt="image"
-            />
-            <span className="w-[65%] whitespace-pre-line text-sm font-bold">
-              {booking.hotel.name}
-            </span>
-          </div>
-
-          {/* ROOM */}
-          <div className="col-span-1 col-start-3 flex items-center gap-2">
-            <img
-              className="h-12 w-12 object-cover"
-              src={booking.room.images[0]}
-              alt="image"
-            />
-            <div className="">
-              <p className="">{`# ${booking.room.roomNumber}`}</p>
-              <p className="text-[10px] font-thin tracking-tight">
-                {booking.room.roomType}
-              </p>
-            </div>
-          </div>
-
-          {/* CHECKIN DATE */}
-          <div className="col-span-2 col-start-5">
-            {formatDate(booking.checkInDate)}
-          </div>
-
-          <div className="col-span-2 col-start-7 flex flex-col">
-            <p className="">{`${booking.pricePerNight}`}</p>
-            <span className="">ETB / Night</span>
-          </div>
-
-          {/* TOTAL PRICE */}
-          <div className="col-span-1 col-start-9">{`${booking.totalPrice} ETB`}</div>
-
-          {/* PAYMENT STATUS */}
-          <div
-            className="col-span-1 col-start-10 flex justify-self-center rounded px-2 py-[2px] text-white"
-            style={{
-              backgroundColor:
-                booking.status === "confirmed"
-                  ? "green"
-                  : booking.status === "pending"
-                    ? "orange"
-                    : booking.status === "cancelled"
-                      ? "red"
-                      : "",
-            }}
-          >
-            {booking.status}
-          </div>
-        </div>
-      ))}
+    <div className="p-4">
+      <h2 className="text-xl font-bold mb-4 text-slate-800">My  Bookings</h2>
+      <Table className="w-full border-collapse border border-gray-300">
+        <TableHeader>
+          <TableRow className="bg-gray-200">
+            <TableHead className="border border-gray-300 p-2">Check-In</TableHead>
+            <TableHead className="border border-gray-300 p-2">Check-Out</TableHead>
+            <TableHead className="border border-gray-300 p-2">Nights</TableHead>
+            <TableHead className="border border-gray-300 p-2">Total Price</TableHead>
+            <TableHead className="border border-gray-300 p-2">Status</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {bookings.map((booking) => (
+            <TableRow key={booking._id} className="border border-gray-300">
+              <TableCell className="border border-gray-300 p-2">
+                {new Date(booking.checkIn).toLocaleDateString()}
+              </TableCell>
+              <TableCell className="border border-gray-300 p-2">
+                {new Date(booking.checkOut).toLocaleDateString()}
+              </TableCell>
+              <TableCell className="border border-gray-300 p-2">{booking.numOfNights} night{booking?.numOfNights && booking.numOfNights > 1 && "s"} </TableCell>
+              <TableCell className="border border-gray-300 p-2">${booking.totalPrice}</TableCell>
+              <TableCell className="border border-gray-300 p-2 capitalize">{booking.status}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
-}
+};
 
 export default MyBookings;

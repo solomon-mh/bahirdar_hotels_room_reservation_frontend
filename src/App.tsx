@@ -138,8 +138,9 @@ function App() {
                     <Route path=":hotelId" element={<HotelDetailPage />} >
                       <Route index element={<HotelDetail />} />
                       <Route path="rooms" element={<HotelRoomsTable />} />
+                      <Route path="rooms/:roomId" element={<RoomDetail />} />
                       <Route path="add-room" element={<AddRoom />} />
-                      <Route path="update-room/:hotelId" element={<UpdateRoom />} />
+                      <Route path="update-room/:roomId" element={<UpdateRoom />} />
                     </Route>
                     <Route path=":hotelId/edit" element={<UpdateHotel />} />
                   </Route>

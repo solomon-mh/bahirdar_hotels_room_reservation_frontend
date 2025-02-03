@@ -39,8 +39,8 @@ function AllHotels() {
   };
 
   return (
-    <div className="w-full bg-white h-[80vh] text-gray-600 shadow-md">
-      <div className="flex items-center bg-slate-200/70 justify-between p-6">
+    <div className="w-full bg-white h-[80vh]  text-gray-600 shadow-md">
+      <div className="flex items-center  justify-between p-6">
         <h1 className="p-4 uppercase">
           <Link to="/dashboard/hotels">All Hotels</Link>
         </h1>
@@ -99,7 +99,7 @@ function AllHotels() {
         </Link>
       </div>
 
-      <div className="flex w-full px-4 h-full bg-slate-200/50">
+      <div className="flex w-full shadow-md  px-4 h-fit max-[80vh] ">
         {
           isLoading
             ?
@@ -123,8 +123,8 @@ function AllHotels() {
                   <span>Hotels not found</span>
                 </NotFoundPage>
                 :
-                <Table>
-                  <TableHeader className=" bg-slate-200/60">
+                <Table className="shadow-md">
+                  <TableHeader className="shadow-md border py-2">
                     <TableHead>Image</TableHead>
                     <TableHead>Name</TableHead>
                     <TableHead>HotelRating</TableHead>
@@ -153,7 +153,7 @@ function AllHotels() {
                           <TableCell>
                             {hotel.numOfRooms > 0 ? `${hotel.numOfRooms} Rooms` : <GoDash />}
                           </TableCell>
-                          <TableCell className="flex">
+                          <TableCell >
                             {hotel.minPricePerNight || <GoDash className="" />}
                           </TableCell>
                           <TableCell>
@@ -163,7 +163,7 @@ function AllHotels() {
                               : "0 Reviews"}
                           </TableCell>
                           <TableCell>{hotel.avgRating} ⭐</TableCell>
-                          <TableCell className="flex">
+                          <TableCell >
                             {hotel.facilities && hotel.facilities.slice(0, 3).join(", ")}
                           </TableCell>
                           <TableCell className="">

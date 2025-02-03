@@ -46,11 +46,12 @@ const RoomList = () => {
                                 {rooms.map((room) => (
                                     <div
                                         key={room._id}
-                                        className="bg-white shadow-md flex flex-col justify-between rounded-lg overflow-hidden"
+                                        className="bg-white shadow-lg shadow-slate-200 flex flex-col justify-between rounded-lg overflow-hidden"
                                     >
                                         <div>
+
                                             <img
-                                                src={room.images.length ? room.images[0] : "/hotel-images/img-1.jpg"}
+                                                src={room.images.length ? room.images[0] : "/hotel-images/img-2.jpg"}
                                                 alt={`Room ${room.roomNumber}`}
                                                 className="w-full h-48 object-cover"
                                             />
@@ -67,7 +68,7 @@ const RoomList = () => {
                                                         ${room.pricePerNight}/night
                                                     </span>
                                                     <span
-                                                        className={`px-2 py-1 rounded-full text-xs ${room.isAvailable
+                                                        className={`px-2 py-1 rounded-full text-xs ${!room.isAvailable
                                                             ? "bg-green-100 text-green-500"
                                                             : "bg-red-100 text-red-500"
                                                             }`}

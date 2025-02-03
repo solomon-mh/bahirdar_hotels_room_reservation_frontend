@@ -116,7 +116,7 @@ function HotelRoomsTable() {
                               className="p-2 text-accent-500 rounded-md"
                               onClick={() => {
                                 if (room._id)
-                                  navigate(`/dashboard/rooms/${room._id}`)
+                                  navigate(`/dashboard/hotels/${hotelId}/rooms/${room._id}`)
                               }}
                             >
                               <Eye />
