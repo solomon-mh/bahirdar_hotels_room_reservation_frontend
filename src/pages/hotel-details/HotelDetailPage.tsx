@@ -30,7 +30,7 @@ const PublicHotelDetailPage = () => {
                         See Rooms
                     </button>
                 </div>
-                <h1 className="text-lg sm:text-xl font-semibold text-center mt-4 sm:mt-0">Hotel Detail</h1>
+                <h1 className="text-lg text-slate-700 sm:text-xl font-semibold text-center mt-4 sm:mt-0">Hotel Detail</h1>
             </div>
 
             {/* Outlet Section */}

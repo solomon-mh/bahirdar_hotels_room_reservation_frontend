@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useGetAllRoomsQuery } from "../../redux/api/roomsApi";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
@@ -8,24 +8,25 @@ import { Eye } from "lucide-react";
 
 function HotelRoomsTable() {
 
+  const { hotelId } = useParams() as { hotelId: string }
   const navigate = useNavigate()
   const { data: { data: rooms } = {}, isLoading, error } = useGetAllRoomsQuery("")
 
   return (
-    <div className=" h-[80vh] px-4 w-full flex flex-col items-center justify-start bg-slate-100/50">
-      <div className="flex w-full items-center justify-between px-6 py-2 bg-slate-200/40">
+    <div className=" h-[80vh]  w-full shadow-md flex flex-col items-center justify-start ">
+      <div className="flex w-full items-center justify-between px-6 py-2 ">
         <h1 className="p-4 uppercase">
           <Link to="/dashboard/bookings">All Rooms</Link>
         </h1>
         <Link
-          to={"/dashboard/add-room"}
+          to={`/dashboard/hotels/${hotelId}/add-room`}
           className="mr-2 cursor-pointer rounded-md bg-accent-500 text-slate-100 px-4 py-[6px] text-lg text-white transition-all duration-200 hover:scale-105"
         >
           Add Room
         </Link>
       </div>
 
-      <div className="flex w-full bg-slate-100/70 p-4 ">
+      <div className="flex w-full p-4 shadow-md ">
         {
           isLoading ?
             <LoadingPage />
@@ -46,7 +47,7 @@ function HotelRoomsTable() {
                 </NotFoundPage>
                 :
                 <Table >
-                  <TableHeader className=" py-4 bg-slate-200/70">
+                  <TableHeader className=" shadow-md py-4 ">
                     <TableHead>
                       Room
                     </TableHead>

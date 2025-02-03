@@ -8,7 +8,7 @@ function RoomDescription() {
       Description
       <textarea
         rows={2}
-        className="w-full rounded-lg border bg-slate-200 px-3 py-2 hover:outline-none"
+        className="w-full rounded-lg border bg-slate-100 px-3 py-2 hover:outline-none"
         placeholder="The room is cozy, with a comfortable bed and a view of the city skyline."
         defaultValue="The room is cozy, with a comfortable bed and a view of the city skyline."
         {...register("description", {
