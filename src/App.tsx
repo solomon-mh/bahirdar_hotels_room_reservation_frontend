@@ -47,6 +47,7 @@ import RoomDetail from "./features/hotels/RoomDetail.js";
 import PublicHotelDetailPage from "./pages/hotel-details/HotelDetailPage.js";
 import RoomList from "./features/hotels/HotelRooms.js";
 import BookingPage from "./features/bookings/BookingPage.js";
+import BookingDetails from "./features/bookings/BookingDetail.js";
 const queryClient = new QueryClient();
 
 function App() {
@@ -144,9 +145,10 @@ function App() {
                     </Route>
                     <Route path=":hotelId/edit" element={<UpdateHotel />} />
                   </Route>
-                    <Route path="bookings" element={<AllBookings />} />
+                  <Route path="bookings" element={<AllBookings />} />
+                  <Route path="bookings/:bookingId" element={<BookingDetails />} />
                   <Route path="users" element={<AllUsers />} />
-                  <Route path="users/:hotelId" element={<UserDetail />} />
+                  <Route path="users/:userId" element={<UserDetail />} />
                   </>
                 ) : role === "manager" ? (
                   <>
