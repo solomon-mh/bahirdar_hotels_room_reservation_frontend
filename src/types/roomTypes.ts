@@ -10,7 +10,7 @@ export interface Room {
   roomNumber: string;
   images: string[];
   description: string;
-  amenities: string[];
+  roomFacilities: string[];
   pricePerNight: string;
   capacity: string;
   [key: string]: unknown;

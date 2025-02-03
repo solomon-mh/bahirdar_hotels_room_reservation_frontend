@@ -1,4 +1,5 @@
 import { BookingStatus } from "../enums/bookingStatusEnum";
+import { ITimeStamp } from "./general";
 import { Hotel } from "./hotelTypes";
 import { Room } from "./roomTypes";
 import { User } from "./userTypes";
@@ -36,11 +37,9 @@ export interface IBooking {
   checkIn: Date;
   checkOut: Date;
   status: BookingStatus;
-  createdAt?: Date;
   numOfNights?: number;
   totalPrice?: number;
   pricePerNight?: number;
-  updatedAt?: Date;
 }
 
 export interface AvailableDates {
@@ -49,4 +48,11 @@ export interface AvailableDates {
   numberOfNights: number;
   pricePerNight: number;
   room: string;
+}
+
+export interface IBookingResponse
+  extends Omit<IBooking, "room" | "user">,
+    ITimeStamp {
+  user: User;
+  room: Room & { hotel: Hotel };
 }

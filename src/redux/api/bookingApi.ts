@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IBooking } from "../../types/bookingTypes";
-import { CreateResponse, ITimeStamp } from "../../types/general";
+import { IBooking, IBookingResponse } from "../../types/bookingTypes";
+import { CreateResponse } from "../../types/general";
 import { BASE_URL } from "../../utils/url";
 
 export enum BookingTags {
@@ -17,17 +17,20 @@ export const bookingApi = createApi({
   endpoints: (builder) => ({
     getAllBookings: builder.query<
       {
-        data: (IBooking & ITimeStamp)[];
+        data: IBookingResponse[];
       },
       string | undefined
     >({
       query: (params) => {
-        return params ? `/?${params}` : "/";
+        return params
+          ? `/all-bookings-with-room-user-hotel-detail
+?${params}`
+          : "/all-bookings-with-room-user-hotel-detail";
       },
       providesTags: [BookingTags.BOOKINGS],
     }),
-    getBookingById: builder.query<{ data: IBooking & ITimeStamp }, string>({
-      query: (id) => `/${id}`,
+    getBookingById: builder.query<{ data: IBookingResponse }, string>({
+      query: (id) => `/booking-with-room-user-hotel-detail/${id}`,
       providesTags: [BookingTags.BOOKING],
     }),
     createBooking: builder.mutation<CreateResponse, IBooking>({
