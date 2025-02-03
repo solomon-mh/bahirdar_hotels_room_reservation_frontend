@@ -1,11 +1,14 @@
-
-
+import { useNavigate } from "react-router-dom";
 import { BookingStatus } from "../../enums/bookingStatusEnum";
-import { bookings } from "./bookings";
+import LoadingPage from "../../pages/utils/LoadingPage";
+import NotFoundPage from "../../pages/utils/NotFoundPage";
+import { useGetAllBookingsQuery } from "../../redux/api/bookingApi";
 
 const AllBookings = () => {
 
+  const navigate = useNavigate();
   const bookingStatuses = Object.values(BookingStatus)
+  const { data: { data: bookings } = {}, isLoading, error } = useGetAllBookingsQuery("");
 
   const getStatusButtonColor = (status: BookingStatus) => {
     switch (status)
@@ -54,7 +57,7 @@ const AllBookings = () => {
             {bookingStatuses.map((status) => (
               <button
                 key={status}
-                className={`flex items-center justify-center px-4 py-2 rounded-sm text-white ${getStatusButtonColor(
+                className={`flex items-center justify-center px-4 py-2 rounded-sm text-[#333333] ${getStatusButtonColor(
                   status
                 )}`}
               >
@@ -65,48 +68,74 @@ const AllBookings = () => {
         </div>
 
         <div className="p-6">
-          {bookings.length > 0 ? (
-            <div className="max-h-[70vh] overflow-y-auto overflow-x-auto">
+
+          {
+            isLoading
+              ?
+              <LoadingPage />
+              :
+              error
+                ?
+                <NotFoundPage>
+                  <pre>
+                    {
+                      JSON.stringify(error, null, 2)
+                    }
+                  </pre>
+                </NotFoundPage>
+                :
+                !bookings?.length
+                  ?
+                  <NotFoundPage>
+                    <p>Bookings not found</p>
+                  </NotFoundPage>
+                  :
+                  (
+                    <div className="max-h-[70vh] overflow-y-auto overflow-x-auto">
+
               <table className="w-full table-auto border-collapse border border-gray-200">
                 <thead>
                   <tr className="bg-gray-100">
                     <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">Booking ID</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">User</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">Email</th>
+                            <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">User</th>
                     <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">Phone</th>
                     <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">Room</th>
                     <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">Check-In</th>
                     <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">Check-Out</th>
                     <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">Status</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">Total Price</th>
+                            <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">Total Price</th>
+                            <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {bookings.map((booking) => (
+                          {bookings?.map((booking) => (
                     <tr key={booking._id}>
-                      <td className="border  border-gray-200 px-4 py-2 text-gray-600">{booking._id.slice(0, 5)}</td>
-                      <td className="border border-gray-200 px-4 py-2 text-gray-600">{`${booking.user.firstName} ${booking.user.lastName}`}</td>
-                      <td className="border border-gray-200 px-4 py-2 text-gray-600">{"***" + booking.user.email.slice(booking.user.email.lastIndexOf("."), booking.user.email.length)}</td>
+                              <td className="border  border-gray-200 px-4 py-2 text-gray-600">{booking?._id && booking?._id.slice(0, 5)}</td>
+                              <td className="border border-gray-200 px-4 py-2 text-gray-600">{`${booking.user?.firstName} ${booking.user?.lastName}`}</td>
                       <td className="border border-gray-200 px-4 py-2 text-gray-600">{booking.user.phoneNumber}</td>
                       <td className="border border-gray-200 px-4 py-2 text-gray-600">
-                        Room {booking.room.roomNumber}
+                                Room {booking?.room?.roomNumber}
                       </td>
                       <td className="border border-gray-200 px-4 py-2 text-gray-600">
-                        {new Date(booking.checkInDate).toLocaleDateString()}
+                                {new Date(booking.checkIn).toLocaleDateString()}
                       </td>
                       <td className="border border-gray-200 px-4 py-2 text-gray-600">
-                        {new Date(booking.checkOutDate).toLocaleDateString()}
+                                {new Date(booking.checkOut).toLocaleDateString()}
                       </td>
                       <td className={"border border-gray-200 px-4 py-2 text-gray-600 capitalize " + `${getBgColor(booking.status as BookingStatus)}`}>{booking.status}</td>
-                      <td className="border border-gray-200 px-4 py-2 text-gray-600">${booking.totalPrice}</td>
+                              <td className="border border-gray-200 px-4 py-2 text-gray-600">${booking.totalPrice}</td>
+                              <td className="border border-gray-200 px-4 py-2 text-gray-600">
+                                <button
+                                  onClick={() => navigate(`/dashboard/bookings/${booking._id}`)}
+                                  className="text-accent-500/90 hover:text-accent-500 hover:underline">View</button>
+                              </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-          ) : (
-            <p className="text-gray-600">No bookings available.</p>
-          )}
+                  )
+          }
         </div>
       </div>
     </div>
