@@ -17,4 +17,10 @@ export interface ITimeStamp {
   updatedAt: string;
 }
 
+export interface IPagination {
+  totalPages: number;
+  limit: number;
+  page: number;
+}
+
 

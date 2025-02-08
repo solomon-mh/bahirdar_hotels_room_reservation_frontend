@@ -4,6 +4,7 @@ import { useAuthContext } from "../context/AuthContext";
 import { FaArrowRight } from "react-icons/fa6";
 import Logo from "./Logo";
 import { cn } from "../utils/cn";
+import { Role } from "../enums/roleEnum";
 
 function Header() {
   const { isLoggedIn, user } = useAuthContext();
@@ -50,8 +51,8 @@ function Header() {
             </li>
             {isLoggedIn ? (
               <>
-                {user!.role === "admin" ||
-                  (user!.role === "manager" && (
+                {(user!.role === Role.ADMIN ||
+                  user!.role === Role.MANAGER) && (
                     <li>
                       <Link
                         to="/dashboard"
@@ -61,7 +62,7 @@ function Header() {
                         <FaArrowRight />
                       </Link>
                     </li>
-                  ))}
+                  )}
 
 
                 <li>

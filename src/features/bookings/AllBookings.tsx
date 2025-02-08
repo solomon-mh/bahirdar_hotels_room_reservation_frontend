@@ -3,7 +3,6 @@ import { BookingStatus } from "../../enums/bookingStatusEnum";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
 import { useGetAllBookingsQuery } from "../../redux/api/bookingApi";
-
 const AllBookings = () => {
 
   const navigate = useNavigate();

@@ -1,28 +1,29 @@
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { Link, useSearchParams } from "react-router-dom";
 import Search from "../../ui/Search";
 import SortBy from "../../ui/SortBy";
-import { useGetAllHotelsQuery } from "../../redux/api/hotelApi";
+import { hotelApi, HotelTags, useGetAllHotelsQuery } from "../../redux/api/hotelApi";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/table";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
 import { GoDash } from "react-icons/go";
+import { HotelSortEnum } from "../../enums/hotelSortEnum";
+import { createLabel } from "../../utils/text";
+import { useEffect } from "react";
 
 function AllHotels() {
-  const navigate = useNavigate();
-  const { register, handleSubmit } = useForm();
+
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const { data: { data: { hotels } = {} } = {}, isLoading, error } = useGetAllHotelsQuery("");
+  const { data: { data: hotels } = {}, isLoading, error } = useGetAllHotelsQuery(searchParams.toString());
 
-  const onSearchHandler = handleSubmit((data) => {
-    if (!data?.search)
+
+  useEffect(() => {
+    if (searchParams)
     {
-      return navigate("/dashboard/hotels");
+      hotelApi.util.invalidateTags([HotelTags.HOTELS]);
     }
-    searchParams.set("search", data.search);
-    setSearchParams(searchParams);
-  });
+  }, [searchParams])
+  const sortOptions = Object.values(HotelSortEnum)
 
   const handleStarsChange = (e: { preventDefault: () => void; target: { value: string; }; }) => {
     e.preventDefault();
@@ -34,7 +35,7 @@ function AllHotels() {
   const handleSortChange = (e: { preventDefault: () => void; target: { value: string; }; }) => {
     e.preventDefault();
     const sort = e.target.value;
-    searchParams.set("sortBy", sort);
+    searchParams.set("sort", sort);
     setSearchParams(searchParams);
   };
 
@@ -46,11 +47,7 @@ function AllHotels() {
         </h1>
 
         {/* SEARCH  */}
-        <Search
-          isLoading={isLoading}
-          onSearchHandler={onSearchHandler}
-          register={register}
-        />
+        <Search />
 
         {/* FILTER */}
 
@@ -71,23 +68,10 @@ function AllHotels() {
           {/* OTHER SORTING   */}
           <SortBy
             handleChange={handleSortChange}
-            options={[
-              { label: "sort by", value: "" },
-              {
-                label: "price per night (high first)",
-                value: "pricePerNight-desc",
-              },
-              {
-                label: "price per night (low first)",
-                value: "pricePerNight-asc",
-              },
-              { label: "avgRating (high first)", value: "avgRating-desc" },
-              { label: "low avgRating (low first)", value: "avgRating-asc" },
-              { label: "recent first", value: "newest" },
-              { label: "oldest first", value: "oldest" },
-              { label: "a-z", value: "a-z" },
-              { label: "z-a", value: "z-a" },
-            ]}
+            options={sortOptions.map((sort) => ({
+              label: createLabel(sort),
+              value: sort,
+            }))}
           />
         </div>
 

@@ -4,20 +4,21 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 interface ImageSliderProps {
-    images: string[]; // Array of image URLs
-    className?: string; // Optional custom class for styling
+    images: string[];
+    className?: string;
+    slidesToShow?: number;
 }
 
-const ImageSlider: React.FC<ImageSliderProps> = ({ images, className = "" }) => {
+const ImageSlider: React.FC<ImageSliderProps> = ({ images, className = "", slidesToShow = 2 }) => {
     const settings = {
-        dots: true, // Enable navigation dots
-        infinite: true, // Infinite scrolling
-        speed: 300, // Transition speed in ms
-        slidesToShow: 2, // Number of slides to show at once
-        slidesToScroll: 1, // Number of slides to scroll
-        autoplay: true, // Autoplay the slides
-        autoplaySpeed: 1000, // Autoplay interval in ms
-        arrows: true, // Enable next/previous arrows
+        dots: true,
+        infinite: true,
+        speed: 300,
+        slidesToShow: slidesToShow,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 1000,
+        arrows: true, 
     };
 
     if (!images || images.length === 0)

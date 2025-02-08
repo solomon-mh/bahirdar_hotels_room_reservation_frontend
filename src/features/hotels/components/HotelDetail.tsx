@@ -7,6 +7,7 @@ import {
 import LoadingPage from "../../../pages/utils/LoadingPage";
 import { useAuthContext } from "../../../context/AuthContext";
 import { MdEdit } from "react-icons/md";
+import { Role } from "../../../enums/roleEnum";
 
 export const HotelDetail = () => {
     const navigate = useNavigate();
@@ -34,7 +35,7 @@ export const HotelDetail = () => {
                                 <button
                                     className="bg-white rounded-lg p-2"
                                     onClick={() =>
-                                        navigate(`/dashboard/hotels/${hotelId}/update`)
+                                        navigate(`/dashboard${user.role === Role.ADMIN ? "/hotels" : ""}/${hotelId}/edit`)
                                     }
                                 >
                                     <MdEdit size={24} />

@@ -17,8 +17,8 @@ function SigninPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [login, { isLoading }] = useLoginMutation()
-  const onSubmitHandler = handleSubmit((data) => {
-    login(data).unwrap().then((response) => {
+  const onSubmitHandler = handleSubmit(async (data) => {
+    return login(data).unwrap().then((response) => {
       setUser(response.data)
       if (response.data.role === "admin")
         window.location.href = "/dashboard"

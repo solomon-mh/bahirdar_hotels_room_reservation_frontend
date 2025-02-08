@@ -1,6 +1,5 @@
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Search from "../../ui/Search";
-import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useGetAllUsersQuery, userApi, UserTags } from "../../redux/api/userApi";
 import LoadingPage from "../../pages/utils/LoadingPage";
@@ -8,18 +7,14 @@ import NotFoundPage from "../../pages/utils/NotFoundPage";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/table";
 
 function AllUsers() {
-  const { register, handleSubmit } = useForm();
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeBtn, setActiveBtn] = useState("");
   const navigate = useNavigate()
   const { data: { data: users } = {}, isLoading } = useGetAllUsersQuery(searchParams.toString());
 
-  const onSearchHandler = handleSubmit((data) => {
-
-    searchParams.set("search", data.search || "");
-    if (data.search)
-    setSearchParams(searchParams);
-  });
+  useEffect(() => {
+    userApi.util.invalidateTags([UserTags.USERS])
+  }, [searchParams]);
 
   const onSearchByRoleHandler = (role: string) => {
     if (role)
@@ -42,11 +37,7 @@ function AllUsers() {
         </h1>
 
         {/* SEARCH  */}
-        <Search
-          isLoading={isLoading}
-          onSearchHandler={onSearchHandler}
-          register={register}
-        />
+        <Search />
 
         <div className="flex items-center justify-between gap-2">
           <button

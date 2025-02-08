@@ -12,6 +12,8 @@ import {
 } from "./index";
 import { FormProvider, useForm } from "react-hook-form";
 import { IRoom } from "../../types/roomTypes";
+import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 interface Props {
   onSubmit: (room: FormData) => void;
@@ -31,27 +33,35 @@ function ManageRoomForm({
 }: Props) {
 
 
+  const { hotelId } = useParams<{ hotelId: string }>();
+
+  const { roomId } = useParams<{ roomId: string }>();
   const formMethods = useForm<IRoom & { RoomImageFiles: FileList, "isInUpdateMode": boolean }>();
   const { handleSubmit, reset, setValue } = formMethods;
 
   // RESET THE ROOM TO BE UPDATED
   useEffect(() => {
-    if (room)
+    if (room && roomId)
     {
       reset(room);
       setValue("isInUpdateMode", isInUpdateMode);
     }
-  }, [reset, room, isInUpdateMode, setValue]);
+  }, [reset, room, roomId, isInUpdateMode, setValue]);
 
   const onSubmitHandler = handleSubmit((data) => {
     const formData = new FormData();
 
+    if (!hotelId)
+    {
+      toast.error("Cannot add room without hotel id");
+      return;
+    }
     formData.append("roomNumber", data.roomNumber);
     formData.append("roomType", data.roomType);
     formData.append("pricePerNight", data.pricePerNight.toString());
     formData.append("capacity", data.capacity.toString());
     formData.append("description", data.description);
-    formData.append("hotel", "678fd33c84843004f747be22")
+    formData.append("hotel", hotelId)
     data.roomFacilities.forEach((amenity, i) => {
       formData.append(`roomFacilities[${i}]`, amenity);
     });

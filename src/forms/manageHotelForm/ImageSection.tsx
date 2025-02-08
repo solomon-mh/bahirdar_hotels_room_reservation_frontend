@@ -24,9 +24,9 @@ function ImageSection() {
 
   return (
     <div className="mb-10">
-      <div className="mb-10 flex gap-4">
+      <div className="mb-10 flex-col md:flex-row flex gap-4">
         {existingImageCoverUrl?.length ? (
-          <div className="w-[400px]">
+          <div className=" w-full md:w-[400px]">
             <h1>Hotel Cover Image </h1>
             <img
               src={existingImageCoverUrl}
@@ -36,22 +36,22 @@ function ImageSection() {
           </div>
         ) : null}
         {existingHotelImagesUrl?.length > 0 ? (
-          <div className="">
+          <div className="flex flex-col md:flex-row gap-4">
             <h1>Hotel Images </h1>
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
               {existingHotelImagesUrl.map((image, i) => (
                 <div key={i} className="group relative bg-gray-200">
                   <img
                     key={i}
                     src={image}
                     alt=""
-                    className="h-[150px] w-full bg-cover bg-center"
+                    className=" h-[150px] w-full bg-cover bg-center"
                   />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 transition duration-300 group-hover:opacity-100">
+                  <div className="absolute inset-0 bottom-12 flex items-center justify-center bg-black bg-opacity-50 opacity-0 transition duration-300 group-hover:opacity-100">
                     <button
                       onClick={(e) => handleDeleteHotelImages(e, image)}
                       type="button"
-                      className="rounded-full bg-red-700 px-2 py-1 text-white"
+                      className="rounded-md  border-2 text-slate-100 border-red-500 px-2 py-1"
                     >
                       delete
                     </button>
@@ -63,7 +63,7 @@ function ImageSection() {
         ) : null}
       </div>
 
-      <div className="flex justify-center gap-3">
+      <div className="flex flex-col md:flex-row justify-center gap-3">
         <div className="flex-1 bg-slate-200 p-3">
           <label className="flex flex-col border hover:cursor-pointer">
             {isInUpdateMode ? (

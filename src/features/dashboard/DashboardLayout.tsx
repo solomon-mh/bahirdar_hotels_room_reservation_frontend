@@ -36,39 +36,38 @@ const adminMenus = [
   },
 ];
 
-const managerMenus = [
-  {
-    title: "Home",
-    url: "/dashboard",
-    Icon: <HiOutlineHome size={20} />,
-  },
-  {
-    title: "Rooms",
-    url: "/dashboard/rooms",
-    Icon: <IoBedSharp size={20} />,
-  },
-  {
-    title: "Bookings",
-    url: "/dashboard/bookings",
-    Icon: <MdOutlineBookmarkAdded size={20} />,
-  },
-  {
-    title: "Users",
-    url: "/dashboard/users",
-    Icon: <HiOutlineUsers size={20} />,
-  },
-  {
-    title: "Settings",
-    url: "/dashboard/settings",
-    Icon: <MdSettings size={20} />,
-  },
-];
-
 function DashboardLayout() {
   const navigate = useNavigate();
   const { role, isLoggedIn } = useAuthContext();
 
-  // IF NOT LOGGED IN NAVIGATE TO THE SIGN IN PAGE
+  const { user } = useAuthContext();
+  const managerMenus = [
+    {
+      title: "Home",
+      url: "/dashboard",
+      Icon: <HiOutlineHome size={20} />,
+    },
+    {
+      title: "Rooms",
+      url: `/dashboard/${user?.hotel?._id}/rooms`,
+      Icon: <IoBedSharp size={20} />,
+    },
+    {
+      title: "Bookings",
+      url: `/dashboard/${user?.hotel?._id}/bookings`,
+      Icon: <MdOutlineBookmarkAdded size={20} />,
+    },
+    {
+      title: "Users",
+      url: "/dashboard/users",
+      Icon: <HiOutlineUsers size={20} />,
+    },
+    {
+      title: "Settings",
+      url: "/dashboard/settings",
+      Icon: <MdSettings size={20} />,
+    },
+  ];
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -83,7 +82,7 @@ function DashboardLayout() {
       ) : role === "manager" ? (
         <SideBar menus={managerMenus} />
       ) : null}
-      <div className="flex min-h-screen gap-2 w-[calc(100vw-260px)] flex-col bg-slate-50  text-gray-700">
+      <div className="flex min-h-screen gap-2 w-screen md:w-[calc(100vw-260px)] flex-col bg-slate-50  text-gray-700">
         <DashboardHeader />
         <main className="overflow-auto">
           <Outlet />

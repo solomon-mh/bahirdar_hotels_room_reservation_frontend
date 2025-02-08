@@ -1,24 +1,41 @@
 import { ArrowLeft } from "lucide-react";
 import { Link, Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useAuthContext } from "../../context/AuthContext";
+import { Role } from "../../enums/roleEnum";
 
 
 const HotelDetailPage = () => {
 
+    const { user } = useAuthContext()
     const { hotelId } = useParams<{ hotelId: string }>();
     const { pathname } = useLocation()
     const navigate = useNavigate();
+
+
+    const isActive = (path: string) => {
+        if (pathname === `/dashboard${user?.role === Role.ADMIN ? "/hotels" : ""}/${hotelId}`)
+
+            return pathname === path ? "text-accent-500 " : "text-slate-700"
+        else
+            return path.includes(pathname) ? "text-accent-500 " : "text-slate-700"
+    }
+
     const navLinks = [
         {
             name: "Hotel Detail",
-            to: `/dashboard/hotels/${hotelId}`
+            to: `/dashboard${user?.role === Role.ADMIN ? "/hotels" : ""}/${hotelId}`
         },
         {
             name: "Rooms",
-            to: `/dashboard/hotels/${hotelId}/rooms`
+            to: `/dashboard${user?.role === Role.ADMIN ? "/hotels" : ""}/${hotelId}/rooms`
+        },
+        {
+            name: "Bookings",
+            to: `/dashboard${user?.role === Role.ADMIN ? "/hotels" : ""}/${hotelId}/bookings`
         },
         {
             name: "Add Room",
-            to: `/dashboard/hotels/${hotelId}/add-room`
+            to: `/dashboard${user?.role === Role.ADMIN ? "/hotels" : ""}/${hotelId}/add-room`
         },
     ]
     return (
@@ -37,11 +54,12 @@ const HotelDetailPage = () => {
                     </button>
                     {
                         navLinks.map(({ to, name }, index) => (
-                            <Link className="text-slate-700 hover:text-accent-500 hover:underline" key={index} to={to}>
+                            <Link className={" hover:text-accent-500 hover:underline " + isActive(to)} key={index} to={to}>
                                 {
                                     name
                                 }
                             </Link>
+
                         ))
                     }
                 </div>

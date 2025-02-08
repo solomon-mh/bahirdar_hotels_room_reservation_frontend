@@ -2,19 +2,25 @@ import { useNavigate, useParams } from "react-router-dom";
 import ManageRoomForm from "../../forms/manageRoomForm/ManageRoomForm";
 import { useGetRoomByIdQuery, useUpdateRoomMutation } from "../../redux/api/roomsApi";
 import toast from "react-hot-toast";
+import LoadingPage from "../../pages/utils/LoadingPage";
+import NotFoundPage from "../../pages/utils/NotFoundPage";
+import { useAuthContext } from "../../context/AuthContext";
+import { Role } from "../../enums/roleEnum";
 
 function UpdateRoom() {
-  const { id } = useParams();
+
+  const user = useAuthContext()
+  const { roomId, hotelId } = useParams<{ roomId: string, hotelId: string }>();
   const navigate = useNavigate();
-  const { data: { data: room } = {}, isLoading } = useGetRoomByIdQuery(id as string);
+  const { data: { data: room } = {}, isLoading, error } = useGetRoomByIdQuery(roomId as string);
 
 
   const [updateRoom, { isLoading: isUpdating }] = useUpdateRoomMutation()
 
   const handleUpdateRoom = (formData:FormData) => {
-    updateRoom({ id: id!, data: formData }).unwrap().then(() => {
+    updateRoom({ id: roomId!, data: formData }).unwrap().then(() => {
       toast.success("Room updated successfully")
-      navigate("/dashboard/rooms/" + id)
+      navigate(`/dashboard${user?.role === Role.ADMIN ? "/hotels" : ""}/${hotelId}/rooms/${roomId}`)
     }).catch((error) => {
       if ('data' in error)
       {
@@ -26,6 +32,30 @@ function UpdateRoom() {
     })
   };
 
+
+  if (isLoading)
+  {
+    return <LoadingPage />
+  }
+
+  if (error)
+  {
+    return <NotFoundPage>
+      <pre>
+        {
+          JSON.stringify(error, null, 2)
+        }
+      </pre>
+    </NotFoundPage>
+  }
+  if (!room)
+  {
+    return <NotFoundPage>
+      <p>
+        Room not found
+      </p>
+    </NotFoundPage>
+  }
   return (
     <ManageRoomForm
       onSubmit={handleUpdateRoom}

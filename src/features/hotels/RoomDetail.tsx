@@ -13,7 +13,6 @@ import DeleteFeature, {
 } from "../../components/DeleteDialog";
 import { MdEdit } from "react-icons/md";
 
-// Sample room data (replace this with your dynamic data source)
 const demoRoom = {
     _id: 1,
     roomNumber: 100,
@@ -81,7 +80,9 @@ const RoomDetail = () => {
                             {user?.role === Role.MANAGER || user?.role === Role.ADMIN ? (
                                 <div className="absolute right-4 top-4 flex items-center gap-2 rounded-sm bg-slate-100 p-2 shadow-md">
                                     <button
-                                        onClick={() => navigate(`/dashboard/rooms/edit/${room._id}`)}
+                                            onClick={() => {
+                                                navigate(`/dashboard${user.role === Role.ADMIN ? "/hotels" : ""}/${hotelId}/rooms/${room._id}/edit`)
+                                            }}
                                             className="rounded-lg px-4 py-2 transition duration-200 hover:bg-accent-500 hover:text-slate-100"
                                         >
                                             <MdEdit size={20} />
@@ -137,7 +138,7 @@ const RoomDetail = () => {
                                     </div>
                                     <div className="mt-3">
                                         {room.images.length > 1 ? (
-                                            <ImageSlider images={room.images} />
+                                            <ImageSlider images={room.images} slidesToShow={2} />
                                         ) : (
                                             <img
                                                 src={room.images[0] || demoRoom.image}
@@ -146,12 +147,14 @@ const RoomDetail = () => {
                                                 />
                                         )}
                                     </div>
-                                    <button
-                                        onClick={handleBooking}
-                                        className="mt-6 w-full rounded-lg bg-accent-500/90 px-4 py-2 text-slate-100 transition duration-200 hover:bg-accent-500"
-                                    >
-                                        Book Now
-                                    </button>
+                                    {
+                                        user?.role === Role.USER && <button
+                                            onClick={handleBooking}
+                                            className="mt-6 w-full rounded-lg bg-accent-500/90 px-4 py-2 text-slate-100 transition duration-200 hover:bg-accent-500"
+                                        >
+                                            Book Now
+                                        </button>
+                                    }
                                 </div>
                             </div>
             )}

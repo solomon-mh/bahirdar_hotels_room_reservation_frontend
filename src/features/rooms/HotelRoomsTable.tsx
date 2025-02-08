@@ -1,16 +1,20 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useGetAllRoomsQuery } from "../../redux/api/roomsApi";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
 import { TableHead, TableHeader, Table, TableBody, TableRow, TableCell } from "../../components/ui/table";
 import { Eye } from "lucide-react";
+import { useAuthContext } from "../../context/AuthContext";
+import { Role } from "../../enums/roleEnum";
+import { useGetHotelRoomsQuery } from "../../redux/api/hotelApi";
 
 
 function HotelRoomsTable() {
 
+  const { user } = useAuthContext()
   const { hotelId } = useParams() as { hotelId: string }
   const navigate = useNavigate()
-  const { data: { data: rooms } = {}, isLoading, error } = useGetAllRoomsQuery("")
+  const { data: { data: { rooms } = {}
+  } = {}, isLoading, error } = useGetHotelRoomsQuery(hotelId as string)
 
   return (
     <div className=" h-[80vh]  w-full shadow-md flex flex-col items-center justify-start ">
@@ -19,7 +23,7 @@ function HotelRoomsTable() {
           <Link to="/dashboard/bookings">All Rooms</Link>
         </h1>
         <Link
-          to={`/dashboard/hotels/${hotelId}/add-room`}
+          to={`/dashboard${user?.role === Role.ADMIN ? "/hotels" : ""}/${hotelId}/add-room`}
           className="mr-2 cursor-pointer rounded-md bg-accent-500 text-slate-100 px-4 py-[6px] text-lg text-white transition-all duration-200 hover:scale-105"
         >
           Add Room
@@ -116,7 +120,7 @@ function HotelRoomsTable() {
                               className="p-2 text-accent-500 rounded-md"
                               onClick={() => {
                                 if (room._id)
-                                  navigate(`/dashboard/hotels/${hotelId}/rooms/${room._id}`)
+                                  navigate(`/dashboard${user?.role === Role.ADMIN ? "/hotels" : ""}/${hotelId}/rooms/${room._id}`)
                               }}
                             >
                               <Eye />

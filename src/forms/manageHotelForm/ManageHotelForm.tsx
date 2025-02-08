@@ -113,10 +113,10 @@ function ManageHotelForm({
   });
 
   return (
-    <div className="flex flex-col p-4">
+    <div className="flex flex-col px-2 md:px-4 ">
       <FormProvider {...formMethods}>
-        <div className="flex items-center justify-center p-3">
-          <h1 className="min-w-[30rem] cursor-pointer rounded-full bg-accent-400 text-slate-100 px-6 py-2 text-center text-2xl font-bold uppercase text-white shadow-xl">
+        <div className="flex w-[90vw] md:w-auto items-center  justify-center py-3">
+          <h1 className="w-full cursor-pointer border border-slate-200  text-slate-700  py-2 text-center text-2xl font-bold uppercase text-white shadow-xl">
             {isInUpdateMode ? "update hotel" : "Add Hotel"}
           </h1>
         </div>
@@ -129,7 +129,7 @@ function ManageHotelForm({
         ) : (
           <form
             onSubmit={onSubmitHandler}
-            className="m-auto flex flex-col gap-8 rounded bg-slate-100 p-10 shadow-lg"
+                className="md:m-auto flex flex-col gap-8 rounded bg-slate-100 px-0 md:p-10 shadow-lg"
           >
             <div>
               <DetailSection />
@@ -138,7 +138,7 @@ function ManageHotelForm({
               {!isInUpdateMode && (
                 <>
                   <div className="my-4">
-                    <p className="w-[30rem] leading-6 tracking-wide text-slate-500">
+                        <p className=" w-[90vw] md:w-[30rem] leading-6 tracking-wide text-slate-500">
                       Does the manager have no account. You can create a new
                       account for the the manager and register the hotel after
                       then.
@@ -148,7 +148,7 @@ function ManageHotelForm({
                   </div>
                 </>
                   )}
-                  <div className="flex gap-4 items-center">
+                  <div className="flex flex-col md:flex-row md:w-auto w-full gap-4   items-stretch md:items-center">
                     <SelectManager
                       selectedManager={seledtedManager}
                       setSelectedManager={setSelectedManager}

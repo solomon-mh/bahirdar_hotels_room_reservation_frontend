@@ -1,32 +1,38 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IHotel, IHotelResponse } from "../../types/hotelTypes";
-import { CreateResponse, ITimeStamp } from "../../types/general";
+import { IHotel } from "../../types/hotelTypes";
+import { CreateResponse, IPagination, ITimeStamp } from "../../types/general";
 import { BASE_URL } from "../../utils/url";
+import { IRoom } from "../../types/roomTypes";
 
-enum Tags {
+export enum HotelTags {
   HOTELS = "hotels",
   HOTEL = "hotel",
+  HOTEL_ROOMS = "hotel_Rooms",
 }
 export const hotelApi = createApi({
   reducerPath: "hotelApi",
-  tagTypes: [Tags.HOTELS, Tags.HOTEL],
+  tagTypes: [HotelTags.HOTELS, HotelTags.HOTEL, HotelTags.HOTEL_ROOMS],
   baseQuery: fetchBaseQuery({
     baseUrl: `${BASE_URL}/hotels`,
     credentials: "include",
   }),
   endpoints: (builder) => ({
-    getAllHotels: builder.query<IHotelResponse, string | undefined>({
+    getAllHotels: builder.query<
+      { data:( IHotel & ITimeStamp)[]; pagination: IPagination },
+      string | undefined
+    >({
       query: (params) => {
-        return params ? `/` : "/";
+        const searchParams = new URLSearchParams(params);
+        return params ? `/?${searchParams}` : "/";
       },
-      providesTags: [Tags.HOTELS],
+      providesTags: [HotelTags.HOTELS],
     }),
     getHotelById: builder.query<
       { data: { hotel: IHotel & ITimeStamp } },
       string
     >({
       query: (id) => `/${id}`,
-      providesTags: [Tags.HOTEL],
+      providesTags: [HotelTags.HOTEL],
     }),
     createHotel: builder.mutation<CreateResponse, FormData>({
       query: (newHotel) => ({
@@ -34,7 +40,7 @@ export const hotelApi = createApi({
         method: "POST",
         body: newHotel,
       }),
-      invalidatesTags: [Tags.HOTELS],
+      invalidatesTags: [HotelTags.HOTELS],
     }),
     updateHotel: builder.mutation<
       CreateResponse,
@@ -45,15 +51,21 @@ export const hotelApi = createApi({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: [Tags.HOTELS, Tags.HOTEL],
+      invalidatesTags: [HotelTags.HOTELS, HotelTags.HOTEL],
     }),
     deleteHotel: builder.mutation<CreateResponse, string>({
       query: (id) => ({
         url: `/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: [Tags.HOTELS, Tags.HOTEL],
+      invalidatesTags: [HotelTags.HOTELS, HotelTags.HOTEL],
     }),
+    getHotelRooms: builder.query<{ data: IHotel & { rooms: IRoom[] } }, string>(
+      {
+        query: (id) => `/with-rooms/${id}`,
+        providesTags: [HotelTags.HOTEL_ROOMS],
+      },
+    ),
   }),
 });
 
@@ -63,4 +75,6 @@ export const {
   useGetAllHotelsQuery,
   useGetHotelByIdQuery,
   useUpdateHotelMutation,
+  useGetHotelRoomsQuery,
 } = hotelApi;
+

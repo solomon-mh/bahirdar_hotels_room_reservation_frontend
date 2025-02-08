@@ -1,12 +1,14 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
-import { useGetAllRoomsQuery } from "../../redux/api/roomsApi";
+import { useGetHotelRoomsQuery } from "../../redux/api/hotelApi";
 
 
 const RoomList = () => {
     const navigate = useNavigate();
-    const { data: { data: rooms } = {}, isLoading, error } = useGetAllRoomsQuery("")
+    const { hotelId } = useParams<{ hotelId: string }>();
+    const { data, isLoading, error } = useGetHotelRoomsQuery(hotelId as string);
+    const rooms = data?.data?.rooms || [];
     return (
         <div className="p-4 bg-gray-100 w-full">
             <div className="flex justify-between items-center">

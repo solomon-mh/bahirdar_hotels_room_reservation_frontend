@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import Select from "react-select";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import Select, { MultiValue } from "react-select";
 import HotelsListItem from "../ui/HotelsListItem";
 import StarRatingFilter from "../components/StarRatingFilter";
-import { FaSearch } from "react-icons/fa";
 import LoadingSkeleton from "../ui/LoadingSkeleton";
 import { useGetAllHotelsQuery } from "../redux/api/hotelApi";
+import { createLabel } from "../utils/text";
+import { HotelSortEnum } from "../enums/hotelSortEnum";
 interface Option {
   value: string;
   label: string;
@@ -14,26 +14,45 @@ interface Option {
 function HotelsListPage() {
   const [selectedStars, setSelectedStars] = useState<string[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
-  const { handleSubmit, register } = useForm<{ search: string }>();
-  const navigate = useNavigate();
+  const [searchInput, setSearchInput] = useState('');
 
-  const { data, error, isLoading } = useGetAllHotelsQuery("");
+  const [debouncedSearch, setDebouncedSearch] = useState(searchInput);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchInput);
+    }, 300);
 
-  const handleSortChange = (selectedOption: Option | null) => {
-    const sort = selectedOption!.value;
-    searchParams.set("sortBy", sort);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchInput]);
+
+  useEffect(() => {
+    if (debouncedSearch)
+    {
+      searchParams.set("search", debouncedSearch);
+      setSearchParams(searchParams);
+    }
+    else
+    {
+      searchParams.delete("search");
+      setSearchParams(searchParams);
+    }
+  }, [debouncedSearch, searchParams, setSearchParams]);
+
+  const { data, error, isLoading } = useGetAllHotelsQuery(searchParams.toString());
+
+  const sortOptions = Object.values(HotelSortEnum).map((sort) => ({
+    value: sort,
+    label: createLabel(sort),
+  }));
+  const handleSortChange = (newValue: MultiValue<Option>) => {
+    const sort = newValue.map((option: { value: unknown; }) => option.value).join(',');
+    searchParams.set("sort", sort);
     setSearchParams(searchParams);
   };
 
-  const onSearchHandler = handleSubmit((data: { search: string }) => {
-    if (!data.search)
-    {
-      return navigate("/hotels");
-    }
 
-    searchParams.set("search", data.search);
-    setSearchParams(searchParams);
-  });
 
   const handleStarsChange = (e: { target: { value: string; checked: boolean; }; }) => {
     const starRating = e.target.value;
@@ -62,55 +81,25 @@ function HotelsListPage() {
             <section className="flex flex-1 items-center justify-between gap-x-6 gap-y-4 rounded bg-black/5 p-6">
               <div className="w-full">
                 <Select
-                  onChange={handleSortChange}
-                  options={[
-                    { label: "recent first", value: "newest" },
-                    { label: "oldest first", value: "oldest" },
-                    {
-                      label: "average Rating: high first",
-                      value: "avgRating-desc",
-                    },
-                    {
-                      label: "average Rating: low first",
-                      value: "avgRating-asc",
-                    },
-                    { label: "hotelStar: high first", value: "hotelStar-desc" },
-                    { label: "hotelStar: low first", value: "hotelStar-asc" },
-                    {
-                      label: "min price per night: high first",
-                      value: "minPricePerNight-desc",
-                    },
-                    {
-                      label: "min price per night: low first",
-                      value: "minPricePerNight-asc",
-                    },
-                    { label: "a-z", value: "a-z" },
-                    { label: "z-a", value: "z-a" },
-                  ]}
+                onChange={handleSortChange}
+                isMulti
+                options={sortOptions}
                   placeholder="sort hotels"
                 />
               </div>
 
               <form
-                className="group relative flex items-center justify-center"
-                onSubmit={onSearchHandler}
+              className="group relative flex items-center justify-center"
               >
                 <div className="flex flex-row rounded bg-slate-200 shadow-lg">
                   <input
                     type="search"
-                    disabled={isLoading}
+                  disabled={isLoading}
+                  onChange={(e) => setSearchInput(e.target.value)}
                     autoFocus
                     className="rounded bg-inherit px-6 py-2 focus:outline-none disabled:cursor-not-allowed"
-                    placeholder="Search"
-                    {...register("search")}
-                  />
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="-ml-12 rounded px-5 text-black/20 disabled:cursor-not-allowed"
-                  >
-                    <FaSearch className="size-5" />
-                  </button>
+                  placeholder="Search"
+                />
                 </div>
               </form>
             </section>
@@ -144,7 +133,7 @@ function HotelsListPage() {
 
             )
               :
-              !data?.data.hotels.length
+              !data?.data.length
                 ?
                 (
                 <div className="mx-auto w-[69.5vw]">
@@ -159,7 +148,7 @@ function HotelsListPage() {
 
                 (
                 <section className="min-h-[100vh] w-full rounded-md border-l-2 border-r-2 py-4 shadow-lg">
-                    {data.data.hotels?.map((hotel, i) => (
+                    {data.data?.map((hotel, i) => (
                       <HotelsListItem hotel={hotel} key={i} />
                     ))}
                   </section>

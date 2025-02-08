@@ -6,10 +6,11 @@ import { BASE_URL } from "../../utils/url";
 export enum RoomTags {
   ROOMS = "rooms",
   ROOM = "room",
+  ROOMS_BY_HOTEL = "hotel_rooms",
 }
 export const roomApi = createApi({
   reducerPath: "roomApi",
-  tagTypes: [RoomTags.ROOMS, RoomTags.ROOM],
+  tagTypes: [RoomTags.ROOMS, RoomTags.ROOM, RoomTags.ROOMS_BY_HOTEL],
   baseQuery: fetchBaseQuery({
     baseUrl: `${BASE_URL}/rooms`,
     credentials: "include",
@@ -31,7 +32,7 @@ export const roomApi = createApi({
         method: "POST",
         body: newRoom,
       }),
-      invalidatesTags: [RoomTags.ROOMS],
+      invalidatesTags: [RoomTags.ROOMS, RoomTags.ROOMS_BY_HOTEL],
     }),
     updateRoom: builder.mutation<
       CreateResponse,

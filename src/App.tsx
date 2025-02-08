@@ -13,7 +13,6 @@ import AllHotels from "./features/hotels/AllHotels";
 import Account from "./features/profile/Account";
 import ProtectRoutes from "./ui/ProtectRoutes";
 import AllBookings from "./features/bookings/AllBookings";
-import HotelBookings from "./features/bookings/HotelBookings";
 import AllUsers from "./features/users/AllUsers";
 import HotelUsers from "./features/users/HotelUsers";
 import HotelRoomsTable from "./features/rooms/HotelRoomsTable";
@@ -48,6 +47,7 @@ import PublicHotelDetailPage from "./pages/hotel-details/HotelDetailPage.js";
 import RoomList from "./features/hotels/HotelRooms.js";
 import BookingPage from "./features/bookings/BookingPage.js";
 import BookingDetails from "./features/bookings/BookingDetail.js";
+import HotelBookings from "./features/hotels/HotelBookings.js";
 const queryClient = new QueryClient();
 
 function App() {
@@ -82,8 +82,8 @@ function App() {
           <BrowserRouter>
             <Routes>
               {/* HOME ROUTES */}
-              <Route element={<AppLayout />}>
-                <Route path="/" element={<HomePage />} />
+            <Route element={<AppLayout />}>
+              <Route path="/" element={<HomePage />} />
                 <Route path="about" element={<AboutPage />} />
                 <Route path="hotels" element={<HotelsListPage />} />
               <Route path="hotels/:hotelId" element={<PublicHotelDetailPage />} >
@@ -92,7 +92,6 @@ function App() {
               </Route>
               <Route path="hotels/:hotelId/rooms/:roomId" element={<RoomDetail />} />
               <Route path="hotels/:hotelId/rooms/:roomId/book" element={<BookingPage />} />
-
                 <Route path="hotels/:hotelId/rooms" element={<RoomsListPage />}>
                   <Route path=":roomId" element={<RoomListDetail />} />
                 </Route>
@@ -141,7 +140,9 @@ function App() {
                       <Route path="rooms" element={<HotelRoomsTable />} />
                       <Route path="rooms/:roomId" element={<RoomDetail />} />
                       <Route path="add-room" element={<AddRoom />} />
-                      <Route path="update-room/:roomId" element={<UpdateRoom />} />
+                      <Route path="rooms/:roomId/edit" element={<UpdateRoom />} />
+                      <Route path="bookings" element={<HotelBookings />} />
+                      <Route path="bookings/:bookingId" element={<BookingDetails />} />
                     </Route>
                     <Route path=":hotelId/edit" element={<UpdateHotel />} />
                   </Route>
@@ -149,13 +150,21 @@ function App() {
                   <Route path="bookings/:bookingId" element={<BookingDetails />} />
                   <Route path="users" element={<AllUsers />} />
                   <Route path="users/:userId" element={<UserDetail />} />
+                  <Route path="add-hotel" element={<AddHotel />} />
                   </>
                 ) : role === "manager" ? (
                   <>
-                    <Route path="rooms" element={<HotelRoomsTable />} />
-                    <Route path="rooms/:roomId" element={<RoomDetail />} />
-                    <Route path="add-room" element={<AddRoom />} />
-                    <Route path="rooms/edit/:roomId" element={<UpdateRoom />} />
+
+                    <Route path=":hotelId" element={<HotelDetailPage />} >
+                      <Route index element={<HotelDetail />} />
+                      <Route path="rooms" element={<HotelRoomsTable />} />
+                      <Route path="rooms/:roomId" element={<RoomDetail />} />
+                      <Route path="add-room" element={<AddRoom />} />
+                      <Route path="rooms/:roomId/edit" element={<UpdateRoom />} />
+                      <Route path="bookings" element={<AllBookings />} />
+                    </Route>
+                    <Route path="bookings/:bookingId" element={<BookingDetails />} />
+                    <Route path=":hotelId/edit" element={<UpdateHotel />} />
                     <Route path="users" element={<HotelUsers />} />
                     <Route path="bookings" element={<HotelBookings />} />
                     <Route path="settings" element={<Settings />} />

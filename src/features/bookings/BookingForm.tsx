@@ -25,7 +25,7 @@ export default function BookingForm({
 
 
 
-    const numOfNights = calculateNumOfNights(checkInDate.toString(), checkOutDate.toString());
+    const numOfNights = calculateNumOfNights(checkInDate?.toString(), checkOutDate?.toString());
     const totalPrice = numOfNights * pricePerNight;
 
     const today = new Date();

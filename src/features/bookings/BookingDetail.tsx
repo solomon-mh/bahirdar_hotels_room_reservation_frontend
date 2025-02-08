@@ -7,19 +7,22 @@ import NotFoundPage from "../../pages/utils/NotFoundPage";
 import { Badge } from "../../components/ui/badge";
 import { Button } from "../../components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import ImageSlider from "../../components/Slider";
 
 export default function BookingDetails() {
+    const { hotelId } = useParams<{ hotelId: string }>();
     const { bookingId } = useParams<{ bookingId: string }>();
     const { data: { data: booking } = {}, isLoading, error } = useGetBookingByIdQuery(bookingId as string);
 
+    const isHotelBookingDetail = !!hotelId
     return (
         <div className="flex flex-col gap-4 p-4 ">
-            <div className="flex  w-full shadow-lg p-2 items-center gap-4">
+            {!isHotelBookingDetail && <div className="flex  w-full shadow-lg p-2 items-center gap-4">
                 <button onClick={() => window.history.back()} className="p-2 flex items-center gap-2 rounded-lg bg-gray-100">
                     <ArrowLeft /> back
                 </button>
                 <h1 className="text-2xl font-semibold">Booking Details</h1>
-            </div>
+            </div>}
 
             {
                 isLoading && <LoadingPage />
@@ -45,7 +48,7 @@ export default function BookingDetails() {
                 )
             }
             {
-                booking && <div className="w-full  container ">
+                booking && <div className="w-[80vw]  cotainer  ">
                     <Card className="p-6 shadow-lg rounded-2xl">
                         <h1 className="text-2xl font-semibold mb-4">Booking Details</h1>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -77,7 +80,7 @@ export default function BookingDetails() {
                                         <h3 className="font-semibold">Facilities:</h3>
                                         <div className="flex flex-wrap gap-2 mt-1">
                                             {booking.room.roomFacilities.map((facility, index) => (
-                                                <Badge key={index} className="bg-blue-100 text-blue-600">{facility}</Badge>
+                                                <Badge key={index} className="bg-slate-100 text-accent-500 cursor-pointer hover:bg-slate-200">{facility}</Badge>
                                             ))}
                                         </div>
                                     </div>
@@ -88,11 +91,7 @@ export default function BookingDetails() {
                         {/* Room Images */}
                         <div className="mt-6">
                             <h2 className="text-lg font-semibold mb-2">Room Images</h2>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                {booking.room.images.map((image, index) => (
-                                    <img key={index} src={image} alt={`Room ${index + 1}`} className="rounded-xl shadow-lg w-full h-40 object-cover" />
-                                ))}
-                            </div>
+                            <ImageSlider slidesToShow={2} images={booking.room.images} />
                         </div>
 
                         {/* Booking Details */}
