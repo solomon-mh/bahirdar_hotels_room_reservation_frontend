@@ -25,6 +25,11 @@ const dataAccountSidebar: IDataAccountSidebar[] = [
     text: "Settings",
   },
   {
+    to: "complete-onboarding",
+    pathname: "/account/complete-onboarding",
+    text: "Complete Onboarding",
+  },
+  {
     to: "identity-verification",
     pathname: "/account/identity-verification",
     text: "Identity Verification",
