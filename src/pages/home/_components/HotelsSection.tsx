@@ -1,39 +1,64 @@
 
 import { Link } from "react-router-dom";
-import QueryKey from "../../../constants/QueryKey";
-import apiHotels from "../../../services/apiHotels";
 import MaxWidthWrapper from "../../../ui/MaxWidthWrapper";
-import { useQuery } from "@tanstack/react-query";
-import { Hotel } from "../../../types/hotelTypes";
+import { IHotel } from "../../../types/hotelTypes";
+import { useGetAllHotelsQuery } from "../../../redux/api/hotelApi";
+import LoadingPage from "../../utils/LoadingPage";
+import NotFoundPage from "../../utils/NotFoundPage";
+import { ITimeStamp } from "../../../types/general";
 
 export const HotelsSection = () => {
-  const { data: { data: { hotels } = {} } = {}, isLoading } = useQuery({
-    queryKey: [QueryKey.POPULAR_HOTELS],
-    queryFn: apiHotels.getPopularHotels,
-  });
+
+  const { data: { data: hotels } = {}, isLoading, error
+  } = useGetAllHotelsQuery("")
 
   if (isLoading) return <p>Loading...</p>;
 
 
   return (
     <section className="">
-      <MaxWidthWrapper>
-        <div className="my-5 flex flex-col items-center justify-center space-y-10 p-4">
-          <h2 className="border-b p-4 text-xl text-black/70 shadow md:text-2xl md:font-bold lg:text-4xl">
-            Popular Hotels
-          </h2>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 xl:gap-16">
-            {hotels?.map((hotel) => (
-              <HotelCard hotel={hotel} key={hotel.id} />
-            ))}
-          </div>
-        </div>
-      </MaxWidthWrapper>
+      {
+        isLoading
+          ?
+          <LoadingPage />
+          :
+          error
+            ?
+            <NotFoundPage>
+              <pre>
+                {
+                  JSON.stringify(error, null, 2)
+                }
+              </pre>
+            </NotFoundPage>
+            :
+            !hotels?.length
+              ?
+              <NotFoundPage>
+                <span>
+                  Hotel data not found
+                </span>
+              </NotFoundPage>
+              :
+              <MaxWidthWrapper>
+                <div className="my-5 flex flex-col items-center justify-center space-y-10 p-4">
+                  <h2 className="border-b p-4 text-xl text-black/70 shadow md:text-2xl md:font-bold lg:text-4xl">
+                    Popular Hotels
+                  </h2>
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 xl:gap-16">
+                    {hotels?.map((hotel) => (
+                      <HotelCard hotel={hotel} key={hotel._id} />
+                    ))}
+                  </div>
+                </div>
+              </MaxWidthWrapper>
+
+      }
     </section>
   );
 };
 
-const HotelCard = ({ hotel }: { hotel: Hotel }) => {
+const HotelCard = ({ hotel }: { hotel: IHotel & ITimeStamp }) => {
   return (
     <Link
       to={`/hotels/${hotel._id}`}
@@ -46,7 +71,7 @@ const HotelCard = ({ hotel }: { hotel: Hotel }) => {
       />
       <div className="p-4">
         <p className="mb-2 text-2xl font-bold">{hotel.name}</p>
-        <p className="text-gray-600">{hotel.address}</p>
+        <p className="text-gray-600">{hotel.address.city}</p>
         <p className="mt-2 text-sm text-black/30">{hotel.summary}</p>
         <div className="mt-4 flex items-center justify-between">
           <div className="flex items-center">
@@ -61,7 +86,7 @@ const HotelCard = ({ hotel }: { hotel: Hotel }) => {
               </svg>
             ))}
           </div>
-          <button className="rounded bg-accent-500 px-3 py-1 text-lg text-white">
+          <button className="rounded text-slate-100 bg-accent-500 px-3 py-1 text-lg text-white">
             ${hotel.minPricePerNight}/night
           </button>
         </div>

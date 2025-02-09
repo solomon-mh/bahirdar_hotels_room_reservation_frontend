@@ -44,6 +44,9 @@ export interface IHotel {
   numOfRooms: number;
   numOfRatings: number;
   avgRating: number;
+  location?: {
+    coordinates: [number, number];
+  };
 }
 
 export interface IHotelResponse {
