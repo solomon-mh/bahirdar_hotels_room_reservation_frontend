@@ -39,7 +39,7 @@ export const bookingApi = createApi({
       query: (id) => `/booking-with-room-user-hotel-detail/${id}`,
       providesTags: [BookingTags.BOOKING],
     }),
-    createBooking: builder.mutation<CreateResponse, IBooking>({
+    createBooking: builder.mutation<{ data: IBooking } & Omit<CreateResponse, "data">, IBooking>({
       query: (newBooking) => ({
         url: "/",
         method: "POST",

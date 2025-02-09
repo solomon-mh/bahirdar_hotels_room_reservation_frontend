@@ -85,7 +85,8 @@ const RoomList = () => {
                                                     <div className="flex  justify-center gap-2">
                                                         <strong>Amenities:</strong>{" "}
                                                         <span className="text-gray-700">
-                                                            {room.roomFacilities.join(", ")}
+                                                            {room.roomFacilities.length > 3 ? room.roomFacilities.slice(0, 3).join(", ") + "..." : room.roomFacilities.join(", ")}
+
                                                         </span>
                                                     </div>
 

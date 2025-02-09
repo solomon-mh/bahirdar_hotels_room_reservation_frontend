@@ -31,8 +31,8 @@ export const HotelDetail = () => {
             {hotel && (
                 <div className="bg-white w-full rounded-lg p-4 shadow-lg">
                     <div className="relative">
-                        {user?.role === "admin" && (
-                            <div className="absolute right-4 top-4 flex items-center gap-2 bg-slate-100 p-2">
+                        {user?.role && [Role.ADMIN, Role.MANAGER].includes(user?.role) && (
+                            <div className="absolute right-4 top-4 z-20 flex items-center gap-2 bg-slate-100 p-2">
                                 <button
                                     className="bg-white rounded-lg p-2"
                                     onClick={() =>
@@ -96,7 +96,7 @@ export const HotelDetail = () => {
 
                         {
                             hotel.location && !!hotel.location.coordinates.length && (
-                                <div>
+                                <div className="mb-4">
                                     <h3 className="text-lg font-semibold text-gray-800">
                                         See Location on map
                                     </h3>
@@ -119,9 +119,16 @@ export const HotelDetail = () => {
                                 <span className="font-semibold">Rating:</span> {hotel.avgRating}{" "}
                                 / 5
                             </div>
-                            <button className="rounded bg-accent-500/90 px-4 py-2 text-slate-100 transition hover:bg-accent-500">
-                                Book Now
-                            </button>
+                            {
+                                user?.role && user?.role === Role.USER && (
+                                    <button
+                                        onClick={() => navigate(`/hotels/${hotelId}/rooms`)}
+                                        className="rounded bg-accent-500/90 px-4 py-2 text-slate-100 transition hover:bg-accent-500"
+                                    >
+                                        Book Now
+                                    </button>
+                                )
+                            }
                         </div>
                     </div>
                 </div>

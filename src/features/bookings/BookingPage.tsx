@@ -8,12 +8,23 @@ import { useAuthContext } from "../../context/AuthContext";
 import { useGetRoomByIdQuery } from "../../redux/api/roomsApi";
 import { ArrowLeft } from "lucide-react";
 import SubHeader from "../../components/SubHeader";
+import { useState } from "react";
+import { useGetHotelByIdQuery } from "../../redux/api/hotelApi";
+import LoadingPage from "../../pages/utils/LoadingPage";
+import NotFoundPage from "../../pages/utils/NotFoundPage";
 
 export default function BookingPage() {
     const navigate = useNavigate();
-    const { roomId } = useParams<{ id: string; roomId: string }>();
+    const { roomId, hotelId } = useParams<{ hotelId: string; roomId: string }>();
     const { user } = useAuthContext();
+    const [booking, setBooking] = useState<IBooking | null>(null)
     const [bookRoom, { isLoading }] = useCreateBookingMutation();
+    const {
+        data: { data: hotel } = {},
+        isLoading: fetchingHotel,
+        error: hotelFetchingError,
+    } = useGetHotelByIdQuery(hotelId as string);
+
     const {
         data: { data: room } = {},
         isLoading: fetchingRoom,
@@ -29,8 +40,13 @@ export default function BookingPage() {
         })
             .unwrap()
             .then((res) => {
-            toast.success(res.message || "Room booked successfully");
-                navigate(-1);
+                toast.success(res.message || "Room booked successfully");
+                if (res.data)
+                    setBooking(res.data)
+                else
+                {
+                    toast.error("Cann't get booking id")
+                }
             })
             .catch((err) => {
                 if ("data" in err)
@@ -45,6 +61,31 @@ export default function BookingPage() {
             });
     };
 
+    if (fetchingRoom)
+    {
+        return (
+            <LoadingPage />
+        )
+    }
+
+    if (roomFetchingError)
+    {
+        return (
+            <NotFoundPage>
+                <pre>{JSON.stringify(roomFetchingError, null, 2)}</pre>
+            </NotFoundPage>
+        )
+    }
+
+    if (!room)
+    {
+        return (
+            <NotFoundPage>
+                <p>Room not found</p>
+            </NotFoundPage>
+        )
+    }
+
     return (
         <div className="p-6 flex flex-col gap-4">
 
@@ -57,10 +98,54 @@ export default function BookingPage() {
                         <ArrowLeft />
                     </span>
                 </button>
-                <h1 className=" text-2xl font-bold text-slate-700">Book a Room with ID: {roomId}</h1>
+                <h1 className=" text-2xl font-bold text-slate-700">
+                    Book a Room number : {room?.roomNumber}  in hotel  {
+                        fetchingHotel ? "Loading..." :
+                            <a
+                                href={`/hotels/${hotelId}`}
+                                className="text-accent-500 underline cursor-pointer">
+                                {hotel?.hotel.name}
+                            </a>
+
+                    }
+                    {
+                        hotelFetchingError && <span className="text-red-500">Failed to fetch hotel</span>
+                    }
+                </h1>
             </SubHeader>
             <div className="flex">
-                <BookingForm isBooking={isLoading} onSubmit={handleBookingSubmit} />
+                <div className="flex flex-col gap-4 w-full">
+                    <BookingForm isBooking={isLoading} onSubmit={handleBookingSubmit} />
+                    {
+                        booking && (
+                            <div className="flex  items-strech gap-10 w-full justify-stretch px-4 py-2">
+                                <div className="flex flex-[1] flex-col gap-2">
+                                    <h2 className="text-xl font-bold">Booking Summary</h2>
+                                    <div className="flex justify-between">
+                                        <p>Price per night:</p>
+                                        <p>${room?.pricePerNight}</p>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <p>Number of nights:</p>
+                                        <p>{booking?.numOfNights}</p>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <p>Total Price:</p>
+                                        <p>${booking?.totalPrice}</p>
+                                    </div>
+                                </div>
+                                <div className="flex flex-[2] flex-col items-center justify-end gap-2">
+                                    <button
+                                        className="w-[80%] px-4 py-2 text-slate-100 bg-accent-500 text-white rounded-md hover:bg-accent-500-dark"
+                                        onClick={() => navigate(`/hotels/${hotelId}/rooms/${roomId}/${booking?._id}/pay`)}
+                                    >
+                                        Continue with chapa
+                                    </button>
+                                </div>
+                            </div>
+                        )
+                    }
+                </div>
                 <div className="div w-72">
                     {fetchingRoom ? (
                         <p>Loading...</p>

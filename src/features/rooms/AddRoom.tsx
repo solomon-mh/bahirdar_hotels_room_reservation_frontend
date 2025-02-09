@@ -16,7 +16,10 @@ function AddRoom() {
     try
     {
 
-      createRoom(room).unwrap().then(() => {
+      createRoom({
+        data: room,
+        hotelId: hotelId as string
+      }).unwrap().then(() => {
         navigate(`/dashboard${user?.role === Role.ADMIN ? "/hotels" : ""}/${hotelId}/rooms`)
         toast.success("Room added succefully")
       }).catch((err) => {

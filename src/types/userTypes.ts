@@ -65,3 +65,12 @@ export interface IUser {
 export interface IUserResponse {
   data: (IUser & ITimeStamp)[];
 }
+
+export interface UserRegistrationData {
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  gender: Gender;
+  phoneNumber: string;
+  address: IAddress;
+}

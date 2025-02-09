@@ -18,7 +18,7 @@ function UpdateRoom() {
   const [updateRoom, { isLoading: isUpdating }] = useUpdateRoomMutation()
 
   const handleUpdateRoom = (formData:FormData) => {
-    updateRoom({ id: roomId!, data: formData }).unwrap().then(() => {
+    updateRoom({ id: roomId!, data: formData, hoteldId: hotelId as string }).unwrap().then(() => {
       toast.success("Room updated successfully")
       navigate(`/dashboard${user?.role === Role.ADMIN ? "/hotels" : ""}/${hotelId}/rooms/${roomId}`)
     }).catch((error) => {
