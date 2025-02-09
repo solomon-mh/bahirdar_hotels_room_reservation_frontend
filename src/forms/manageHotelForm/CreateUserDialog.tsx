@@ -69,7 +69,11 @@ const CreateUserDialog = () => {
 
     return (
         <Dialog open={open} onOpenChange={setOpen} >
-            <DialogTrigger className="border border-accent-500 px-2 rounded-sm py-1 hover:border-2">Create Manager</DialogTrigger>
+            <DialogTrigger asChild>
+                <button className="px-4 py-1  border bg-[#34343400] border-accent-500 text-accent-500 hover:bg-accent-500 rounded-md hover:text-slate-100">
+                    Create Manager
+                </button>
+            </DialogTrigger>
             <DialogContent className="min-w-[70vw] p-6 max-h-[80vh] bg-slate-200">
                 <DialogHeader>
                     <DialogTitle>Create user</DialogTitle>
