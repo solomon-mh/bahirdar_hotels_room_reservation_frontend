@@ -108,9 +108,8 @@ function HotelRoomsTable() {
                             {room.capacity}
                           </TableCell>
                           <TableCell>
-                            {
-                              room.roomFacilities.join(",")
-                            }
+                            {room.roomFacilities.length > 3 ? room.roomFacilities.slice(0, 3).join(", ") + "..." : room.roomFacilities.join(", ")}
+
                           </TableCell>
                           <TableCell>
                             {room.isAvailable ? "Available" : "Reserved"}

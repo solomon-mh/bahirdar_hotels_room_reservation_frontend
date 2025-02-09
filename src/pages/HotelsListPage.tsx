@@ -52,17 +52,26 @@ function HotelsListPage() {
     setSearchParams(searchParams);
   };
 
-
-
-  const handleStarsChange = (e: { target: { value: string; checked: boolean; }; }) => {
+  const handleStarsChange = (e: { target: { value: string; checked: boolean } }) => {
     const starRating = e.target.value;
 
     setSelectedStars((prevStars) =>
       e.target.checked
         ? [...prevStars, starRating]
-        : prevStars.filter((star) => star !== starRating),
+        : prevStars.filter((star) => star !== starRating)
     );
+
+    const updatedStars = e.target.checked
+      ? [...selectedStars, starRating]
+      : selectedStars.filter((star) => star !== starRating);
+
+    searchParams.delete('hotelStar');
+    updatedStars.forEach((star) => {
+      searchParams.append('hotelStar', star);
+    });
+    setSearchParams(searchParams);
   };
+
 
   return (
     <div className=" relative flex flex-row w-screen px-4 md:px-16 ">

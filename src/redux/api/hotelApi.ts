@@ -18,7 +18,7 @@ export const hotelApi = createApi({
   }),
   endpoints: (builder) => ({
     getAllHotels: builder.query<
-      { data:( IHotel & ITimeStamp)[]; pagination: IPagination },
+      { data: (IHotel & ITimeStamp)[]; pagination: IPagination },
       string | undefined
     >({
       query: (params) => {
@@ -63,7 +63,7 @@ export const hotelApi = createApi({
     getHotelRooms: builder.query<{ data: IHotel & { rooms: IRoom[] } }, string>(
       {
         query: (id) => `/with-rooms/${id}`,
-        providesTags: [HotelTags.HOTEL_ROOMS],
+        providesTags: (_, __, id) => [{ type: HotelTags.HOTEL_ROOMS, id }],
       },
     ),
   }),

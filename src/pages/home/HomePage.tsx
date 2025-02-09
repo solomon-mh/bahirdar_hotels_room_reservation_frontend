@@ -54,7 +54,7 @@ function HomePage() {
                   </span>
                 </NotFoundPage>
                 :
-                <Map markers={markers} center={markers[0].location} />
+                <Map markers={markers} center={markers[0]?.location} />
         }
       </div>
       <OurServices />
