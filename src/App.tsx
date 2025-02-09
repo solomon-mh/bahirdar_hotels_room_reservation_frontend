@@ -48,6 +48,7 @@ import RoomList from "./features/hotels/HotelRooms.js";
 import BookingPage from "./features/bookings/BookingPage.js";
 import BookingDetails from "./features/bookings/BookingDetail.js";
 import HotelBookings from "./features/hotels/HotelBookings.js";
+import PaymentPage from "./features/payments/MakePayment.js";
 const queryClient = new QueryClient();
 
 function App() {
@@ -92,6 +93,7 @@ function App() {
               </Route>
               <Route path="hotels/:hotelId/rooms/:roomId" element={<RoomDetail />} />
               <Route path="hotels/:hotelId/rooms/:roomId/book" element={<BookingPage />} />
+              <Route path="hotels/:hotelId/rooms/:roomId/:bookingId/pay" element={<PaymentPage />} />
                 <Route path="hotels/:hotelId/rooms" element={<RoomsListPage />}>
                   <Route path=":roomId" element={<RoomListDetail />} />
                 </Route>
