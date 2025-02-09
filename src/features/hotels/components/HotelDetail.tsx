@@ -8,6 +8,7 @@ import LoadingPage from "../../../pages/utils/LoadingPage";
 import { useAuthContext } from "../../../context/AuthContext";
 import { MdEdit } from "react-icons/md";
 import { Role } from "../../../enums/roleEnum";
+import MapComponent from "../../bookings/Map";
 
 export const HotelDetail = () => {
     const navigate = useNavigate();
@@ -93,6 +94,26 @@ export const HotelDetail = () => {
                             </ul>
                         </div>
 
+                        {
+                            hotel.location && !!hotel.location.coordinates.length && (
+                                <div>
+                                    <h3 className="text-lg font-semibold text-gray-800">
+                                        See Location on map
+                                    </h3>
+                                    <MapComponent
+                                        markers={[
+                                            {
+                                                id: 1,
+                                                name: hotel.name,
+                                                location: [...hotel.location.coordinates],
+                                            },
+                                        ]}
+                                        center={[...hotel.location.coordinates]}
+                                        zoom={12}
+                                    />
+                                </div>
+                            )
+                        }
                         <div className="mt-6 flex items-center justify-between">
                             <div className="text-gray-800">
                                 <span className="font-semibold">Rating:</span> {hotel.avgRating}{" "}
