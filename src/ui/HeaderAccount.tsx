@@ -1,4 +1,3 @@
-
 import HeaderAccountMenu from "./HeaderAccountMenu";
 import { useAuthContext } from "../context/AuthContext";
 import { useRef, useState } from "react";
@@ -7,52 +6,50 @@ import { CircleUserRound } from "lucide-react";
 import { Role } from "../enums/roleEnum";
 
 function HeaderAccount() {
-  const { user, } = useAuthContext();
+  const { user } = useAuthContext();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
   const iconRef = useRef(null);
   useOnClickOutside({
     handler: () => {
       setIsOpen(false);
-    }, refs: [menuRef, iconRef]
+    },
+    refs: [menuRef, iconRef],
   });
 
   return (
     <div className="relative z-50">
       <div
         ref={iconRef}
-        onClick={() => setIsOpen(prev => !prev)}
+        onClick={() => setIsOpen((prev) => !prev)}
         className="flex items-center justify-center gap-2 hover:cursor-pointer"
       >
-        <li>
-          {user?.role === Role.MANAGER && user?.hotel?.name || "No Hotel"}
-        </li>
-        <span className="text-sm font-semibold text-black/50">
+        <li>{(user?.role === Role.MANAGER && user?.hotel?.name) || ""}</li>
+        <span className="text-black/50 text-sm font-semibold">
           {user?.role}
         </span>
-        <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-slate-50">
+        <div className="bg-slate-50 flex h-10 w-10 items-center justify-center overflow-hidden rounded-full">
           {user?.profilePicture ? (
             <img
               className="h-full w-full object-cover object-center"
               src={user?.profilePicture}
               alt=""
             />
-          ) :
-            (
-              <CircleUserRound />
-            )}
+          ) : (
+            <CircleUserRound />
+          )}
         </div>
       </div>
-      {isOpen &&
-          <>
-            <div
-              ref={menuRef}
-          className="absolute right-2 top-5 z-[100] mt-2 w-[13rem] rounded-md border-2 border-black/10 bg-white text-black/50 shadow-lg"
-            >
-              <HeaderAccountMenu />
-            </div>
+      {isOpen && (
+        <>
+          <div
+            ref={menuRef}
+            className="border-black/10 bg-white text-black/50 absolute right-2 top-5 z-[100] mt-2 w-[13rem] rounded-md border-2 shadow-lg"
+          >
+            <HeaderAccountMenu />
+          </div>
         </>
-      }
+      )}
     </div>
   );
 }

@@ -51,7 +51,6 @@ import HotelBookings from "./features/hotels/HotelBookings.js";
 import CompleteOnboarding from "./features/profile/CompleteOnboarding.js";
 import IdentityVerification from "./features/profile/IdentityVerification.js";
 import PaymentPage from "./features/payments/MakePayment.js";
-import UserRegistration from "./features/users/FinishOnboarding.js";
 const queryClient = new QueryClient();
 
 function App() {
@@ -94,10 +93,10 @@ function App() {
                 <Route index element={<HotelDetail />} />
                 <Route path="rooms" element={<RoomList />} />
               </Route>
-              <Route
+              {/* <Route
                 path="complete-onboarding"
                 element={<UserRegistration />}
-              />
+              /> */}
               <Route
                 path="hotels/:hotelId/rooms/:roomId"
                 element={<RoomDetail />}
