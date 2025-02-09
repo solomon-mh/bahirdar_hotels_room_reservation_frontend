@@ -11,6 +11,8 @@ import CreateUserDialog from "./CreateUserDialog";
 import { IUser } from "../../types/userTypes";
 import toast from "react-hot-toast";
 import { useGetUserByIdQuery } from "../../redux/api/userApi";
+import AddLocation from "../../features/hotels/components/AddLocation";
+import { LatLngExpression } from "leaflet";
 interface Props {
   hotel?: IHotel;
   isAdding: boolean;
@@ -28,11 +30,24 @@ function ManageHotelForm({
   isInUpdateMode = false,
 }: Props) {
 
+  const [selectedPosition, setSelectedPosition] = useState<LatLngExpression | null>(null);
 
-  const { data: { data: user } = {}, error } = useGetUserByIdQuery(hotel?.manager as string || '', { skip: !hotel?.manager });
+  const { data: { data: user } = {}, error } = useGetUserByIdQuery(
+    (hotel?.manager as string) || "",
+    { skip: !hotel?.manager },
+  );
   const [seledtedManager, setSelectedManager] = useState<IUser | null>(null);
-  const formMethods = useForm<IHotel & { address: IAddress, facilities: string[], imageCoverFile: string, hotelImagesFiles: string[], manager: string, isInUpdateMode: boolean }>();
-  const { handleSubmit, reset, setValue } = formMethods; 
+  const formMethods = useForm<
+    IHotel & {
+      address: IAddress;
+      facilities: string[];
+      imageCoverFile: string;
+      hotelImagesFiles: string[];
+      manager: string;
+      isInUpdateMode: boolean;
+    }
+  >();
+  const { handleSubmit, reset, setValue } = formMethods;
 
   useEffect(() => {
     if (error)
@@ -52,12 +67,20 @@ function ManageHotelForm({
     {
       reset({
         ...hotel,
-        manager: typeof hotel.manager === 'string' ? hotel.manager : hotel.manager?._id || '',
-        address: hotel.address || { city: '', subcity: '', street: '', woreda: '' },
+        manager:
+          typeof hotel.manager === "string"
+            ? hotel.manager
+            : hotel.manager?._id || "",
+        address: hotel.address || {
+          city: "",
+          subcity: "",
+          street: "",
+          woreda: "",
+        },
         facilities: hotel.facilities || [],
-        imageCoverFile: '',
+        imageCoverFile: "",
         hotelImagesFiles: [],
-        isInUpdateMode
+        isInUpdateMode,
       });
       setValue("isInUpdateMode", isInUpdateMode);
     }
@@ -68,24 +91,29 @@ function ManageHotelForm({
 
     formData.append("name", data.name);
     formData.append("description", data.description);
-    formData.append("hotelStar", data.hotelStar?.toString() || '');
+    formData.append("hotelStar", data.hotelStar?.toString() || "");
     formData.append("summary", data.summary);
+    formData.append("address[country]", "Ethiopia");
     formData.append("address[city]", data.address.city);
     formData.append("address[subcity]", data.address.subcity);
     formData.append("address[street]", data.address.street);
     formData.append("address[woreda]", data.address.woreda);
-    if (seledtedManager?._id)
-      formData.append("manager", seledtedManager._id);
+
+    if (selectedPosition)
+    {
+      formData.append("longitude", selectedPosition.toString().split(',')[0] || "");
+      formData.append("latitude", selectedPosition.toString().split(',')[1] || "");
+    }
+    if (seledtedManager?._id) formData.append("manager", seledtedManager._id);
     else
     {
-      toast.error("Please select manger manager not selected yet")
+      toast.error("Please select manger manager not selected yet");
       return;
     }
 
     data.facilities.forEach((facility, i) => {
       formData.append(`facilities[${i}]`, facility);
     });
-
 
     if (hotel?.imageCover)
     {
@@ -113,10 +141,10 @@ function ManageHotelForm({
   });
 
   return (
-    <div className="flex flex-col px-2 md:px-4 ">
+    <div className="flex flex-col px-2 md:px-4">
       <FormProvider {...formMethods}>
-        <div className="flex w-[90vw] md:w-auto items-center  justify-center py-3">
-          <h1 className="w-full cursor-pointer border border-slate-200  text-slate-700  py-2 text-center text-2xl font-bold uppercase text-white shadow-xl">
+        <div className="flex w-[90vw] items-center justify-center py-3 md:w-auto">
+          <h1 className="text-white w-full cursor-pointer border border-slate-200 py-2 text-center text-2xl font-bold uppercase text-slate-700 shadow-xl">
             {isInUpdateMode ? "update hotel" : "Add Hotel"}
           </h1>
         </div>
@@ -129,42 +157,62 @@ function ManageHotelForm({
         ) : (
           <form
             onSubmit={onSubmitHandler}
-                className="md:m-auto flex flex-col gap-8 rounded bg-slate-100 px-0 md:p-10 shadow-lg"
+                className="flex flex-col gap-8 rounded bg-slate-100 px-0 shadow-lg md:m-auto md:p-10"
           >
             <div>
+
               <DetailSection />
                   <ImageSection />
 
               {!isInUpdateMode && (
                 <>
                   <div className="my-4">
-                        <p className=" w-[90vw] md:w-[30rem] leading-6 tracking-wide text-slate-500">
+                        <p className="w-[90vw] leading-6 tracking-wide text-slate-500 md:w-[30rem]">
                       Does the manager have no account. You can create a new
                       account for the the manager and register the hotel after
                       then.
-                    </p>
-
-
+                        </p>
                   </div>
                 </>
                   )}
-                  <div className="flex flex-col md:flex-row md:w-auto w-full gap-4   items-stretch md:items-center">
+                  <div className="flex w-full flex-col items-stretch gap-4 md:w-auto md:flex-row md:items-center">
                     <SelectManager
                       selectedManager={seledtedManager}
                       setSelectedManager={setSelectedManager}
                     />
                     <span>
-                      {seledtedManager ? seledtedManager.firstName + " " + seledtedManager.lastName : "No manager selected yet"}
+                      {seledtedManager
+                        ? seledtedManager.firstName + " " + seledtedManager.lastName
+                        : "No manager selected yet"}
                     </span>
                     <CreateUserDialog />
+                    <AddLocation
+                      selectedPosition={selectedPosition}
+                      setSelectedPosition={setSelectedPosition}
+                    />
+                    {
+                      selectedPosition
+                        ?
+                        <span>
+                          <span>
+                            Latitude: {selectedPosition.toString().split(',')[0]}
+                          </span>
+                          <span>
+                            Longitude: {selectedPosition.toString().split(',')[1]}
+                          </span>
+                        </span>
+                        :
+                        <span>
+                          No location selected yet
+                        </span>
+                    }
                   </div>
             </div>
             <button
               type="submit"
-                  className="w-full rounded bg-accent-500/90 hover:bg-accent-500 text-slate-100 px-3 py-2 text-white transition-all duration-300 disabled:cursor-not-allowed disabled:bg-accent-500"
+                  className="text-white w-full rounded bg-accent-500/90 px-3 py-2 text-slate-100 transition-all duration-300 hover:bg-accent-500 disabled:cursor-not-allowed disabled:bg-accent-500"
               disabled={
-                isAdding ||
-                isUpdating // we want this condition only in adding mode | isInUpdateMode is false by default
+                isAdding || isUpdating // we want this condition only in adding mode | isInUpdateMode is false by default
               }
             >
               {isAdding || isUpdating ? <SpinnerMini /> : "Save Hotel"}
@@ -172,8 +220,6 @@ function ManageHotelForm({
           </form>
         )}
       </FormProvider>
-
-
     </div>
   );
 }
