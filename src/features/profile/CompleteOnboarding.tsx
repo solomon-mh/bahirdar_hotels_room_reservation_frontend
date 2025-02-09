@@ -1,34 +1,170 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "react-hot-toast";
+import { toast } from "react-toastify";
 import { Card, CardContent } from "../../components/ui/card";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { UserRegistrationData } from "../../types/userTypes";
 import { completeOnboardingSchema } from "../../forms/schema/userSchema";
+import { useEffect, useState } from "react";
+import { useCompleteOnboardingMutation } from "@/redux/api/userApi";
 
 function CompleteOnboarding() {
+  const [selectProfilePicture, setSelectProfilePicture] = useState("");
+  const [selectIdPhoto, setSelectIdPhoto] = useState("");
+
+  const [completeOnboarding, { isLoading, isError, error, isSuccess }] =
+    useCompleteOnboardingMutation();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<UserRegistrationData>({
     resolver: zodResolver(completeOnboardingSchema),
   });
 
-  const onSubmit = (data: unknown) => {
+  const profilePicture = watch("profilePicture");
+  const idPhoto = watch("idPhoto");
+
+  const onSubmit = (data: UserRegistrationData) => {
+    const formData = new FormData();
+    formData.append("firstName", data.firstName);
+    formData.append("lastName", data.lastName);
+    formData.append("dateOfBirth", new Date(data.dateOfBirth).toISOString());
+    formData.append("gender", data.gender);
+    formData.append("phoneNumber", data.phoneNumber);
+    formData.append("address[country]", data.address.country);
+    formData.append("address[city]", data.address.city);
+    formData.append("address[subcity]", data.address.subcity);
+    formData.append("address[street]", data.address.street);
+    formData.append("address[woreda]", data.address.woreda || "");
+
+    if (data.profilePicture instanceof FileList) {
+      formData.append("profilePicture", data.profilePicture[0]);
+    } else if (data.profilePicture) {
+      formData.append("profilePicture", data.profilePicture);
+    }
+
+    if (data.idPhoto instanceof FileList) {
+      formData.append("idPhoto", data.idPhoto[0]);
+    } else if (data.idPhoto) {
+      formData.append("idPhoto", data.idPhoto);
+    }
+
     console.log("User Data:", data);
-    toast.success("Registration successful!");
+    completeOnboarding(formData);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(
+        "User data submitted successfully, You can now request for Identity verification",
+      );
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      console.error("Error:", error);
+      toast.error(
+        "An error occurred When submitting the data. Please try again later.",
+      );
+    }
+  }, [isError, error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-100">
       <Card className="bg-accent w-full rounded-xl p-6">
         <h2 className="mb-4 text-center text-xl font-semibold">
-          User Registration
+          Compete Your Information
         </h2>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="grid space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2">
+              <div>
+                <p>Profile Picture</p>
+                <div className="flex justify-start gap-5">
+                  <div className="h-[100px] w-[100px] overflow-hidden sm:block">
+                    <img
+                      src={
+                        typeof profilePicture === "string"
+                          ? profilePicture
+                          : selectProfilePicture.length > 0
+                            ? selectProfilePicture
+                            : "/user.jpg"
+                      }
+                      alt=""
+                      className="h-full w-full object-cover object-center"
+                    />
+                  </div>
+                  <div className="flex flex-col justify-start hover:cursor-pointer">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="mx-auto w-2/3"
+                      {...register("profilePicture", {
+                        onChange: (e) => {
+                          const file = e.target.files?.[0];
+                          const reader = new FileReader();
+                          reader.onload = (e) => {
+                            setSelectProfilePicture(e.target?.result as string);
+                          };
+                          reader.readAsDataURL(file);
+                        },
+                      })}
+                    />
+                    {errors.profilePicture && (
+                      <p className="font-normal text-red-700">
+                        {errors.profilePicture.message as string}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+              {/* Identity Photo */}
+              <div>
+                <h2>Identity Photo</h2>
+                <div className="flex justify-start gap-5">
+                  <div className="h-[100px] w-[100px] overflow-hidden sm:block">
+                    <img
+                      src={
+                        typeof idPhoto === "string"
+                          ? idPhoto
+                          : selectIdPhoto.length > 0
+                            ? selectIdPhoto
+                            : "/user.jpg"
+                      }
+                      alt=""
+                      className="h-full w-full object-cover object-center"
+                    />
+                  </div>
+                  <div className="flex flex-col justify-start hover:cursor-pointer">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="mx-auto w-2/3"
+                      {...register("idPhoto", {
+                        onChange: (e) => {
+                          const file = e.target.files?.[0];
+                          const reader = new FileReader();
+                          reader.onload = (e) => {
+                            setSelectIdPhoto(e.target?.result as string);
+                          };
+                          reader.readAsDataURL(file);
+                        },
+                      })}
+                    />
+                    {errors.idPhoto && (
+                      <p className="font-normal text-red-700">
+                        {errors.idPhoto.message as string}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
             <Input
               type="text"
               placeholder="First Name"
@@ -54,6 +190,7 @@ function CompleteOnboarding() {
             <Input
               type="date"
               placeholder="Date of Birth"
+              max={new Date().toISOString().split("T")[0]}
               {...register("dateOfBirth")}
             />
             {errors.dateOfBirth?.message && (
@@ -88,6 +225,25 @@ function CompleteOnboarding() {
             )}
 
             <div className="grid w-full grid-cols-1 md:grid-cols-2">
+              <div className="flex flex-1 flex-col gap-1">
+                <label className="px-2" htmlFor="country">
+                  Country
+                </label>
+                <input
+                  type="text"
+                  defaultValue="Ethiopia"
+                  className="rounded-md border bg-slate-200 px-3 py-2 hover:outline-none focus-visible:outline-accent-500"
+                  placeholder="Ethiopia, Amhara, 16km from the main straight"
+                  {...register("address.country", {
+                    required: "Hotel address is required",
+                  })}
+                />
+                {errors.address?.country && (
+                  <p className="text-sm font-normal text-red-700">
+                    {errors.address.country.message}
+                  </p>
+                )}
+              </div>
               <div className="flex flex-1 flex-col gap-1">
                 <label className="px-2" htmlFor="city">
                   City
@@ -138,10 +294,15 @@ function CompleteOnboarding() {
                   placeholder="Bahir Dar, Amhara, 16km from the main straight"
                   {...register("address.street")}
                 />
+                {errors.address?.street && (
+                  <p className="text-sm font-normal text-red-700">
+                    {errors.address.street.message}
+                  </p>
+                )}
               </div>
               <div className="flex flex-1 flex-col gap-1">
                 <label className="px-2" htmlFor="woreda">
-                  Wereda
+                  Woreda
                 </label>
                 <input
                   type="text"
@@ -155,9 +316,10 @@ function CompleteOnboarding() {
             </div>
             <Button
               type="submit"
-              className="w-full bg-accent-500/90 hover:bg-accent-500"
+              disabled={isLoading}
+              className="w-full bg-accent-500/90 hover:bg-accent-500 disabled:cursor-not-allowed"
             >
-              Register
+              Complete Onboarding
             </Button>
           </form>
         </CardContent>

@@ -14,10 +14,11 @@ export const AddressZodSchema = z.object(
       .string({ message: "subcity is required" })
       .min(4, { message: "subcity should be at least 4 characters" })
       .max(255, { message: "subcity should be at most 255 characters" }),
-    woreda: z
-      .string({ message: "woreda is required" })
-      .min(1, { message: "woreda should be at least 1 characters" })
-      .max(255, { message: "woreda should be at most 255 characters" }),
+    woreda: z.optional(
+      z
+        .string()
+        .max(255, { message: "woreda should be at most 255 characters" }),
+    ),
     street: z
       .string({ message: "street is required" })
       .min(4, { message: "street should be at least 4 characters" })
@@ -29,6 +30,12 @@ export const AddressZodSchema = z.object(
   },
 );
 export const completeOnboardingSchema = z.object({
+  profilePicture: z
+    .any()
+    .refine((file) => file?.length > 0, "Profile picture is required"),
+  idPhoto: z
+    .any()
+    .refine((file) => file?.length > 0, "Identity photo is required"),
   firstName: z
     .string({ message: "First name is required" })
     .min(4, { message: "First name should be at least 4 characters" })

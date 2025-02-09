@@ -73,4 +73,6 @@ export interface UserRegistrationData {
   gender: Gender;
   phoneNumber: string;
   address: IAddress;
+  idPhoto: FileList | string | null;
+  profilePicture: FileList | string | null;
 }

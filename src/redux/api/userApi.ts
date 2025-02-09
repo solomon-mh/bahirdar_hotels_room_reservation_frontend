@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IUser } from "../../types/userTypes";
+import { IUser, User } from "../../types/userTypes";
 import { CreateResponse, ITimeStamp } from "../../types/general";
 import { BASE_URL } from "../../utils/url";
 
@@ -15,7 +15,10 @@ export const userApi = createApi({
     credentials: "include",
   }),
   endpoints: (builder) => ({
-    getAllUsers: builder.query<{ data: (IUser & ITimeStamp)[] },string | undefined>({
+    getAllUsers: builder.query<
+      { data: (IUser & ITimeStamp)[] },
+      string | undefined
+    >({
       query: (params) => {
         return params ? `/?${params}` : "/";
       },
@@ -56,6 +59,14 @@ export const userApi = createApi({
       query: () => "/current-user",
       providesTags: [UserTags.USER],
     }),
+    completeOnboarding: builder.mutation<User, FormData>({
+      query: (data) => ({
+        url: "/complete-onboarding",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: [UserTags.USERS, UserTags.USER],
+    }),
   }),
 });
 
@@ -66,4 +77,5 @@ export const {
   useGetUserByIdQuery,
   useUpdateUserMutation,
   useGetCurrentUserQuery,
+  useCompleteOnboardingMutation,
 } = userApi;
