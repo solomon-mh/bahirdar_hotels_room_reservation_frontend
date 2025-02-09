@@ -80,110 +80,129 @@ function App() {
 
       <BookingContextProvider>
         <ToastContainer />
-          <BrowserRouter>
-            <Routes>
-              {/* HOME ROUTES */}
+        <BrowserRouter>
+          <Routes>
+            {/* HOME ROUTES */}
             <Route element={<AppLayout />}>
               <Route path="/" element={<HomePage />} />
-                <Route path="about" element={<AboutPage />} />
-                <Route path="hotels" element={<HotelsListPage />} />
-              <Route path="hotels/:hotelId" element={<PublicHotelDetailPage />} >
+              <Route path="about" element={<AboutPage />} />
+              <Route path="hotels" element={<HotelsListPage />} />
+              <Route path="hotels/:hotelId" element={<PublicHotelDetailPage />}>
                 <Route index element={<HotelDetail />} />
                 <Route path="rooms" element={<RoomList />} />
               </Route>
-              <Route path="hotels/:hotelId/rooms/:roomId" element={<RoomDetail />} />
-              <Route path="hotels/:hotelId/rooms/:roomId/book" element={<BookingPage />} />
-              <Route path="hotels/:hotelId/rooms/:roomId/:bookingId/pay" element={<PaymentPage />} />
-                <Route path="hotels/:hotelId/rooms" element={<RoomsListPage />}>
-                  <Route path=":roomId" element={<RoomListDetail />} />
-                </Route>
-
-                <Route
-                  path="hotels/:hotelId/rooms/:roomId/booking"
-                  element={
-                    <ProtectRoutes>
-                      <BookRoomPage />
-                    </ProtectRoutes>
-                  }
-                />
-                <Route
-                  path={`payment-successful/:roomId`}
-                  element={
-                    <ProtectRoutes>
-                      <PaymentSuccessPage />
-                    </ProtectRoutes>
-                  }
-                />
-                {isLoggedIn && (
-                  <Route path="account" element={<Account />}>
-                    <Route path="profile" index element={<Profile />} />
-                    <Route path="settings" element={<AccountSettings />} />
-                    <Route path="bookings" element={<MyBookings />} />
-                  </Route>
-                )}
-              </Route>
-              {/* DASHBOARD ROUTES */}
               <Route
-                path="/dashboard"
+                path="hotels/:hotelId/rooms/:roomId"
+                element={<RoomDetail />}
+              />
+              <Route
+                path="hotels/:hotelId/rooms/:roomId/book"
+                element={<BookingPage />}
+              />
+              <Route
+                path="hotels/:hotelId/rooms/:roomId/bookings/:bookingId/pay"
+                element={<PaymentPage />}
+              />
+              <Route path="hotels/:hotelId/rooms" element={<RoomsListPage />}>
+                <Route path=":roomId" element={<RoomListDetail />} />
+              </Route>
+
+              <Route
+                path="hotels/:hotelId/rooms/:roomId/booking"
                 element={
-                  <ProtectAdminRoutes>
-                    <DashboardLayout />
-                  </ProtectAdminRoutes>
+                  <ProtectRoutes>
+                    <BookRoomPage />
+                  </ProtectRoutes>
                 }
-              >
+              />
+              <Route
+                path={`payment-successful/:roomId`}
+                element={
+                  <ProtectRoutes>
+                    <PaymentSuccessPage />
+                  </ProtectRoutes>
+                }
+              />
+              {isLoggedIn && (
+                <Route path="account" element={<Account />}>
+                  <Route path="profile" index element={<Profile />} />
+                  <Route path="settings" element={<AccountSettings />} />
+                  <Route path="bookings" element={<MyBookings />} />
+                </Route>
+              )}
+            </Route>
+            {/* DASHBOARD ROUTES */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectAdminRoutes>
+                  <DashboardLayout />
+                </ProtectAdminRoutes>
+              }
+            >
               <Route index element={<Dashboard />} />
-                {role === "admin" ? (
-                  <>
-                  <Route path="hotels" element={<HotelsPage />} >
+              {role === "admin" ? (
+                <>
+                  <Route path="hotels" element={<HotelsPage />}>
                     <Route index element={<AllHotels />} />
                     <Route path="add-hotel" element={<AddHotel />} />
-                    <Route path=":hotelId" element={<HotelDetailPage />} >
+                    <Route path=":hotelId" element={<HotelDetailPage />}>
                       <Route index element={<HotelDetail />} />
                       <Route path="rooms" element={<HotelRoomsTable />} />
                       <Route path="rooms/:roomId" element={<RoomDetail />} />
                       <Route path="add-room" element={<AddRoom />} />
-                      <Route path="rooms/:roomId/edit" element={<UpdateRoom />} />
+                      <Route
+                        path="rooms/:roomId/edit"
+                        element={<UpdateRoom />}
+                      />
                       <Route path="bookings" element={<HotelBookings />} />
-                      <Route path="bookings/:bookingId" element={<BookingDetails />} />
+                      <Route
+                        path="bookings/:bookingId"
+                        element={<BookingDetails />}
+                      />
                     </Route>
                     <Route path=":hotelId/edit" element={<UpdateHotel />} />
                   </Route>
                   <Route path="bookings" element={<AllBookings />} />
-                  <Route path="bookings/:bookingId" element={<BookingDetails />} />
+                  <Route
+                    path="bookings/:bookingId"
+                    element={<BookingDetails />}
+                  />
                   <Route path="users" element={<AllUsers />} />
                   <Route path="users/:userId" element={<UserDetail />} />
                   <Route path="add-hotel" element={<AddHotel />} />
-                  </>
-                ) : role === "manager" ? (
-                  <>
+                </>
+              ) : role === "manager" ? (
+                <>
+                  <Route path=":hotelId" element={<HotelDetailPage />}>
+                    <Route index element={<HotelDetail />} />
+                    <Route path="rooms" element={<HotelRoomsTable />} />
+                    <Route path="rooms/:roomId" element={<RoomDetail />} />
+                    <Route path="add-room" element={<AddRoom />} />
+                    <Route path="rooms/:roomId/edit" element={<UpdateRoom />} />
+                    <Route path="bookings" element={<AllBookings />} />
+                  </Route>
+                  <Route
+                    path="bookings/:bookingId"
+                    element={<BookingDetails />}
+                  />
+                  <Route path=":hotelId/edit" element={<UpdateHotel />} />
+                  <Route path="users" element={<HotelUsers />} />
+                  <Route path="bookings" element={<HotelBookings />} />
+                  <Route path="settings" element={<Settings />} />
+                </>
+              ) : null}
+            </Route>
+            <Route path="/settings/:resetToken" element={<ResetMyPassword />} />
+            <Route path="/login" element={<SigninPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            {/* forgot pass */}
+            <Route path="/forgot-password" element={<ForgotMyPassword />} />
 
-                    <Route path=":hotelId" element={<HotelDetailPage />} >
-                      <Route index element={<HotelDetail />} />
-                      <Route path="rooms" element={<HotelRoomsTable />} />
-                      <Route path="rooms/:roomId" element={<RoomDetail />} />
-                      <Route path="add-room" element={<AddRoom />} />
-                      <Route path="rooms/:roomId/edit" element={<UpdateRoom />} />
-                      <Route path="bookings" element={<AllBookings />} />
-                    </Route>
-                    <Route path="bookings/:bookingId" element={<BookingDetails />} />
-                    <Route path=":hotelId/edit" element={<UpdateHotel />} />
-                    <Route path="users" element={<HotelUsers />} />
-                    <Route path="bookings" element={<HotelBookings />} />
-                    <Route path="settings" element={<Settings />} />
-                  </>
-                ) : null}
-              </Route>
-              <Route path="/settings/:resetToken" element={<ResetMyPassword />} />
-              <Route path="/login" element={<SigninPage />} />
-              <Route path="/signup" element={<SignupPage />} />
-              {/* forgot pass */}
-              <Route path="/forgot-password" element={<ForgotMyPassword />} />
-
-              {/* NOT FOUND ROUTES */}
-              <Route path="/*" element={<Navigate to="/" />} />
-            </Routes>
-          </BrowserRouter>
-
+            {/* NOT FOUND ROUTES */}
+            <Route path="/*" element={<Navigate to="/" />} />
+          </Routes>
+        </BrowserRouter>
       </BookingContextProvider>
     </QueryClientProvider>
   );

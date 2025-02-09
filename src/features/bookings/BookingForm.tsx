@@ -57,10 +57,8 @@ export default function BookingForm({
 
   if (isError) {
     toast.error("Failed to fetch booking details");
-    return navigate("/hotels");
+    navigate("/hotels");
   }
-
-  console.log(data);
 
   return (
     <form

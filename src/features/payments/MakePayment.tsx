@@ -1,10 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetBookingByIdQuery } from "../../redux/api/bookingApi";
 import toast from "react-hot-toast";
-import { IBooking } from "../../types/bookingTypes";
-import { Room } from "../../types/roomTypes";
-import { User } from "../../types/userTypes";
-import { Hotel } from "../../types/hotelTypes";
 import {
   Card,
   CardContent,
@@ -12,34 +7,29 @@ import {
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
-
-export interface IBookingDetailWithRoomUserHotel
-  extends Omit<IBooking, "room" | "user"> {
-  room: Room;
-  user: User;
-  hotel: Hotel;
-}
+import { useAcceptPaymentQuery } from "../../redux/api/paymentsApi";
 
 const PaymentPage = () => {
-  const params = useParams();
-
-  console.log(params);
+  const { bookingId, hotelId } = useParams();
   const navigate = useNavigate();
 
-  const {
-    isLoading,
-    isError,
-    data: { data } = {},
-  } = useGetBookingByIdQuery(params.bookingId as string);
+  const { data, isLoading, isError, error } = useAcceptPaymentQuery(
+    bookingId as string,
+  );
 
   if (isLoading) {
     return <div>Loading booking detail...</div>;
   }
+  console.log("data", data);
 
   if (isError || !data) {
+    console.log(error);
     toast.error("Failed to fetch booking details, try again later");
-    navigate(`/hotels/${params.hotelId}`);
+    navigate(`/hotels/${hotelId}`);
+    return null;
   }
+
+  // if (true) return <pre>{JSON.stringify(data, null, 2)}</pre>;
 
   const {
     room: { capacity, description: roomDescription, roomNumber, roomType } = {},
@@ -50,7 +40,7 @@ const PaymentPage = () => {
     numOfNights,
     pricePerNight,
     totalPrice,
-  } = data as unknown as IBookingDetailWithRoomUserHotel;
+  } = data.data;
 
   return (
     <section className="min-h-screen w-[90vw] bg-gray-100 p-4">
@@ -160,7 +150,12 @@ const PaymentPage = () => {
               </div>
 
               <a
-                href="#"
+                href={data.checkout_url}
+                target="_blank"
+                onClick={() => {
+                  toast.success("Redirecting to Chapa payment gateway");
+                  navigate("/account/bookings");
+                }}
                 className="rounded-lg bg-green-400 px-4 py-2 text-center text-dark-200"
               >
                 Continue Payment With Chapa

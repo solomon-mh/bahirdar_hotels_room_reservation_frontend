@@ -29,8 +29,7 @@ export const bookingApi = createApi({
     >({
       query: (params) => {
         return params
-          ? `/all-bookings-with-room-user-hotel-detail
-?${params}`
+          ? `/all-bookings-with-room-user-hotel-detail?${params}`
           : "/all-bookings-with-room-user-hotel-detail";
       },
       providesTags: [BookingTags.BOOKINGS],
@@ -39,7 +38,10 @@ export const bookingApi = createApi({
       query: (id) => `/booking-with-room-user-hotel-detail/${id}`,
       providesTags: [BookingTags.BOOKING],
     }),
-    createBooking: builder.mutation<{ data: IBooking } & Omit<CreateResponse, "data">, IBooking>({
+    createBooking: builder.mutation<
+      { data: IBooking } & Omit<CreateResponse, "data">,
+      IBooking
+    >({
       query: (newBooking) => ({
         url: "/",
         method: "POST",
