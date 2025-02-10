@@ -74,98 +74,68 @@ function HotelsListPage() {
 
 
   return (
-    <div className=" relative flex flex-row w-screen px-4 md:px-16 ">
-        {/* filter/sort */}
-      <div className="sticky h-[80vh] top-4 p-2 shadow-md shadow-accent-100 ">
-        <div className="flex flex-col items-center justify-center gap-6 space-y-8 ">
-            <StarRatingFilter
-              selectedStars={selectedStars}
-              onChange={handleStarsChange}
-            />
-          </div>
-      </div>
-      <div className="-mt-6 w-[80%]">
-          {/* SEARCH */}
-        <div className="flex w-full px-0 p-6">
-            <section className="flex flex-1 items-center justify-between gap-x-6 gap-y-4 rounded bg-black/5 p-6">
-              <div className="w-full">
-                <Select
-                onChange={handleSortChange}
-                isMulti
-                options={sortOptions}
-                  placeholder="sort hotels"
-                />
-              </div>
-
-              <form
-              className="group relative flex items-center justify-center"
-              >
-                <div className="flex flex-row rounded bg-slate-200 shadow-lg">
-                  <input
-                    type="search"
-                  disabled={isLoading}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                    autoFocus
-                    className="rounded bg-inherit px-6 py-2 focus:outline-none disabled:cursor-not-allowed"
-                  placeholder="Search"
-                />
-                </div>
-              </form>
-            </section>
-          </div>
-          <div className="flex w-full gap-4 px-6">
-            {/* hotel cards */}
-            {isLoading ? (
-              <div className="mx-auto w-[69.5vw]">
-                <div className="mx-auto flex min-h-screen w-full justify-center">
-                  <div className="mt-5 p-4 lg:mt-12">
-                    <LoadingSkeleton className="h-3 w-[10rem]" />
-                    <LoadingSkeleton className="h-3 w-[30rem]" />
-                    <LoadingSkeleton className="h-3 w-[20rem]" />
-                    <LoadingSkeleton className="h-3 w-[15rem]" />
-                    <LoadingSkeleton className="h-3 w-[25rem]" />
-                    <LoadingSkeleton className="h-3 w-[10rem]" />
-                  </div>
-                </div>
-              </div>
-          )
-            :
-
-            error ? (
-              <div className="mx-auto w-[69.5vw]">
-                <div className="mx-auto flex min-h-screen w-full justify-center">
-                  <div className="mt-5 p-4 lg:mt-12">
-                    <h1 className="text-2xl text-red-400 text-center">Something went wrong</h1>
-                  </div>
-                </div>
-              </div>
-
-            )
-              :
-              !data?.data.length
-                ?
-                (
-                <div className="mx-auto w-[69.5vw]">
-                  <div className="mx-auto flex min-h-screen w-full justify-center">
-                    <div className="mt-5 p-4 lg:mt-12">
-                      <h1 className="text-xl text-center">No hotels found</h1>
-                    </div>
-                  </div>
-                </div>
-              ) :
-
-
-                (
-                <section className="min-h-[100vh] w-full rounded-md border-l-2 border-r-2 py-4 shadow-lg">
-                    {data.data?.map((hotel, i) => (
-                      <HotelsListItem hotel={hotel} key={i} />
-                    ))}
-                  </section>
-                )}
+    <div className="relative flex flex-col md:flex-row w-screen px-4 md:px-16">
+      {/* Filter/Sort Sidebar */}
+      <div className="sticky top-0 z-10 w-full md:w-auto md:top-4 md:h-[80vh] p-2 bg-white shadow-md shadow-accent-100">
+        <div className="flex flex-row md:flex-col items-center justify-center gap-4 md:gap-6">
+          <StarRatingFilter selectedStars={selectedStars} onChange={handleStarsChange} />
         </div>
       </div>
 
+      {/* Main Content */}
+      <div className=" md:mt-0 w-full md:w-[80%]">
+        {/* Search & Sort */}
+        <div className="flex w-full px-0 md:px-4  py-4 md:py-6">
+          <section className="flex flex-1  flex-col md:flex-row items-stretch md:items-center justify-between gap-x-6 gap-y-4 rounded bg-black/5 p-6">
+            <div className="w-full">
+              <Select
+                onChange={handleSortChange}
+                isMulti
+                options={sortOptions}
+                placeholder="sort hotels"
+              />
+            </div>
+
+            <div className="flex  flex-row rounded bg-slate-200 shadow-lg">
+              <input
+                type="search"
+                  disabled={isLoading}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                autoFocus
+                className="rounded w-full bg-inherit px-6 py-2 focus:outline-none disabled:cursor-not-allowed"
+                  placeholder="Search"
+                />
+            </div>
+          </section>
+        </div>
+
+        {/* Hotel Listings */}
+        <div className="flex flex-col w-full gap-4 p-4">
+          {isLoading ? (
+            <div className="flex justify-center items-center min-h-[50vh]">
+              <LoadingSkeleton className="h-3 w-[10rem]" />
+              <LoadingSkeleton className="h-3 w-[30rem]" />
+              <LoadingSkeleton className="h-3 w-[20rem]" />
+            </div>
+          ) : error ? (
+            <div className="flex justify-center items-center min-h-[50vh]">
+              <h1 className="text-2xl text-red-400 text-center">Something went wrong</h1>
+            </div>
+            ) : !data?.data.length ? (
+              <div className="flex justify-center items-center min-h-[50vh]">
+                <h1 className="text-xl text-center">No hotels found</h1>
+              </div>
+          ) : (
+            <section className="w-full rounded-md border border-gray-300 bg-white shadow-lg">
+              {data.data?.map((hotel, i) => (
+                <HotelsListItem hotel={hotel} key={i} />
+              ))}
+            </section>
+          )}
+        </div>
+      </div>
     </div>
+
   );
 }
 

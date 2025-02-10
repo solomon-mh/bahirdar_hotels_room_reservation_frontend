@@ -11,7 +11,7 @@ import { useForm, Controller } from "react-hook-form";
 import { IUser } from "../../types/userTypes";
 import { DatePicker } from "../components/datePicker";
 import { useCreateUserMutation } from "../../redux/api/userApi";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { Gender } from "../../enums/genderEnum";
 import { Role } from "../../enums/roleEnum";
 import SpinnerMini from "../../ui/SpinnerMini";
@@ -82,38 +82,27 @@ const CreateUserDialog = () => {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="bg-white rounded-lg py-6">
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="grid grid-cols-1 gap-4 md:grid-cols-3"
-          >
-            {/* First Name */}
-            <div className="space-y-1">
-              <label
-                htmlFor="firstName"
-                className="block text-sm font-medium text-gray-700"
-              >
-                First Name
-              </label>
-              <Controller
-                name="firstName"
-                control={control}
-                rules={{ required: "First name is required" }}
-                render={({ field }) => (
-                  <input
-                    id="firstName"
-                    type="text"
-                    {...field}
-                    className="focus:ring-indigo-500 w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2"
-                  />
-                )}
-              />
-              {errors.firstName && (
-                <p className="text-sm text-red-500">
-                  {errors.firstName.message}
-                </p>
-              )}
-            </div>
+                <div className=" py-6 bg-white rounded-lg ">
+
+                    <form onSubmit={handleSubmit(onSubmit)} className=" grid grid-cols-1 p-3 md:grid-cols-3 gap-4">
+                        {/* First Name */}
+                        <div className="space-y-1">
+                            <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">First Name</label>
+                            <Controller
+                                name="firstName"
+                                control={control}
+                                rules={{ required: 'First name is required' }}
+                                render={({ field }) => (
+                                    <input
+                                        id="firstName"
+                                        type="text"
+                                        {...field}
+                                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    />
+                                )}
+                            />
+                            {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName.message}</p>}
+                        </div>
 
             {/* Last Name */}
             <div className="space-y-1">

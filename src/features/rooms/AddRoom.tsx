@@ -1,4 +1,4 @@
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import ManageRoomForm from "../../forms/manageRoomForm/ManageRoomForm";
 import { useCreateRoomMutation } from "../../redux/api/roomsApi";
 import { useNavigate, useParams } from "react-router-dom";

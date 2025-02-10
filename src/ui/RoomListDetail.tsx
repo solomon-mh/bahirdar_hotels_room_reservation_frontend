@@ -124,7 +124,7 @@ function RoomListDetail() {
         </div>
 
         <div className="mx-auto mb-4 flex flex-wrap items-center justify-center gap-2">
-          {room.amenities.map((amenity) => (
+          {room.roomFacilities.map((amenity) => (
             <span
               className="mb-1 min-w-[5rem] rounded-full bg-accent-500 px-3 py-[.3rem] text-center text-white"
               key={amenity}

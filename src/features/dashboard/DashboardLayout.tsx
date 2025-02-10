@@ -75,7 +75,8 @@ function DashboardLayout() {
   ];
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isLoggedIn)
+    {
       navigate("/login", { replace: true });
     }
   }, [isLoggedIn, navigate]);

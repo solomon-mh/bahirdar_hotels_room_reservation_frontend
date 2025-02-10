@@ -11,6 +11,7 @@ function UpdateHotel() {
   const navigate = useNavigate();
 
 
+
   const { data: { data: { hotel } = {} } = {}, isLoading, error } = useGetHotelByIdQuery(hotelId as string);
 
   const [updateHotel, { isLoading: isPending }] = useUpdateHotelMutation();
@@ -24,7 +25,9 @@ function UpdateHotel() {
         id: hotelId || hotelId || '',
       }).unwrap().then(() => {
         toast.success("Hotel updated successfully");
-        navigate('/dashboard/hotels');
+
+        navigate('/dashboard/' + hotelId);
+
       }).catch((err) => {
         if ('data' in err)
         {

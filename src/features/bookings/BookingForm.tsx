@@ -1,47 +1,68 @@
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { IBooking } from "../../types/bookingTypes";
-import { DatePicker } from "../../forms/components/datePicker";
+import { IBooking } from "@/types/bookingTypes";
+import { DatePicker } from "@/forms/components/datePicker";
 import AvailableDatesTable from "./AvDates";
 import { addDays } from "date-fns";
-import { calculateNumOfNights } from "../../utils/numOfNights";
+import { calculateNumOfNights } from "@/utils/numOfNights";
+import { useGetHotelBookingsQuery } from "@/redux/api/bookingApi";
+import LoadingPage from "@/pages/utils/LoadingPage";
+import NotFoundPage from "@/pages/utils/NotFoundPage";
+import { IRoom } from "@/types/roomTypes";
+import { ITimeStamp } from "@/types/general";
+import { getDateRange } from "@/utils/date";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetRoomByIdQuery } from "../../redux/api/roomsApi";
+import { useGetRoomByIdQuery } from "@/redux/api/roomsApi";
 import toast from "react-hot-toast";
 
 export default function BookingForm({
   onSubmit,
   isBooking,
 }: {
-  onSubmit: (data: IBooking) => void;
-  isBooking?: boolean;
+        room: IRoom & ITimeStamp
+    onSubmit: (data: IBooking) => void;
+    isBooking?: boolean;
 }) {
-  const {
-    handleSubmit,
-    control,
-    watch,
-    formState: { errors },
-  } = useForm<IBooking>();
-  const [pricePerNight, setPricePerNight] = useState(0);
-  const navigate = useNavigate();
+    const {
+        handleSubmit,
+        control,
+        watch,
+        formState: { errors },
+    } = useForm<IBooking>();
+    const [activeDates, setActiveDates] = useState<Date[]>([]);
+    const { hotelId, roomId } = useParams<{ roomId: string, hotelId: string }>();
 
-  const checkInDate = watch("checkIn");
-  const checkOutDate = watch("checkOut");
+    const navigate = useNavigate();
+    const {
+        isError,
+        data: { data } = {},
+    } = useGetRoomByIdQuery(roomId as string);
+    const [pricePerNight, setPricePerNight] = useState(data?.pricePerNight); // Example price per night
+    const checkInDate = watch("checkIn");
+    const checkOutDate = watch("checkOut");
 
-  const { roomId } = useParams();
+    const { data: { data: hotel } = {}, isLoading, error } = useGetHotelBookingsQuery(hotelId as string);
 
-  const {
-    isLoading,
-    isError,
-    data: { data } = {},
-  } = useGetRoomByIdQuery(roomId as string);
 
   const numOfNights = calculateNumOfNights(
     checkInDate?.toString(),
     checkOutDate?.toString(),
   );
-  const totalPrice = numOfNights * pricePerNight;
+    const totalPrice = pricePerNight ? numOfNights * pricePerNight : 0;
 
+
+    useEffect(() => {
+        hotel?.bookings.filter(booking => booking.room._id === data?._id).forEach(booking => {
+            const firstDate = new Date(booking.checkIn);
+            const lastDate = new Date(booking.checkOut);
+
+            setActiveDates((prev) => {
+                return [...prev, ...getDateRange(firstDate, lastDate)]
+            })
+        });
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [hotel?.bookings])
   useEffect(() => {
     if (data) {
       setPricePerNight(data.pricePerNight);
@@ -59,6 +80,8 @@ export default function BookingForm({
     toast.error("Failed to fetch booking details");
     navigate("/hotels");
   }
+
+
 
   return (
     <form
@@ -102,77 +125,93 @@ export default function BookingForm({
           )}
         </div>
 
-        {/* Check-Out Date */}
-        <div>
-          <div className="space-y-1">
-            <label
-              htmlFor="checkOut"
-              className="block text-sm font-medium text-gray-700"
+                {/* Check-Out Date */}
+                <div>
+                    <div className="space-y-1">
+                        <label htmlFor="checkOut" className="block text-sm font-medium text-gray-700">
+                            Check-out Date
+                        </label>
+                        <Controller
+                            name="checkOut"
+                            control={control}
+                            rules={{
+                                required: "Check-out date is required.",
+                                validate: value => {
+                                    if (!checkInDate) return true;
+                                    return (
+                                        new Date(value) > new Date(checkInDate) ||
+                                        "Check-out date must be after the check-in date."
+                                    );
+                                },
+                            }}
+                            render={({ field }) => (
+                                <DatePicker
+                                    activeDates={Array.from(new Set(activeDates))}
+                                    date={field.value}
+                                    setDate={field.onChange}
+                                    minDate={addDays(checkInDate ? new Date(checkInDate) : today, 1)}
+                                />
+                            )}
+                        />
+                    </div>
+                    {errors.checkOut && (
+                        <p className="text-red-500 text-sm mt-1">{errors.checkOut.message}</p>
+                    )}
+                </div>
+
+                {/* Number of Nights */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                        Number of Nights
+                    </label>
+                    <p className="mt-1 font-semibold">
+                        {!!numOfNights && (
+                            <span>
+                                {numOfNights} night{numOfNights > 1 && "s"}
+                            </span>
+                        )}
+                    </p>
+                </div>
+
+                {/* Total Price */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                        Total Price
+                    </label>
+                    <p className="mt-1 font-semibold">
+                        {!!totalPrice && `$${totalPrice.toFixed(2)}`}
+                    </p>
+                </div>
+            </div>
+
+            {/* Loading or Error Handling */}
+            <div className="flex flex-col items-center">
+                {isLoading ? (
+                    <LoadingPage />
+                ) : error ? (
+                    <NotFoundPage>
+                            <pre>{JSON.stringify(error, null, 2)}</pre>
+                        </NotFoundPage>
+                    ) : !hotel ? (
+                        <NotFoundPage>
+                            <span>Hotel not found</span>
+                        </NotFoundPage>
+                        ) : hotel.bookings && (
+                            <AvailableDatesTable
+                                  bookings={hotel.bookings.filter(booking => booking.room._id === data?._id)}
+                            />
+                )}
+            </div>
+
+            {/* Submit Button */}
+            <button
+                disabled={isBooking}
+                type="submit"
+                className="w-full px-4 py-2 0 bg-accent-500 text-white rounded-md hover:bg-accent-500-dark mt-4"
             >
-              Check-out Date
-            </label>
-            <Controller
-              name="checkOut"
-              control={control}
-              rules={{
-                required: "Check-out date is required.",
-                validate: (value) => {
-                  if (!checkInDate) return true;
-                  return (
-                    new Date(value) > new Date(checkInDate) ||
-                    "Check-out date must be after the check-in date."
-                  );
-                },
-              }}
-              render={({ field }) => (
-                <DatePicker
-                  date={field.value}
-                  setDate={field.onChange}
-                  minDate={addDays(
-                    checkInDate ? new Date(checkInDate) : today,
-                    1,
-                  )}
-                />
-              )}
-            />
-          </div>
-          {errors.checkOut && (
-            <p className="mt-1 text-sm text-red-500">
-              {errors.checkOut.message}
-            </p>
-          )}
-        </div>
+                Book Room
+            </button>
+        </form>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Number of Nights
-          </label>
-          <p className="mt-1 font-semibold">
-            {!!numOfNights && (
-              <span>
-                {numOfNights} night{numOfNights > 1 && "s"}
-              </span>
-            )}
-          </p>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Total Price
-          </label>
-          <p className="mt-1 font-semibold">
-            {!!totalPrice && `$${totalPrice.toFixed(2)}`}
-          </p>
-        </div>
-      </div>
-      <AvailableDatesTable />
-      <button
-        disabled={isBooking}
-        type="submit"
-        className="text-white hover:bg-accent-500-dark w-full rounded-md bg-accent-500 px-4 py-2 text-slate-100"
-      >
-        Book Room
-      </button>
-    </form>
-  );
+    );
 }

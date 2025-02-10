@@ -6,7 +6,7 @@ function AppLayout() {
   return (
     <div className=" flex min-h-screen gap-4  w-screen flex-col bg-white">
       <Header />
-      <main className="flex-1  flex flex-col items-center justify-center min-w-screen">
+      <main className="flex-1 overflow-hidden flex flex-col items-center justify-center min-w-screen">
         <Outlet />
       </main>
       <Footer />

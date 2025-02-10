@@ -1,15 +1,16 @@
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../components/ui/dialog";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 export type FeatureDeleteActionType = () => [unknown, { isLoading: boolean }]
 interface Props {
     useDelete: FeatureDeleteActionType;
     feature: string;
     featureId: string;
+    redirectUrl?: string;
 }
-export default function DeleteFeature({ useDelete, feature, featureId }: Props) {
+export default function DeleteFeature({ useDelete, feature, featureId, redirectUrl }: Props) {
     const [deleteFeature, { isLoading, }] = useDelete() as [(id: string) => Promise<unknown>, { isLoading: boolean }];
     const [isOpen, setIsOpen] = useState(false);
 
@@ -21,7 +22,7 @@ export default function DeleteFeature({ useDelete, feature, featureId }: Props) 
             deleteFeature(featureId).then(() => {
                 toast.success(`${feature} deleted successfully`);
                 setIsOpen(false);
-                navigate('/dashboard/hotels');
+                navigate(redirectUrl || '/dashboard/hotels');
             }).catch((err) => {
                 if ('data' in err)
                 {
@@ -39,11 +40,13 @@ export default function DeleteFeature({ useDelete, feature, featureId }: Props) 
         }
     };
 
+
+
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
                 <button className="px-4 py-1  border bg-[#34343400] border-red-500 text-red-500 hover:bg-red-500 rounded-md hover:text-slate-100">
-                    Delete {feature}
+                    Delete 
                 </button>
             </DialogTrigger>
             <DialogContent className="max-w-sm bg-slate-200">
@@ -53,7 +56,7 @@ export default function DeleteFeature({ useDelete, feature, featureId }: Props) 
                 <p className="text-gray-600">
                     Are you sure you want to delete this hotel? This action cannot be undone.
                 </p>
-                <DialogFooter>
+                <DialogFooter className="flex flex-col md:flex-row gap-2">
                     <button
                         disabled={isLoading}
                         onClick={() => setIsOpen(false)}
@@ -67,7 +70,7 @@ export default function DeleteFeature({ useDelete, feature, featureId }: Props) 
                             onConfirm();
                             setIsOpen(false);
                         }}
-                        className="px-4 py-2 disabled:cursor-not-allowed text-slate-100 bg-red-500 text-white rounded-md hover:bg-red-600"
+                        className="px-4 py-2 disabled:cursor-not-allowed  bg-red-500 text-white rounded-md hover:bg-red-600"
                     >
                         Delete
                     </button>

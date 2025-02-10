@@ -7,7 +7,7 @@ function RoomAmenities() {
   return (
     <div>
       <h1 className="text-xl font-bold">Room Amenities</h1>
-      <div className="grid grid-cols-5 gap-4 border-2 p-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5  gap-4 border-2 p-3">
         {AMENITIES.map((amenity) => (
           <label key={amenity} className="flex flex-1 items-center gap-2">
             <input

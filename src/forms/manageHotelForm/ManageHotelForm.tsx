@@ -13,6 +13,8 @@ import toast from "react-hot-toast";
 import { useGetUserByIdQuery } from "../../redux/api/userApi";
 import AddLocation from "../../features/hotels/components/AddLocation";
 import { LatLngExpression } from "leaflet";
+import { useAuthContext } from "../../context/AuthContext";
+import { Role } from "../../enums/roleEnum";
 interface Props {
   hotel?: IHotel;
   isAdding: boolean;
@@ -30,13 +32,16 @@ function ManageHotelForm({
   isInUpdateMode = false,
 }: Props) {
 
+
   const [selectedPosition, setSelectedPosition] = useState<LatLngExpression | null>(null);
 
+  const { user: manger } = useAuthContext();
   const { data: { data: user } = {}, error } = useGetUserByIdQuery(
     (hotel?.manager as string) || "",
-    { skip: !hotel?.manager },
+    { skip: !hotel?.manager || manger?.role === Role.MANAGER },
+
   );
-  const [seledtedManager, setSelectedManager] = useState<IUser | null>(null);
+  const [selectedManager, setSelectedManager] = useState<IUser | null>(null);
   const formMethods = useForm<
     IHotel & {
       address: IAddress;
@@ -50,6 +55,11 @@ function ManageHotelForm({
   const { handleSubmit, reset, setValue } = formMethods;
 
   useEffect(() => {
+    if (manger?.role === Role.MANAGER)
+    {
+      setSelectedManager(manger);
+      return;
+    }
     if (error)
     {
       toast.error("An error occurred while fetching the manager");
@@ -58,7 +68,8 @@ function ManageHotelForm({
     {
       setSelectedManager(user);
     }
-  }, [error, user]);
+
+  }, [error, manger, user]);
 
   // IF IN UPDATE MODE RESET THE HOTEL DATA TO THE FORM
   useEffect(() => {
@@ -67,10 +78,10 @@ function ManageHotelForm({
     {
       reset({
         ...hotel,
-        manager:
+        manager: 
           typeof hotel.manager === "string"
             ? hotel.manager
-            : hotel.manager?._id || "",
+            : hotel.manager?._id || manger?._id || "",
         address: hotel.address || {
           city: "",
           subcity: "",
@@ -81,7 +92,15 @@ function ManageHotelForm({
         imageCoverFile: "",
         hotelImagesFiles: [],
         isInUpdateMode,
+        location: {
+          coordinates: [hotel.location?.coordinates[0], hotel.location?.coordinates[1]],
+        }
       });
+
+      if (hotel.location?.coordinates[0] !== undefined && hotel.location?.coordinates[1] !== undefined)
+      {
+        setSelectedPosition([hotel.location.coordinates[0], hotel.location.coordinates[1]]);
+      }
       setValue("isInUpdateMode", isInUpdateMode);
     }
   }, [reset, hotel, isInUpdateMode, setValue]);
@@ -104,7 +123,7 @@ function ManageHotelForm({
       formData.append("longitude", selectedPosition.toString().split(',')[0] || "");
       formData.append("latitude", selectedPosition.toString().split(',')[1] || "");
     }
-    if (seledtedManager?._id) formData.append("manager", seledtedManager._id);
+    if (selectedManager?._id) formData.append("manager", selectedManager._id);
     else
     {
       toast.error("Please select manger manager not selected yet");
@@ -144,76 +163,72 @@ function ManageHotelForm({
     <div className="flex flex-col px-2 md:px-4">
       <FormProvider {...formMethods}>
         <div className="flex w-[90vw] items-center justify-center py-3 md:w-auto">
-          <h1 className="text-white w-full cursor-pointer border border-slate-200 py-2 text-center text-2xl font-bold uppercase text-slate-700 shadow-xl">
-            {isInUpdateMode ? "update hotel" : "Add Hotel"}
+          <h1 className="w-full cursor-pointer border border-slate-200 py-2 text-center text-2xl font-bold uppercase text-slate-700 shadow-xl">
+            {isInUpdateMode ? "Update Hotel" : "Add Hotel"}
           </h1>
         </div>
         {isLoading ? (
           <Spinner />
         ) : isInUpdateMode && !hotel ? (
           <div className="flex items-center justify-center p-6">
-            <p className="text-2xl uppercase">there is no hotel to update</p>
+              <p className="text-2xl uppercase">There is no hotel to update</p>
           </div>
         ) : (
           <form
-            onSubmit={onSubmitHandler}
-                className="flex flex-col gap-8 rounded bg-slate-100 px-0 shadow-lg md:m-auto md:p-10"
+                onSubmit={(onSubmitHandler)}
+                className="flex flex-col w-full gap-8 rounded bg-slate-100 px-0 shadow-lg md:m-auto md:p-10"
           >
-            <div>
-
+                <div>
               <DetailSection />
                   <ImageSection />
 
-              {!isInUpdateMode && (
-                <>
-                  <div className="my-4">
-                        <p className="w-[90vw] leading-6 tracking-wide text-slate-500 md:w-[30rem]">
-                      Does the manager have no account. You can create a new
-                      account for the the manager and register the hotel after
-                      then.
-                        </p>
-                  </div>
-                </>
+                  {!isInUpdateMode && (
+                    <div className="my-4">
+                      <p className="w-[90vw] leading-6 tracking-wide text-slate-500 md:w-[30rem]">
+                        Does the manager have no account? You can create a new account for the manager and register the hotel after that.
+                      </p>
+                    </div>
                   )}
+
                   <div className="flex w-full flex-col items-stretch gap-4 md:w-auto md:flex-row md:items-center">
-                    <SelectManager
-                      selectedManager={seledtedManager}
-                      setSelectedManager={setSelectedManager}
-                    />
+
+                    {
+                      manger?.role === Role.ADMIN && (
+                        <SelectManager
+                          selectedManager={selectedManager}
+                          setSelectedManager={setSelectedManager}
+                        />
+                      )
+                    }
                     <span>
-                      {seledtedManager
-                        ? seledtedManager.firstName + " " + seledtedManager.lastName
+                      {selectedManager
+                        ? `${selectedManager.firstName} ${selectedManager.lastName}`
                         : "No manager selected yet"}
                     </span>
-                    <CreateUserDialog />
+                    {
+                      manger?.role === Role.ADMIN && (
+                        <CreateUserDialog />
+                      )
+                    }
                     <AddLocation
                       selectedPosition={selectedPosition}
                       setSelectedPosition={setSelectedPosition}
                     />
-                    {
-                      selectedPosition
-                        ?
-                        <span>
-                          <span>
-                            Latitude: {selectedPosition.toString().split(',')[0]}
-                          </span>
-                          <span>
-                            Longitude: {selectedPosition.toString().split(',')[1]}
-                          </span>
-                        </span>
-                        :
-                        <span>
-                          No location selected yet
-                        </span>
-                    }
+                    {selectedPosition ? (
+                      <span className="flex items-center gap-2">
+                        <span>Latitude: {selectedPosition.toString().split(',')[0]}</span>
+                        <span>Longitude: {selectedPosition.toString().split(',')[1]}</span>
+                      </span>
+                    ) : (
+                      <span>No location selected yet</span>
+                    )}
                   </div>
             </div>
+
             <button
               type="submit"
-                  className="text-white w-full rounded bg-accent-500/90 px-3 py-2 text-slate-100 transition-all duration-300 hover:bg-accent-500 disabled:cursor-not-allowed disabled:bg-accent-500"
-              disabled={
-                isAdding || isUpdating // we want this condition only in adding mode | isInUpdateMode is false by default
-              }
+                  className="w-full rounded bg-accent-500/90 px-3 py-2 text-slate-100 transition-all duration-300 hover:bg-accent-500 disabled:cursor-not-allowed disabled:bg-accent-500"
+                  disabled={isAdding || isUpdating}
             >
               {isAdding || isUpdating ? <SpinnerMini /> : "Save Hotel"}
             </button>

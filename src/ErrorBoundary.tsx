@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, ErrorInfo, ReactNode } from 'react';
 
 interface Props {
     children: ReactNode;
@@ -25,7 +25,22 @@ class ErrorBoundary extends Component<Props, State> {
     public render() {
         if (this.state.hasError)
         {
-            return <h1>Something went wrong.</h1>;
+            return <div className="flex flex-col items-center justify-center h-screen bg-gray-100 text-center p-6">
+                <h1 className="text-6xl font-bold text-red-600">Oops!</h1>
+                <p className="text-xl text-gray-700 mt-4">Something went wrong.</p>
+                <pre>
+                    <code className="text-left mt-4">
+                        {JSON.stringify(this.state, null, 2)}
+                    </code>
+                </pre>
+                <p className="text-gray-500 mt-2">Please try refreshing the page or contact support.</p>
+                <button
+                    onClick={() => window.location.reload()}
+                    className="mt-6 px-6 py-3 bg-accent-600 text-white rounded-lg shadow-md hover:bg-accent-700 transition"
+                >
+                    Refresh Page
+                </button>
+            </div>
         }
 
         return this.props.children;
