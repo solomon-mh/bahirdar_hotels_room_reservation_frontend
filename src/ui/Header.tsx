@@ -43,11 +43,11 @@ function Header() {
             menuOpen ? "block" : "hidden"
           )}
         >
-          <ul className="flex flex-col items-strech gap-4 p-4 md:flex-row md:p-0">
+          <ul className="flex flex-col items-center gap-4 p-4 md:flex-row md:p-0">
             {
               isLoggedIn && dataAccountSidebar.map((link) => {
                 return (
-                  <li className="inline w-full md:hidden hover:bg-accent-500  hover:text-white" key={link.to}>
+                  <li className="block w-full md:hidden hover:bg-accent-500  hover:text-white" key={link.to}>
                     <Link
                       onClick={() => setMenuOpen(false)}
                       to={link.pathname}
