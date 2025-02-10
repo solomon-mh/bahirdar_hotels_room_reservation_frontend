@@ -77,7 +77,7 @@ export const userApi = createApi({
     }),
     verifyUserAccount: builder.mutation<{ data: User }, string>({
       query: (id: string) => ({
-        url: `/verify-user-account${id}`,
+        url: `/verify-user-account/${id}`,
         method: "PATCH",
         body: {},
       }),
@@ -89,6 +89,14 @@ export const userApi = createApi({
         method: "GET",
       }),
       providesTags: [UserTags.USERS, UserTags.USER],
+    }),
+    declineVerificationRequest: builder.mutation<{ data: IUser }, string>({
+      query: (id: string) => ({
+        url: `/decline-verification-request/${id}`,
+        method: "PATCH",
+        body: {},
+      }),
+      invalidatesTags: [UserTags.USERS, UserTags.USER],
     }),
   }),
 });
@@ -104,4 +112,5 @@ export const {
   useRequestIdentityVerificationMutation,
   useVerifyUserAccountMutation,
   useVerificationRequestedUsersQuery,
+  useDeclineVerificationRequestMutation,
 } = userApi;
