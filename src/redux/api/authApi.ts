@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { ILogin } from "../../types/authTypes";
 import { CreateResponse, ITimeStamp } from "../../types/general";
 import { BASE_URL } from "../../utils/url";
-import { IUser } from "../../types/userTypes";
+import { ISignup, ISignupRes, IUser } from "../../types/userTypes";
 
 enum Tags {
   AUTHS = "auths",
@@ -32,7 +32,16 @@ export const authApi = createApi({
         method: "POST",
       }),
     }),
+    signup: builder.mutation<ISignupRes, ISignup>({
+      query: (signupData) => ({
+        url: "/signup",
+        method: "POST",
+        body: signupData,
+      }),
+      invalidatesTags: [Tags.AUTHS],
+    }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation } = authApi;
+export const { useLoginMutation, useLogoutMutation, useSignupMutation } =
+  authApi;

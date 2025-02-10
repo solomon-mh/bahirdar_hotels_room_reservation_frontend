@@ -1,7 +1,6 @@
 import { useFormContext } from "react-hook-form";
 import {
   FormControl,
-  // FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -10,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ILogin } from "@/types/userTypes";
+import SpinnerMini from "@/ui/SpinnerMini";
 
 interface Props {
   onSubmitHandler: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -50,10 +50,9 @@ function LogInForm({ onSubmitHandler, isPending }: Props) {
       <Button
         disabled={isPending}
         type="submit"
-        className="mt-2 w-full text-light-200"
+        className="mt-2 w-full text-light-200 disabled:cursor-not-allowed"
       >
-        {/* {true ? <SpinnerMini /> : "Sign Up"} */}
-        Loin in to your account
+        {isPending ? <SpinnerMini /> : "Loin in to your account"}
       </Button>
     </form>
   );

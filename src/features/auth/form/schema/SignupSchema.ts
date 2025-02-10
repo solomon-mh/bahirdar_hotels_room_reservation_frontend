@@ -16,6 +16,12 @@ export const SignupSchema = z
       .min(8, { message: "password should be at least 8 characters" }),
     passwordConfirm: z.string({ message: "password confirm is required" }),
   })
-  .refine((data) => data.password === data.passwordConfirm, {
-    message: "password and password confirm should match",
+  .superRefine(({ password, passwordConfirm }, ctx) => {
+    if (password !== passwordConfirm) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["passwordConfirm"],
+        message: "Passwords do not match",
+      });
+    }
   });

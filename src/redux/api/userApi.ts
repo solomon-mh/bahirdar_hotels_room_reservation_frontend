@@ -1,14 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {
-  ILoginRes,
-  ISignup,
-  ISignupRes,
-  IUser,
-  User,
-} from "../../types/userTypes";
+import { IUser, User } from "../../types/userTypes";
 import { CreateResponse, ITimeStamp } from "../../types/general";
 import { BASE_URL } from "../../utils/url";
-import { ILogin } from "@/types/authTypes";
 
 export enum UserTags {
   USERS = "users",
@@ -82,22 +75,6 @@ export const userApi = createApi({
       }),
       invalidatesTags: [UserTags.USERS, UserTags.USER],
     }),
-    signup: builder.mutation<ISignupRes, ISignup>({
-      query: (data) => ({
-        url: "/signup",
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags: [UserTags.USERS, UserTags.USER],
-    }),
-    login: builder.mutation<ILoginRes, ILogin>({
-      query: (data) => ({
-        url: "/login",
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags: [UserTags.USERS, UserTags.USER],
-    }),
   }),
 });
 
@@ -110,5 +87,4 @@ export const {
   useGetCurrentUserQuery,
   useCompleteOnboardingMutation,
   useRequestIdentityVerificationMutation,
-  useSignupMutation,
 } = userApi;

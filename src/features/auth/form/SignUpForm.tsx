@@ -11,11 +11,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import SpinnerMini from "@/ui/SpinnerMini";
 
 interface Props {
   onSubmitHandler: (e: React.FormEvent<HTMLFormElement>) => void;
+  isPending: boolean;
 }
-function SignUpForm({ onSubmitHandler }: Props) {
+function SignUpForm({ onSubmitHandler, isPending }: Props) {
   const { control } = useFormContext<ISignup>();
 
   return (
@@ -74,12 +76,11 @@ function SignUpForm({ onSubmitHandler }: Props) {
         )}
       />
       <Button
-        disabled={false}
+        disabled={isPending}
         type="submit"
         className="mt-2 w-full text-light-200"
       >
-        {/* {true ? <SpinnerMini /> : "Sign Up"} */}
-        Sign up
+        {isPending ? <SpinnerMini /> : "Sign Up"}
       </Button>
     </form>
   );
