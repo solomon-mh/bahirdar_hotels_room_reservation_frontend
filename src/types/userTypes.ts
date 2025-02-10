@@ -60,6 +60,8 @@ export interface IUser {
   hotel?: IHotel;
   profilePicture: string;
   address: IAddress;
+  isVerified: boolean;
+  isVerificationRequested: boolean;
 }
 
 export interface IUserResponse {

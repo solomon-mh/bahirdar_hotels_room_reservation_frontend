@@ -67,6 +67,14 @@ export const userApi = createApi({
       }),
       invalidatesTags: [UserTags.USERS, UserTags.USER],
     }),
+    requestIdentityVerification: builder.mutation<{ data: User }, void>({
+      query: () => ({
+        url: "/request-identity-verification",
+        method: "PATCH",
+        body: {},
+      }),
+      invalidatesTags: [UserTags.USERS, UserTags.USER],
+    }),
   }),
 });
 
@@ -78,4 +86,5 @@ export const {
   useUpdateUserMutation,
   useGetCurrentUserQuery,
   useCompleteOnboardingMutation,
+  useRequestIdentityVerificationMutation,
 } = userApi;
