@@ -81,7 +81,15 @@ function ManageHotelForm({
         imageCoverFile: "",
         hotelImagesFiles: [],
         isInUpdateMode,
+        location: {
+          coordinates: [hotel.location?.coordinates[0], hotel.location?.coordinates[1]],
+        }
       });
+
+      if (hotel.location?.coordinates[0] !== undefined && hotel.location?.coordinates[1] !== undefined)
+      {
+        setSelectedPosition([hotel.location.coordinates[0], hotel.location.coordinates[1]]);
+      }
       setValue("isInUpdateMode", isInUpdateMode);
     }
   }, [reset, hotel, isInUpdateMode, setValue]);
@@ -193,7 +201,7 @@ function ManageHotelForm({
                     {
                       selectedPosition
                         ?
-                        <span>
+                        <span className="flex items-center gap-2">
                           <span>
                             Latitude: {selectedPosition.toString().split(',')[0]}
                           </span>
