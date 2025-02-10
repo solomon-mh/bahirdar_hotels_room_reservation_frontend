@@ -109,7 +109,7 @@ export const HotelDetail = () => {
                                             },
                                         ]}
                                         center={[...hotel.location.coordinates]}
-                                        zoom={12}
+                                        zoom={15}
                                     />
                                 </div>
                             )

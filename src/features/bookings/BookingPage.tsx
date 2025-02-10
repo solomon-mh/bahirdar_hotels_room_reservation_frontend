@@ -115,7 +115,7 @@ export default function BookingPage() {
             </SubHeader>
             <div className="flex">
                 <div className="flex flex-col gap-4 w-full">
-                    <BookingForm isBooking={isLoading} onSubmit={handleBookingSubmit} />
+                    <BookingForm room={room} isBooking={isLoading} onSubmit={handleBookingSubmit} />
                     {
                         booking && (
                             <div className="flex  items-strech gap-10 w-full justify-stretch px-4 py-2">

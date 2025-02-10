@@ -14,8 +14,9 @@ interface Props {
     setDate: (date: Date) => void
     minDate?: Date,
     maxDate?: Date,
+    activeDates?: Date[]
 }
-export function DatePicker({ minDate, maxDate, date, setDate }: Props) {
+export function DatePicker({ activeDates, minDate, maxDate, date, setDate }: Props) {
 
     return (
         <Popover>
@@ -28,21 +29,22 @@ export function DatePicker({ minDate, maxDate, date, setDate }: Props) {
                     )}
                 >
                     <CalendarIcon />
-                    {date ? format(date, "PPP") : <span>Pick a date</span>}
+                    {date ? format(date, "PPP") : <span>Pick a date  </span>}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className=" bg-slate-200 w-auto p-0">
+
                 <Calendar
                     mode="single"
                     selected={date}
                     onSelect={(day) => {
-                        if (day && (!minDate || day >= minDate) && (!maxDate || day <= maxDate))
+                        if (day && (!minDate || day >= minDate) && (!maxDate || day <= maxDate) && !activeDates?.filter(date => date).find(date => format(day, "PPP") === format(date, "PPP")))
                         {
                             setDate(day); // Only set the date if it’s within the valid range
                         }
                     }}
                     disabled={(day) =>
-                        !!((minDate && day < minDate) || (maxDate && day > maxDate)) // Disable dates outside the range
+                        !!((minDate && day < minDate) || (maxDate && day > maxDate) || activeDates?.filter(date => date).find(date => format(day, "PPP") === format(date, "PPP"))) // Disable dates outside the range
                     }
                     initialFocus
                 />

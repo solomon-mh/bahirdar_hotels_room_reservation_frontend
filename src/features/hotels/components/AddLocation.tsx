@@ -25,18 +25,9 @@ interface Props {
 }
 
 export default function AddLocation({ setSelectedPosition, selectedPosition }: Props) {
-    // const [zoom, setZoom] = useState<number>(10);
-    // const [center, setCenter] = useState<LatLngExpression>([11.59244238014163, 37.423214410732655]);
 
     const [isOpen, setIsOpen] = useState(false);
 
-    // useEffect(() => {
-    //     if (selectedPosition)
-    //     {
-    //         setCenter(selectedPosition);
-    //         setZoom(15);
-    //     }
-    // }, [selectedPosition]);
 
     function MapClickHandler() {
         useMapEvents({
@@ -57,7 +48,7 @@ export default function AddLocation({ setSelectedPosition, selectedPosition }: P
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
                 <button className="px-4 py-1 border bg-[#34343400] border-accent-500 text-accent-500 hover:bg-accent-500 rounded-md hover:text-slate-100">
-                    Add Location
+                    {selectedPosition ? "Edit" : "Add"} Location
                 </button>
             </DialogTrigger>
             <DialogContent className="min-w-[80vw] min-h-[80vh] bg-slate-200">
