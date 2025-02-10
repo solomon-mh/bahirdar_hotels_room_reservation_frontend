@@ -77,8 +77,8 @@ export default function BookingPage() {
   }
 
     return (
-        <div className="p-6 flex w-full overflow-x-hidden flex-col gap-4">
-            <div className="flex items-center px-4 w-full ml-0  md:ml-24 justify-between  shadow-md"  >
+        <div className="p-6 flex w-full items-center overflow-x-hidden flex-col gap-4">
+            <div className="flex items-center w-[95vw] px-4 md:w-[88%] justify-between  shadow-md"  >
                 <div className="flex">
                     <button
                         onClick={() => navigate(-1)}
@@ -110,16 +110,16 @@ export default function BookingPage() {
                 </h1>
             </div>
 
-            <div className="flex w-full gap-6 flex-col md:flex-row md:px-10 md:items-start items-stretch">
+            <div className="flex w-full gap-6 px-0 flex-col md:flex-row md:px-10 md:items-start items-stretch">
                 {/* Booking Form Section */}
-                <div className="flex flex-col  items-stretch  gap-4 w-full ">
+                <div className="flex flex-col px-0 md:px-20  items-stretch  gap-2 md:w-auto w-full">
                     <BookingForm
                         room={room}
                         isBooking={isLoading}
                         onSubmit={handleBookingSubmit}
                     />
                     {booking && (
-                        <div className="w-full sm:w-[60vw] p-6 rounded-lg shadow-md space-y-6 mx-auto">
+                        <div className="w-full sm:w-[50vw] p-6 rounded-lg shadow-md space-y-6 mx-auto">
                             <div className="flex-[1] flex flex-col gap-2">
                                 <h2 className="text-xl font-bold">Booking Summary</h2>
                                 <div className="flex justify-between">
@@ -150,7 +150,7 @@ export default function BookingPage() {
                 </div>
 
                 {/* Room Details Section */}
-                <div className="w-full md:w-[35%]">
+                <div className="w-full md:w-[30%]">
                     {fetchingRoom ? (
                         <p>Loading...</p>
                     ) : roomFetchingError ? (

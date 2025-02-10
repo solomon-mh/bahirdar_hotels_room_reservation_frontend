@@ -86,7 +86,7 @@ export default function BookingForm({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-[60vw] space-y-6 rounded-lg bg-slate-100 p-6 shadow-md"
+      className="sm:w-[50vw] p-3 w-[95vw] space-y-6 rounded-lg bg-slate-100 md:p-6 shadow-md"
     >
       <h2 className="mb-4 text-2xl font-bold text-gray-900">Book a Room</h2>
       <div className="grid grid-cols-1 md:grid-cols-2">
@@ -110,6 +110,7 @@ export default function BookingForm({
               }}
               render={({ field }) => (
                 <DatePicker
+                  activeDates={Array.from(new Set(activeDates))}
                   date={field.value}
                   setDate={field.onChange}
                   minDate={today}
