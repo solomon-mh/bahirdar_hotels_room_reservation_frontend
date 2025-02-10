@@ -21,6 +21,7 @@ import {
 
 function IdentityVerificationRequests() {
   const navigate = useNavigate();
+
   const {
     data: { data } = {},
     isLoading,
@@ -39,8 +40,6 @@ function IdentityVerificationRequests() {
   if (isLoading) {
     return <LoadingPage />;
   }
-
-  console.log(data);
 
   return (
     <Card>

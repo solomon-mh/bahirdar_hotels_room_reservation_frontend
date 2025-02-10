@@ -1,5 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetUserByIdQuery } from "../../redux/api/userApi";
+import {
+  useGetUserByIdQuery,
+  useVerifyUserAccountMutation,
+} from "../../redux/api/userApi";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
 import { ArrowLeft } from "lucide-react";
@@ -22,6 +25,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import SpinnerMini from "@/ui/SpinnerMini";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 function UserDetailForVerification() {
   const navigate = useNavigate();
@@ -31,6 +37,32 @@ function UserDetailForVerification() {
     isLoading,
     error,
   } = useGetUserByIdQuery(userId as string);
+
+  const [
+    verifyUserAccount,
+    {
+      isLoading: isLoadingVerifyAccount,
+      isSuccess: isSuccessVerifyAccount,
+      isError: isErrorVerifyAccount,
+      error: errorVerifyAccount,
+    },
+  ] = useVerifyUserAccountMutation();
+
+  useEffect(() => {
+    if (isErrorVerifyAccount) {
+      console.log(errorVerifyAccount);
+      toast.error("Failed to verify user account");
+    }
+
+    if (isSuccessVerifyAccount) {
+      toast.success("User account verified successfully");
+      navigate(-1);
+    }
+  }, [isErrorVerifyAccount, isSuccessVerifyAccount, errorVerifyAccount]);
+
+  const onConfirmHandler = () => {
+    verifyUserAccount(userId as string);
+  };
 
   return (
     <Card className="flex min-h-screen w-full flex-col px-10">
@@ -277,9 +309,15 @@ function UserDetailForVerification() {
                   <DialogFooter>
                     <Button
                       type="submit"
+                      disabled={isLoadingVerifyAccount}
                       className="bg-red-600 hover:bg-red-700"
+                      onClick={onConfirmHandler}
                     >
-                      Confirm Verification
+                      {isLoadingVerifyAccount ? (
+                        <SpinnerMini className="text-white h-5 w-5" />
+                      ) : (
+                        "Confirm Verification"
+                      )}
                     </Button>
                   </DialogFooter>
                 </DialogContent>
