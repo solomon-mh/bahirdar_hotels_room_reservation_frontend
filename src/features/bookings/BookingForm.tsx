@@ -1,15 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { IBooking } from "../../types/bookingTypes";
 import { DatePicker } from "../../forms/components/datePicker";
 import AvailableDatesTable from "./AvDates";
 import { addDays } from "date-fns";
 import { calculateNumOfNights } from "../../utils/numOfNights";
+import { useGetHotelBookingsQuery } from "../../redux/api/bookingApi";
+import { useParams } from "react-router-dom";
+import LoadingPage from "../../pages/utils/LoadingPage";
+import NotFoundPage from "../../pages/utils/NotFoundPage";
+import { IRoom } from "../../types/roomTypes";
+import { ITimeStamp } from "../../types/general";
+import { getDateRange } from "../../utils/date";
 
 export default function BookingForm({
     onSubmit,
-    isBooking
+    isBooking,
+    room
 }: {
+        room: IRoom & ITimeStamp
     onSubmit: (data: IBooking) => void;
     isBooking?: boolean;
 }) {
@@ -19,10 +28,14 @@ export default function BookingForm({
         watch,
         formState: { errors },
     } = useForm<IBooking>();
-    const [pricePerNight] = useState(100); // Example price per night
+    const [activeDates, setActiveDates] = useState<Date[]>([]);
+    const [pricePerNight] = useState(room.pricePerNight); // Example price per night
     const checkInDate = watch("checkIn");
     const checkOutDate = watch("checkOut");
 
+
+    const { hotelId } = useParams<{ hotelId: string }>();
+    const { data: { data: hotel } = {}, isLoading, error } = useGetHotelBookingsQuery(hotelId as string);
 
 
     const numOfNights = calculateNumOfNights(checkInDate?.toString(), checkOutDate?.toString());
@@ -30,6 +43,21 @@ export default function BookingForm({
 
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Reset to midnight for accurate comparisons
+
+
+
+    useEffect(() => {
+        hotel?.bookings.filter(booking => booking.room._id === room._id).forEach(booking => {
+            const firstDate = new Date(booking.checkIn);
+            const lastDate = new Date(booking.checkOut);
+
+            setActiveDates((prev) => {
+                return [...prev, ...getDateRange(firstDate, lastDate)]
+            })
+        });
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [hotel?.bookings])
 
     return (
         <form
@@ -56,6 +84,7 @@ export default function BookingForm({
                             }}
                             render={({ field }) => (
                                 <DatePicker
+                                    activeDates={Array.from(new Set(activeDates))}
                                     date={field.value}
                                     setDate={field.onChange}
                                     minDate={today}
@@ -90,6 +119,9 @@ export default function BookingForm({
                             }}
                             render={({ field }) => (
                                 <DatePicker
+                                    activeDates={Array.from(new Set(activeDates)).map(date => {
+                                        return date;
+                                    })}
                                     date={field.value}
                                     setDate={field.onChange}
                                     minDate={addDays(checkInDate ? new Date(checkInDate) : today, 1)}
@@ -125,7 +157,39 @@ export default function BookingForm({
                     </p>
                 </div>
             </div>
-            <AvailableDatesTable />
+
+            <div className="flex">
+
+                {
+                    isLoading
+                        ?
+                        <LoadingPage />
+                        :
+                        error
+                            ?
+                            <NotFoundPage>
+                                <pre>
+                                    {
+                                        JSON.stringify(error, null, 2)
+                                    }
+                                </pre>
+                            </NotFoundPage>
+                            :
+                            !hotel
+                                ?
+                                <NotFoundPage>
+                                    <span>Hotel not found</span>
+                                </NotFoundPage>
+                                :
+
+                                hotel.bookings &&
+                                < AvailableDatesTable
+                                    bookings={hotel.bookings.filter(booking => booking.room._id === room._id)}
+                                />
+
+                }
+
+            </div>
             <button
                 disabled={isBooking}
                 type="submit"
