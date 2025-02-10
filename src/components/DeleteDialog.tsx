@@ -8,8 +8,9 @@ interface Props {
     useDelete: FeatureDeleteActionType;
     feature: string;
     featureId: string;
+    redirectUrl?: string;
 }
-export default function DeleteFeature({ useDelete, feature, featureId }: Props) {
+export default function DeleteFeature({ useDelete, feature, featureId, redirectUrl }: Props) {
     const [deleteFeature, { isLoading, }] = useDelete() as [(id: string) => Promise<unknown>, { isLoading: boolean }];
     const [isOpen, setIsOpen] = useState(false);
 
@@ -21,7 +22,7 @@ export default function DeleteFeature({ useDelete, feature, featureId }: Props) 
             deleteFeature(featureId).then(() => {
                 toast.success(`${feature} deleted successfully`);
                 setIsOpen(false);
-                navigate('/dashboard/hotels');
+                navigate(redirectUrl || '/dashboard/hotels');
             }).catch((err) => {
                 if ('data' in err)
                 {
@@ -39,11 +40,13 @@ export default function DeleteFeature({ useDelete, feature, featureId }: Props) 
         }
     };
 
+
+
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
                 <button className="px-4 py-1  border bg-[#34343400] border-red-500 text-red-500 hover:bg-red-500 rounded-md hover:text-slate-100">
-                    Delete {feature}
+                    Delete 
                 </button>
             </DialogTrigger>
             <DialogContent className="max-w-sm bg-slate-200">
