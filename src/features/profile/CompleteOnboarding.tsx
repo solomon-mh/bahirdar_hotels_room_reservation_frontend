@@ -8,10 +8,12 @@ import { UserRegistrationData } from "../../types/userTypes";
 import { completeOnboardingSchema } from "../../forms/schema/userSchema";
 import { useEffect, useState } from "react";
 import { useCompleteOnboardingMutation } from "@/redux/api/userApi";
+import { useNavigate } from "react-router-dom";
 
 function CompleteOnboarding() {
   const [selectProfilePicture, setSelectProfilePicture] = useState("");
   const [selectIdPhoto, setSelectIdPhoto] = useState("");
+  const navigate = useNavigate();
 
   const [completeOnboarding, { isLoading, isError, error, isSuccess }] =
     useCompleteOnboardingMutation();
@@ -62,6 +64,7 @@ function CompleteOnboarding() {
       toast.success(
         "User data submitted successfully, You can now request for Identity verification",
       );
+      navigate("/account/identity-verification");
     }
   }, [isSuccess]);
 

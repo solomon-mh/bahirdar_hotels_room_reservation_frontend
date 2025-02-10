@@ -33,9 +33,11 @@ function SigninPage() {
       .unwrap()
       .then((response) => {
         setUser(response.data);
-        if (response.data.role === "admin") window.location.href = "/dashboard";
+        if (response.data.role === "user") {
+          window.location.href = "/";
+        } else if (response.data.role === "admin")
+          window.location.href = "/dashboard";
         else window.location.href = "/dashboard/hotels";
-        toast.success(response.message);
       })
       .catch((error) => {
         toast.error(error.data.message || "Something went wrong");
