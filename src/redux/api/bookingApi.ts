@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IBooking, IBookingResponse } from "../../types/bookingTypes";
-import { CreateResponse, ITimeStamp } from "../../types/general";
+import { CreateResponse, IPagination, ITimeStamp } from "../../types/general";
 import { BASE_URL } from "../../utils/url";
 import { IHotel } from "../../types/hotelTypes";
+import { BookingStatus } from "../../enums/bookingStatusEnum";
 
 export enum BookingTags {
   BOOKINGS = "bookings",
@@ -24,6 +25,7 @@ export const bookingApi = createApi({
     getAllBookings: builder.query<
       {
         data: IBookingResponse[];
+        pagination: IPagination;
       },
       string | undefined
     >({
@@ -39,7 +41,10 @@ export const bookingApi = createApi({
       query: (id) => `/booking-with-room-user-hotel-detail/${id}`,
       providesTags: [BookingTags.BOOKING],
     }),
-    createBooking: builder.mutation<{ data: IBooking } & Omit<CreateResponse, "data">, IBooking>({
+    createBooking: builder.mutation<
+      { data: IBooking } & Omit<CreateResponse, "data">,
+      IBooking
+    >({
       query: (newBooking) => ({
         url: "/",
         method: "POST",
@@ -53,7 +58,7 @@ export const bookingApi = createApi({
     >({
       query: ({ id, data }) => ({
         url: `/${id}`,
-        method: "PUT",
+        method: "PATCH",
         body: data,
       }),
       invalidatesTags: [BookingTags.BOOKINGS, BookingTags.BOOKING],
@@ -71,11 +76,26 @@ export const bookingApi = createApi({
           hotel: IHotel & ITimeStamp;
           bookings: (IBookingResponse & ITimeStamp)[];
         };
+        pagination: IPagination;
       },
       string
     >({
       query: (hotelId) => `/all-bookings-of-a-hotel/${hotelId}`,
       providesTags: [BookingTags.HOTEL_BOOKINGS],
+    }),
+    updateBookingStatus: builder.mutation<
+      { data: IBooking } & Omit<CreateResponse, "data">,
+      {
+        id: string;
+        status: BookingStatus;
+      }
+    >({
+      query: ({ id, status }) => ({
+        url: `/${id}`,
+        method: "PATCH",
+        body: { status },
+      }),
+      invalidatesTags: [BookingTags.BOOKINGS, BookingTags.BOOKING],
     }),
   }),
 });
@@ -87,4 +107,5 @@ export const {
   useGetBookingByIdQuery,
   useUpdateBookingMutation,
   useGetHotelBookingsQuery,
+  useUpdateBookingStatusMutation,
 } = bookingApi;

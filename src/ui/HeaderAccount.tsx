@@ -2,20 +2,15 @@
 import HeaderAccountMenu from "./HeaderAccountMenu";
 import { useAuthContext } from "../context/AuthContext";
 import { useRef, useState } from "react";
-import { useOnClickOutside } from "../hooks/useOnClickOutside";
 import { CircleUserRound } from "lucide-react";
 import { Role } from "../enums/roleEnum";
+import { useClickOutside } from "../components/lib/useClickOutSide";
 
 function HeaderAccount() {
   const { user, } = useAuthContext();
   const [isOpen, setIsOpen] = useState(false);
-  const menuRef = useRef(null);
   const iconRef = useRef(null);
-  useOnClickOutside({
-    handler: () => {
-      setIsOpen(false);
-    }, refs: [menuRef, iconRef]
-  });
+  const modalRef = useClickOutside<HTMLDivElement>(() => setIsOpen(false));
 
   return (
     <div className="relative z-50">
@@ -46,7 +41,7 @@ function HeaderAccount() {
       {isOpen &&
           <>
             <div
-              ref={menuRef}
+          ref={modalRef}
           className="absolute right-2 top-5 z-[100] mt-2 w-[13rem] rounded-md border-2 border-black/10 bg-white text-black/50 shadow-lg"
             >
               <HeaderAccountMenu />

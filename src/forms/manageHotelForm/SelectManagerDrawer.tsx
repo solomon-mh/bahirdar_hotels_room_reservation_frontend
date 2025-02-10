@@ -29,7 +29,7 @@ export function SelectManager({ selectedManager, setSelectedManager }: Props) {
         <Drawer open={open} onOpenChange={setOpen}>
             <DrawerTrigger asChild>
                 <button className="px-4 py-1  border bg-[#34343400] border-accent-500 text-accent-500 hover:bg-accent-500 rounded-md hover:text-slate-100">
-                    {selectedManager ? "Manager Selected" : "Select manager"}
+                    {selectedManager ? "Change Manager" : "Select manager"}
                 </button>
             </DrawerTrigger>
             <DrawerContent className="bg-slate-200 h-[60vh]  pb-6 text-slate-900 dark:bg-slate-950 dark:text-slate-50">

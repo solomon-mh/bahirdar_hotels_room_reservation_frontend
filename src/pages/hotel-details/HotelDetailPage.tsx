@@ -1,9 +1,12 @@
 import { ArrowLeft } from "lucide-react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { useGetHotelByIdQuery } from "../../redux/api/hotelApi";
 
 const PublicHotelDetailPage = () => {
     const navigate = useNavigate();
-    const { hotelId } = useParams() as { hotelId: string };
+    const { hotelId, roomId } = useParams() as { hotelId: string, roomId: string };
+    const { data: { data: hotel } = {}, isLoading, error } = useGetHotelByIdQuery(hotelId as string)
+
 
     return (
         <div className="flex flex-col px-4 w-auto md:w-[90vw] sm:px-6 md:px-20 items-center justify-start gap-6 p-6">
@@ -30,7 +33,19 @@ const PublicHotelDetailPage = () => {
                         See Rooms
                     </button>
                 </div>
-                <h1 className="text-lg text-slate-700 sm:text-xl font-semibold text-center mt-4 sm:mt-0">Hotel Detail</h1>
+                <div className="flex  gap-4 items-center px-4">
+                    <h2>
+                        {hotel?.hotel.name}
+                        {isLoading && <span>Loading...</span>}
+                        {error && <span className="text-red-500">Error: Failed to fetch hotel</span>}
+                    </h2>
+                    <button
+                        className="flex items-center justify-center gap-2 text-sm sm:text-base hover:underline text-accent-500/90 hover:text-accent-500"
+                        onClick={() => navigate(`/hotels/${hotelId}/rooms${roomId ? `/${roomId}/book` : ""}`)}
+                    >
+                        Book Now
+                    </button>
+                </div>
             </div>
 
             {/* Outlet Section */}

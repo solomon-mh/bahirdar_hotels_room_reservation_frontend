@@ -2,9 +2,9 @@ import { VscAccount } from "react-icons/vsc";
 import { FiSettings } from "react-icons/fi";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { IoIosLogOut } from "react-icons/io";
+import { MdOutlineBookmarkAdded } from "react-icons/md";
 import { useAuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
-import { MdOutlineBookmarkAdded } from "react-icons/md";
 import { useLogoutMutation } from "../redux/api/authApi";
 import { toast } from "react-toastify";
 
@@ -41,29 +41,33 @@ function HeaderAccountMenu() {
   const [logout, { isLoading }] = useLogoutMutation();
 
   return (
-    <ul className="flex flex-col bg-slate-100">
+    <ul className="bg-slate-100 shadow-lg rounded-lg w-56 p-2 space-y-1 border border-gray-200">
       {links.map((link) => {
-        if (link.title === "Sign Out") {
+        if (link.title === "Sign Out")
+        {
           return (
-            <li key={link.title}>
+            <li key={link.title} className="border-t border-gray-300 pt-2">
               <button
                 disabled={isLoading}
                 onClick={() => {
-                  logout().unwrap().then(() => {
-                    window.location.href = "/";
-
-                  }).catch((err) => {
-                    if ('data' in err)
-                    {
-                      toast.error(err.data.message || "Something went wrong Please try again");
-                    }
-                    else
-                    {
-                      toast.error("An error occurred please try again");
-                    }
-                  });
+                  logout()
+                    .unwrap()
+                    .then(() => {
+                      window.location.href = "/";
+                    })
+                    .catch((err) => {
+                      if ("data" in err)
+                      {
+                        toast.error(
+                          err.data.message || "Something went wrong. Please try again"
+                        );
+                      } else
+                      {
+                        toast.error("An error occurred. Please try again");
+                      }
+                    });
                 }}
-                className="mt-2 flex  w-full items-center justify-start gap-2 rounded-md px-3 py-2 font-bold transition duration-300 hover:bg-slate-200 disabled:cursor-not-allowed disabled:bg-slate-300"
+                className="flex w-full items-center gap-3 px-4 py-2 text-sm font-semibold text-red-600 transition-all duration-300 hover:bg-red-100 rounded-md disabled:cursor-not-allowed disabled:bg-gray-200"
               >
                 {link.icon}
                 {link.title}
@@ -72,27 +76,21 @@ function HeaderAccountMenu() {
           );
         }
 
-        if (link.title === "Dashboard") {
-          if (role !== "admin" && role !== "manager") {
-            return null;
-          }
+        if (link.title === "Dashboard" && role !== "admin" && role !== "manager")
+        {
+          return null;
         }
 
         return (
-          <li
-            key={link.title}
-            className="rounded-md transition duration-300 hover:cursor-pointer hover:bg-slate-200"
-          >
-            {
-              <Link
-                to={link.to}
-                onClick={() => handleOpenModal()}
-                className="flex items-center justify-start gap-2 p-3 py-2"
-              >
-                {link.icon}
-                <p>{link.title}</p>
-              </Link>
-            }
+          <li key={link.title}>
+            <Link
+              to={link.to}
+              onClick={handleOpenModal}
+              className="flex items-center gap-3 px-4 py-2 text-sm font-medium text-gray-700 rounded-md transition-all duration-300 hover:bg-gray-100"
+            >
+              {link.icon}
+              {link.title}
+            </Link>
           </li>
         );
       })}
