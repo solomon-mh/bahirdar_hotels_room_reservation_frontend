@@ -59,6 +59,8 @@ export interface IUser {
   role: Role;
   hotel?: IHotel;
   profilePicture: string;
+  idPhoto_back: string;
+  idPhoto_front: string;
   address: IAddress;
   isVerified: boolean;
   isVerificationRequested: boolean;
@@ -75,7 +77,8 @@ export interface UserRegistrationData {
   gender: Gender;
   phoneNumber: string;
   address: IAddress;
-  idPhoto: FileList | string | null;
+  idPhoto_back: FileList | string | null;
+  idPhoto_front: FileList | string | null;
   profilePicture: FileList | string | null;
 }
 

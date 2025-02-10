@@ -51,6 +51,8 @@ import HotelBookings from "./features/hotels/HotelBookings.js";
 import CompleteOnboarding from "./features/profile/CompleteOnboarding.js";
 import IdentityVerification from "./features/profile/IdentityVerification.js";
 import PaymentPage from "./features/payments/MakePayment.js";
+import IdentityVerificationRequests from "./features/users/IdentityVerificationRequests.js";
+import UserDetailForVerification from "./features/users/UserDetailForVerification.js";
 const queryClient = new QueryClient();
 
 function App() {
@@ -185,6 +187,14 @@ function App() {
                   <Route path="users" element={<AllUsers />} />
                   <Route path="users/:userId" element={<UserDetail />} />
                   <Route path="add-hotel" element={<AddHotel />} />
+                  <Route
+                    path="identity-verification-requests"
+                    element={<IdentityVerificationRequests />}
+                  />
+                  <Route
+                    path="identity-verification-requests/:userId"
+                    element={<UserDetailForVerification />}
+                  />
                 </>
               ) : role === "manager" ? (
                 <>

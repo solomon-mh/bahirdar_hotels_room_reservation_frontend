@@ -33,7 +33,10 @@ export const completeOnboardingSchema = z.object({
   profilePicture: z
     .any()
     .refine((file) => file?.length > 0, "Profile picture is required"),
-  idPhoto: z
+  idPhoto_front: z
+    .any()
+    .refine((file) => file?.length > 0, "Identity photo is required"),
+  idPhoto_back: z
     .any()
     .refine((file) => file?.length > 0, "Identity photo is required"),
   firstName: z

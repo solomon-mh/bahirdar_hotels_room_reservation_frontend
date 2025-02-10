@@ -75,6 +75,21 @@ export const userApi = createApi({
       }),
       invalidatesTags: [UserTags.USERS, UserTags.USER],
     }),
+    verifyUserAccount: builder.mutation<{ data: User }, string>({
+      query: (id: string) => ({
+        url: `/verify-user-account${id}`,
+        method: "PATCH",
+        body: {},
+      }),
+      invalidatesTags: [UserTags.USERS, UserTags.USER],
+    }),
+    verificationRequestedUsers: builder.query<{ data: IUser[] }, void>({
+      query: () => ({
+        url: "/verification-requests",
+        method: "GET",
+      }),
+      providesTags: [UserTags.USERS, UserTags.USER],
+    }),
   }),
 });
 
@@ -87,4 +102,6 @@ export const {
   useGetCurrentUserQuery,
   useCompleteOnboardingMutation,
   useRequestIdentityVerificationMutation,
+  useVerifyUserAccountMutation,
+  useVerificationRequestedUsersQuery,
 } = userApi;

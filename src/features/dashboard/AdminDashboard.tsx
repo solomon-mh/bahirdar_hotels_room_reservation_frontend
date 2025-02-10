@@ -47,8 +47,13 @@ const Hotels = [
 ];
 
 function AdminDashboard() {
-
-  const { numUsers = 23, numHotels = 12, numRooms = 98, numBookings = 38, numReviews = 123 } = {};
+  const {
+    numUsers = 23,
+    numHotels = 12,
+    numRooms = 98,
+    numBookings = 38,
+    numReviews = 123,
+  } = {};
 
   const countData = [
     {
@@ -84,7 +89,7 @@ function AdminDashboard() {
         {countData.map(({ title, Icon, number }, i) => (
           <div
             key={i}
-            className="flex flex-col items-center rounded bg-gradient-to-br from-[#E0A75E] to-[#E0A75E]/70 p-2 text-white shadow-xl"
+            className="text-white flex flex-col items-center rounded bg-gradient-to-br from-[#E0A75E] to-[#E0A75E]/70 p-2 shadow-xl"
           >
             {Icon}
             <span className="text-xl font-semibold md:text-2xl">{number}</span>
@@ -93,12 +98,12 @@ function AdminDashboard() {
         ))}
       </section>
 
-      <section className="m-3 my-6 flex justify-between bg-white p-4">
+      <section className="bg-white m-3 my-6 flex justify-between p-4">
         <RecentUsers />
         <BookingPieChart />
       </section>
 
-      <section className="m-3 my-6 flex h-[500px] bg-white p-8">
+      <section className="bg-white m-3 my-6 flex h-[500px] p-8">
         <AreaChartBox
           title="Monthly Registered Number of Hotels and Users "
           data={hotelUserBookingMonthlyStatusData}
@@ -108,14 +113,14 @@ function AdminDashboard() {
       </section>
 
       <section className="flex justify-between">
-        <div className="m-3 my-6 h-96 w-full bg-white p-6 py-6">
+        <div className="bg-white m-3 my-6 h-96 w-full p-6 py-6">
           <BarChartBox data={barChartBoxVisit} />
         </div>
-        <div className="m-3 my-6 h-96 w-full bg-white p-6 py-6">
+        <div className="bg-white m-3 my-6 h-96 w-full p-6 py-6">
           <BarChartBox data={barChartBookingData} />
         </div>
       </section>
-      <section className="m-3 my-6 flex h-[500px] bg-white p-6">
+      <section className="bg-white m-3 my-6 flex h-[500px] p-6">
         <AreaChartBox
           title="All Hotels Revenue Analysis"
           data={bookingRevenueData}
@@ -123,17 +128,17 @@ function AdminDashboard() {
           colors={["#15c458"]}
         />
       </section>
-      <section className="mx-3 my-6 flex h-[400px] bg-white p-6">
+      <section className="bg-white mx-3 my-6 flex h-[400px] p-6">
         <LineChartBox data={lineChartData} />
       </section>
       <section className="my-6 flex flex-col">
-        <div className="flex justify-between bg-white p-4">
+        <div className="bg-white flex justify-between p-4">
           <h2 className="text-2xl font-bold uppercase">
             Recently added Hotels
           </h2>
           <Link
             to="/dashboard/hotels"
-            className="flex items-center rounded-full bg-accent-500 px-2 py-1 text-sm text-white transition-all duration-200 hover:scale-105"
+            className="text-white flex items-center rounded-full bg-accent-500 px-2 py-1 text-sm transition-all duration-200 hover:scale-105"
           >
             See more &gt;&gt;
           </Link>

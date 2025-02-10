@@ -12,7 +12,9 @@ import { useNavigate } from "react-router-dom";
 
 function CompleteOnboarding() {
   const [selectProfilePicture, setSelectProfilePicture] = useState("");
-  const [selectIdPhoto, setSelectIdPhoto] = useState("");
+  const [selectIdPhotoFront, setSelectIdPhotoFront] = useState("");
+  const [selectIdPhotoBack, setSelectIdPhotoBack] = useState("");
+
   const navigate = useNavigate();
 
   const [completeOnboarding, { isLoading, isError, error, isSuccess }] =
@@ -28,7 +30,8 @@ function CompleteOnboarding() {
   });
 
   const profilePicture = watch("profilePicture");
-  const idPhoto = watch("idPhoto");
+  const idPhoto_back = watch("idPhoto_back");
+  const idPhoto_front = watch("idPhoto_front");
 
   const onSubmit = (data: UserRegistrationData) => {
     const formData = new FormData();
@@ -49,10 +52,15 @@ function CompleteOnboarding() {
       formData.append("profilePicture", data.profilePicture);
     }
 
-    if (data.idPhoto instanceof FileList) {
-      formData.append("idPhoto", data.idPhoto[0]);
-    } else if (data.idPhoto) {
-      formData.append("idPhoto", data.idPhoto);
+    if (data.idPhoto_back instanceof FileList) {
+      formData.append("idPhoto_back", data.idPhoto_back[0]);
+    } else if (data.idPhoto_back) {
+      formData.append("idPhoto_back", data.idPhoto_back);
+    }
+    if (data.idPhoto_front instanceof FileList) {
+      formData.append("idPhoto_front", data.idPhoto_front[0]);
+    } else if (data.idPhoto_front) {
+      formData.append("idPhoto_front", data.idPhoto_front);
     }
 
     console.log("User Data:", data);
@@ -84,25 +92,13 @@ function CompleteOnboarding() {
           Compete Your Information
         </h2>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="grid space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2">
-              <div>
-                <p>Profile Picture</p>
-                <div className="flex justify-start gap-5">
-                  <div className="h-[100px] w-[100px] overflow-hidden sm:block">
-                    <img
-                      src={
-                        typeof profilePicture === "string"
-                          ? profilePicture
-                          : selectProfilePicture.length > 0
-                            ? selectProfilePicture
-                            : "/user.jpg"
-                      }
-                      alt=""
-                      className="h-full w-full object-cover object-center"
-                    />
-                  </div>
-                  <div className="flex flex-col justify-start hover:cursor-pointer">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div className="grid grid-cols-1 gap-y-4">
+              {/* Profile picture */}
+              {/* <div>
+                <h2 className="col-span-2 py-2 text-2xl">Profile Picture</h2>
+                <div className="flex gap-5">
+                  <div className="hover:cursor-pointer">
                     <input
                       type="file"
                       accept="image/*"
@@ -124,50 +120,220 @@ function CompleteOnboarding() {
                       </p>
                     )}
                   </div>
-                </div>
-              </div>
-              {/* Identity Photo */}
-              <div>
-                <h2>Identity Photo</h2>
-                <div className="flex justify-start gap-5">
-                  <div className="h-[100px] w-[100px] overflow-hidden sm:block">
+                  <div className="h-[250px] w-[300px] overflow-hidden sm:block">
                     <img
                       src={
-                        typeof idPhoto === "string"
-                          ? idPhoto
-                          : selectIdPhoto.length > 0
-                            ? selectIdPhoto
+                        typeof profilePicture === "string"
+                          ? profilePicture
+                          : selectProfilePicture.length > 0
+                            ? selectProfilePicture
                             : "/user.jpg"
                       }
                       alt=""
                       className="h-full w-full object-cover object-center"
                     />
                   </div>
-                  <div className="flex flex-col justify-start hover:cursor-pointer">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="mx-auto w-2/3"
-                      {...register("idPhoto", {
-                        onChange: (e) => {
-                          const file = e.target.files?.[0];
-                          const reader = new FileReader();
-                          reader.onload = (e) => {
-                            setSelectIdPhoto(e.target?.result as string);
-                          };
-                          reader.readAsDataURL(file);
-                        },
-                      })}
-                    />
-                    {errors.idPhoto && (
-                      <p className="font-normal text-red-700">
-                        {errors.idPhoto.message as string}
+                </div>
+              </div> */}
+              <h2 className="col-span-2 py-2 text-2xl font-semibold text-gray-800">
+                Profile Picture
+              </h2>
+              <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                {/* Upload Section */}
+                <div className="mt-3 space-y-3">
+                  {/* Guidelines */}
+                  <p className="mb-3 text-sm text-gray-600">
+                    Please upload a{" "}
+                    <span className="font-semibold">
+                      clear, recent, and professional
+                    </span>{" "}
+                    profile picture:
+                  </p>
+
+                  <ul className="list-disc space-y-1 pl-5 text-sm text-gray-600">
+                    <li>
+                      <span className="font-semibold">Accepted formats:</span>{" "}
+                      JPEG, PNG, or WebP (Max:{" "}
+                      <span className="font-semibold">5MB</span>)
+                    </li>
+                    <li>
+                      <span className="font-semibold">Minimum resolution:</span>{" "}
+                      400x400 pixels
+                    </li>
+                    <li>
+                      <span className="font-semibold">
+                        Face must be centered and well-lit
+                      </span>
+                    </li>
+                    <li className="text-red-300">
+                      No sunglasses, filters, or group photos
+                    </li>
+                  </ul>
+                  <div className="gap-2">
+                    {/* Styled File Input Label */}
+                    <label className="cursor-pointer rounded-lg bg-blue-700 px-4 py-2 text-light-200 shadow-md transition-all hover:bg-blue-700">
+                      Upload Profile Picture
+                      {/* Hidden File Input */}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        {...register("profilePicture", {
+                          onChange: (e) => {
+                            const file = e.target.files?.[0];
+                            const reader = new FileReader();
+                            reader.onload = (e) => {
+                              setSelectProfilePicture(
+                                e.target?.result as string,
+                              );
+                            };
+                            reader.readAsDataURL(file);
+                          },
+                        })}
+                      />{" "}
+                    </label>
+
+                    {/* Error Message */}
+                    {errors.profilePicture && (
+                      <p className="mt-4 text-sm text-red-600">
+                        {errors.profilePicture.message as string}
                       </p>
                     )}
                   </div>
                 </div>
+
+                {/* Preview Image */}
+                <div className="h-[250px] w-[300px] overflow-hidden rounded-lg border border-gray-300 shadow-md">
+                  <img
+                    src={
+                      typeof profilePicture === "string"
+                        ? profilePicture
+                        : selectProfilePicture.length > 0
+                          ? selectProfilePicture
+                          : "/user.jpg"
+                    }
+                    alt="Profile Preview"
+                    className="h-full w-full object-cover object-center"
+                  />
+                </div>
+              </div>
+
+              <hr className="col-span-2 my-2 border-2 border-gray-400" />
+
+              {/* Identity Photo */}
+              <div className="">
+                <h2 className="col-span-2 py-2 text-2xl">
+                  National ID / Resident Card
+                </h2>
+                <div className="grid grid-cols-1 lg:grid-cols-2">
+                  {/* front */}
+                  <div className="space-y-2">
+                    <h3 className="capitalize">
+                      The front side of your National ID / Resident Card
+                    </h3>
+                    <div className="space-y-4">
+                      <div className="space-y-4">
+                        <label className="mb-2 cursor-pointer rounded-lg bg-blue-700 px-4 py-2 text-light-200 shadow-md transition-all hover:bg-blue-700">
+                          Upload Profile Picture
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            {...register("idPhoto_front", {
+                              onChange: (e) => {
+                                const file = e.target.files?.[0];
+                                const reader = new FileReader();
+                                reader.onload = (e) => {
+                                  setSelectIdPhotoFront(
+                                    e.target?.result as string,
+                                  );
+                                };
+                                reader.readAsDataURL(file);
+                              },
+                            })}
+                          />
+                        </label>
+                      </div>
+                      <div className="h-[200px] w-[250px] overflow-hidden sm:block">
+                        <img
+                          src={
+                            typeof idPhoto_front === "string"
+                              ? idPhoto_front
+                              : selectIdPhotoFront.length > 0
+                                ? selectIdPhotoFront
+                                : "/user.jpg"
+                          }
+                          alt=""
+                          className="h-full w-full object-cover object-center"
+                        />
+                      </div>
+                      {errors.idPhoto_front && (
+                        <p className="mt-2 font-normal text-red-700">
+                          {errors.idPhoto_front.message as string}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* back */}
+                  <div className="space-y-2">
+                    <h3 className="capitalize">
+                      the back side of your National ID / Resident Card
+                    </h3>
+                    <div className="space-y-4">
+                      <div className="space-y-4">
+                        <label className="cursor-pointer rounded-lg bg-blue-700 px-4 py-2 text-light-200 shadow-md transition-all hover:bg-blue-700">
+                          Upload the back side of your Id
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            {...register("idPhoto_back", {
+                              onChange: (e) => {
+                                const file = e.target.files?.[0];
+                                const reader = new FileReader();
+                                reader.onload = (e) => {
+                                  setSelectIdPhotoBack(
+                                    e.target?.result as string,
+                                  );
+                                };
+                                reader.readAsDataURL(file);
+                              },
+                            })}
+                          />
+                        </label>
+
+                        {errors.idPhoto_back && (
+                          <p className="font-normal text-red-700">
+                            {errors.idPhoto_back.message as string}
+                          </p>
+                        )}
+                      </div>{" "}
+                      <div className="h-[200px] w-[250px] overflow-hidden sm:block">
+                        <img
+                          src={
+                            typeof idPhoto_back === "string"
+                              ? idPhoto_back
+                              : selectIdPhotoBack.length > 0
+                                ? selectIdPhotoBack
+                                : "/user.jpg"
+                          }
+                          alt=""
+                          className="h-full w-full object-cover object-center"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
+
+            <hr className="my-2 border-2 border-gray-400" />
+
+            <h2 className="col-span-2 py-2 text-2xl">
+              put your personal information
+            </h2>
+
             <Input
               type="text"
               placeholder="First Name"

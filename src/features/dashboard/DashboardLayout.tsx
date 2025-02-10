@@ -34,6 +34,11 @@ const adminMenus = [
     url: "/dashboard/users",
     Icon: <HiOutlineUsers size={20} />,
   },
+  {
+    title: "identity verification",
+    url: "/dashboard/identity-verification-requests",
+    Icon: <HiOutlineUsers size={20} />,
+  },
 ];
 
 function DashboardLayout() {
@@ -76,13 +81,13 @@ function DashboardLayout() {
   }, [isLoggedIn, navigate]);
 
   return (
-    <div className="mx-auto flex gap-2 max-w-[120rem] bg-black">
+    <div className="bg-black mx-auto flex max-w-[120rem] gap-2">
       {role === "admin" ? (
         <SideBar menus={adminMenus} />
       ) : role === "manager" ? (
         <SideBar menus={managerMenus} />
       ) : null}
-      <div className="flex min-h-screen gap-2 w-screen md:w-[calc(100vw-260px)] flex-col bg-slate-50  text-gray-700">
+      <div className="bg-slate-50 flex min-h-screen w-screen flex-col gap-2 text-gray-700 md:w-[calc(100vw-260px)]">
         <DashboardHeader />
         <main className="overflow-auto">
           <Outlet />
