@@ -1,35 +1,53 @@
 import { FormProvider, useForm } from "react-hook-form";
-import SignUpForm from "../../forms/auth/SignUpForm";
-import { useSignUp } from "./useSignup";
-import Logo from "../../ui/Logo";
+import SignUpForm from "./form/SignUpForm";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { ISignup } from "@/types/userTypes";
+import { SignupSchema } from "@/features/auth/form/schema/SignupSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Link } from "react-router-dom";
 
 function SignupPage() {
-  const formMethods = useForm();
+  const formMethods = useForm<ISignup>({
+    resolver: zodResolver(SignupSchema),
+  });
   const { handleSubmit } = formMethods;
-
-  const { mutate, isPending } = useSignUp();
-
   const onSubmitHandler = handleSubmit((data) => {
     console.log(data);
-    mutate(data);
+    // mutate(data);
   });
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <div className="my-8 w-[95vw] rounded-xl p-4 shadow-2xl sm:mx-auto sm:w-[40rem] md:w-[60rem]">
-        <div className="mx-auto flex items-center justify-center p-3 sm:p-6">
-          <Logo />
+    <Card className="mx-auto mt-10 w-[400px]">
+      <CardHeader>
+        <CardTitle>Create Account</CardTitle>
+        <CardDescription>
+          Create an account to book your favorite hotel.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <FormProvider {...formMethods}>
+          <SignUpForm onSubmitHandler={onSubmitHandler} />
+        </FormProvider>
+      </CardContent>
+      <CardFooter className="flex flex-col">
+        {/* <Button variant="outline">Cancel</Button> */}
+        <div>
+          <CardDescription>
+            have an account?{" "}
+            <Link to="/login" className="underline">
+              Sign in
+            </Link>
+          </CardDescription>
         </div>
-        <div className="mx-auto">
-          <FormProvider {...formMethods}>
-            <SignUpForm
-              onSubmitHandler={onSubmitHandler}
-              isPending={isPending}
-            />
-          </FormProvider>
-        </div>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 }
 

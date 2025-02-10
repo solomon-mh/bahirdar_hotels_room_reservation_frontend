@@ -78,3 +78,41 @@ export interface UserRegistrationData {
   idPhoto: FileList | string | null;
   profilePicture: FileList | string | null;
 }
+
+export interface IOnboardingUser {
+  _id: string;
+  username: string;
+  email: string;
+  role: Role;
+  isOnboarding: boolean;
+  isVerified: boolean;
+  isVerificationRequested: boolean;
+
+  isCreated: boolean;
+  isUpdated: boolean;
+}
+
+export interface ISignup {
+  username: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+}
+
+export interface ISignupRes {
+  status: string;
+  isOnboarding: true;
+  message: string;
+  data: IOnboardingUser;
+}
+
+export interface ILogin {
+  email: string;
+  password: string;
+}
+
+export interface ILoginRes {
+  status: string;
+  message: string;
+  data: IOnboardingUser;
+}
