@@ -90,6 +90,14 @@ export const userApi = createApi({
       }),
       providesTags: [UserTags.USERS, UserTags.USER],
     }),
+    declineVerificationRequest: builder.mutation<{ data: IUser }, string>({
+      query: (id: string) => ({
+        url: `/decline-verification-request/${id}`,
+        method: "PATCH",
+        body: {},
+      }),
+      invalidatesTags: [UserTags.USERS, UserTags.USER],
+    }),
   }),
 });
 
@@ -104,4 +112,5 @@ export const {
   useRequestIdentityVerificationMutation,
   useVerifyUserAccountMutation,
   useVerificationRequestedUsersQuery,
+  useDeclineVerificationRequestMutation,
 } = userApi;

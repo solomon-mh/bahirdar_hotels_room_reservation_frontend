@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  useDeclineVerificationRequestMutation,
   useGetUserByIdQuery,
   useVerifyUserAccountMutation,
 } from "../../redux/api/userApi";
@@ -36,7 +37,9 @@ function UserDetailForVerification() {
     data: { data: user } = {},
     isLoading,
     error,
-  } = useGetUserByIdQuery(userId as string);
+  } = useGetUserByIdQuery(userId as string, {
+    refetchOnMountOrArgChange: true,
+  });
 
   const [
     verifyUserAccount,
@@ -47,6 +50,16 @@ function UserDetailForVerification() {
       error: errorVerifyAccount,
     },
   ] = useVerifyUserAccountMutation();
+
+  const [
+    declineVerification,
+    {
+      isLoading: isLoadingDeclineVerification,
+      isError: isErrorDeclineVerification,
+      error: errorDeclineVerification,
+      isSuccess: isSuccessDeclineVerification,
+    },
+  ] = useDeclineVerificationRequestMutation();
 
   useEffect(() => {
     if (isErrorVerifyAccount) {
@@ -60,8 +73,28 @@ function UserDetailForVerification() {
     }
   }, [isErrorVerifyAccount, isSuccessVerifyAccount, errorVerifyAccount]);
 
+  useEffect(() => {
+    if (isErrorDeclineVerification) {
+      console.log(errorDeclineVerification);
+      toast.error("Failed to decline verification request");
+    }
+
+    if (isSuccessDeclineVerification) {
+      toast.success("Verification request declined successfully");
+      navigate(-1);
+    }
+  }, [
+    isErrorDeclineVerification,
+    isSuccessDeclineVerification,
+    errorDeclineVerification,
+  ]);
+
   const onConfirmHandler = () => {
     verifyUserAccount(userId as string);
+  };
+
+  const onDeclineHandler = () => {
+    declineVerification(userId as string);
   };
 
   return (
@@ -308,7 +341,6 @@ function UserDetailForVerification() {
                   </div>
                   <DialogFooter>
                     <Button
-                      type="submit"
                       disabled={isLoadingVerifyAccount}
                       className="bg-red-600 hover:bg-red-700"
                       onClick={onConfirmHandler}
@@ -317,6 +349,40 @@ function UserDetailForVerification() {
                         <SpinnerMini className="text-white h-5 w-5" />
                       ) : (
                         "Confirm Verification"
+                      )}
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="my-2 w-full bg-red-400 text-light-300 hover:bg-red-500 disabled:cursor-not-allowed">
+                    Decline Verification
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="bg-slate-200 sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Decline User Account</DialogTitle>
+                    <DialogDescription>
+                      <span className="font-semibold text-red-600">
+                        ⚠ Warning:
+                      </span>
+                      <div className="text-gray-800">
+                        Are you sure you want to Decline the verification
+                        process of this user?
+                      </div>
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter>
+                    <Button
+                      onClick={onDeclineHandler}
+                      disabled={isLoadingDeclineVerification}
+                      className="bg-red-600 hover:bg-red-700"
+                    >
+                      {isLoadingDeclineVerification ? (
+                        <SpinnerMini className="text-white h-5 w-5" />
+                      ) : (
+                        "Decline Verification"
                       )}
                     </Button>
                   </DialogFooter>
