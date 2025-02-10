@@ -1,5 +1,4 @@
 import { Outlet } from "react-router-dom";
-import { useAuthContext } from "../../context/AuthContext";
 import { AccountSidebar } from "./components/AccountSidebar";
 
 export interface IDataAccountSidebar {
@@ -8,7 +7,7 @@ export interface IDataAccountSidebar {
   text: string;
 }
 
-const dataAccountSidebar: IDataAccountSidebar[] = [
+export const dataAccountSidebar: IDataAccountSidebar[] = [
   {
     to: "profile",
     pathname: "/account/profile",
@@ -37,17 +36,14 @@ const dataAccountSidebar: IDataAccountSidebar[] = [
 ];
 
 const Account = () => {
-  // get user from the context
-  const { user } = useAuthContext();
 
-  console.log(user);
 
   return (
-    <div className="mx-auto flex min-h-screen w-[90vw] gap-2 rounded-xl bg-light-100">
+    <div className="md:mx-auto w-full  flex min-h-screen md:w-[90vw] gap-2 rounded-xl bg-light-100">
       {/* SIDE BAR */}
       <AccountSidebar data={dataAccountSidebar} />
       {/* BODY | OUTLET */}
-      <div className="flex-1 p-2">
+      <div className="flex-1 p-2 px-0">
         <Outlet />
       </div>
     </div>

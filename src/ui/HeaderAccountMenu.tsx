@@ -1,8 +1,6 @@
 import { VscAccount } from "react-icons/vsc";
-import { FiSettings } from "react-icons/fi";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { IoIosLogOut } from "react-icons/io";
-import { MdOutlineBookmarkAdded } from "react-icons/md";
 import { useAuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import { useLogoutMutation } from "../redux/api/authApi";
@@ -13,16 +11,6 @@ const links = [
     title: "Profile",
     icon: <VscAccount size={"20px"} />,
     to: "/account/profile",
-  },
-  {
-    title: "Settings",
-    icon: <FiSettings size="20px" />,
-    to: "/account/settings",
-  },
-  {
-    title: "My Bookings",
-    icon: <MdOutlineBookmarkAdded size="20px" />,
-    to: "/account/bookings",
   },
   {
     title: "Dashboard",
@@ -41,7 +29,7 @@ function HeaderAccountMenu() {
   const [logout, { isLoading }] = useLogoutMutation();
 
   return (
-    <ul className="bg-slate-100 shadow-lg rounded-lg w-56 p-2 space-y-1 border border-gray-200">
+    <ul className="bg-slate-100 shadow-lg rounded-lg w-full md:w-56 p-2 space-y-1 border border-gray-200">
       {links.map((link) => {
         if (link.title === "Sign Out")
         {

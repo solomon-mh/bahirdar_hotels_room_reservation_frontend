@@ -5,7 +5,7 @@ export const AccountSidebar = ({ data }: { data: IDataAccountSidebar[] }) => {
   const { pathname } = useLocation();
 
   return (
-    <ul className="flex w-[250px] min-w-[250px] flex-col gap-0 space-y-2 border-r-2 border-light-400 text-gray-700">
+    <ul className="hidden md:flex w-[250px] min-w-[250px] flex-col gap-0 space-y-2 border-r-2 border-light-400 text-gray-700">
       {data.map((item, i) => (
         <li key={i}>
           <Link
