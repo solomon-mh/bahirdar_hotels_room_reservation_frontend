@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useNavigate, useParams } from "react-router-dom";
 import DeleteFeature from "../../../components/DeleteDialog";
 import {
@@ -9,16 +10,25 @@ import { useAuthContext } from "../../../context/AuthContext";
 import { MdEdit } from "react-icons/md";
 import { Role } from "../../../enums/roleEnum";
 import MapComponent from "../../bookings/Map";
+import { useEffect, useState } from "react";
 
 export const HotelDetail = () => {
     const navigate = useNavigate();
     const { user } = useAuthContext();
+    const [_, setHotelImages] = useState<string[]>([]);
     const { hotelId } = useParams<{ hotelId: string }>();
     const {
         data: { data: { hotel } = {} } = {},
         isLoading,
         error,
     } = useGetHotelByIdQuery(hotelId as string);
+
+    useEffect(() => {
+        if (hotel?.hotelImages.length)
+        {
+            setHotelImages(hotel.hotelImages.map((image) => image));
+        }
+    }, [hotel?.hotelImages])
 
     return (
         <div className="flex">
@@ -41,7 +51,9 @@ export const HotelDetail = () => {
                                 >
                                     <MdEdit size={24} />
                                 </button>
-                                <DeleteFeature
+                                {
+                                    user.role === Role.ADMIN &&
+                                    <DeleteFeature
                                     useDelete={
                                         useDeleteHotelMutation as () => [
                                             unknown,
@@ -50,7 +62,7 @@ export const HotelDetail = () => {
                                     }
                                     feature="Hotel"
                                     featureId={hotelId as string}
-                                />
+                                    />}
                             </div>
                         )}
                         <img
@@ -94,6 +106,8 @@ export const HotelDetail = () => {
                             </ul>
                         </div>
 
+
+
                         {
                             hotel.location && !!hotel.location.coordinates.length && (
                                 <div className="mb-4">
@@ -114,6 +128,7 @@ export const HotelDetail = () => {
                                 </div>
                             )
                         }
+
                         <div className="mt-6 flex items-center justify-between">
                             <div className="text-gray-800">
                                 <span className="font-semibold">Rating:</span> {hotel.avgRating}{" "}

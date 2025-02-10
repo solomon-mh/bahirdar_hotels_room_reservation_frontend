@@ -34,7 +34,7 @@ export interface IHotel {
   name: string;
   hotelStar?: number;
   imageCover: string;
-  hotelImages: string[] | File[];
+  hotelImages: string[];
   address: IAddress;
   summary: string;
   description: string;

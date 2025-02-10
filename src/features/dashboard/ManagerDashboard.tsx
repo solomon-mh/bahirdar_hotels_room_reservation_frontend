@@ -1,9 +1,3 @@
-import {
-  MdOutlineBedroomChild,
-  MdOutlineFreeCancellation,
-  MdOutlineManageSearch,
-  MdOutlineShoppingCartCheckout,
-} from "react-icons/md";
 import { Link } from "react-router-dom";
 
 import BookingCard from "../bookings/BookingCard";
@@ -62,22 +56,38 @@ function ManagerDashboard() {
 
   const managerStats = [
     {
-      icon: <MdOutlineBedroomChild className="size-12" />,
+      icon: <img
+        src="/icons/room.png"
+        alt="booking"
+        className="w-16 h-16"
+      />,
       title: "Rooms",
       number: numRooms,
     },
     {
-      icon: <MdOutlineManageSearch className="size-12" />,
+      icon: <img
+        src="/icons/booked.png"
+        alt="booking"
+        className="w-16 h-16"
+      />,
       title: "Bookings",
       number: numBookings,
     },
     {
-      icon: <MdOutlineShoppingCartCheckout className="size-12" />,
+      icon: <img
+        src="/icons/users.png"
+        alt="booking"
+        className="w-16 h-16"
+      />,
       title: "Users",
       number: numUsers,
     },
     {
-      icon: <MdOutlineFreeCancellation className="size-12" />,
+      icon: <img
+        src="/icons/reviews.png"
+        alt="booking"
+        className="w-16 h-16"
+      />,
       title: "Reviews",
       number: numReviews,
     },
@@ -91,7 +101,7 @@ function ManagerDashboard() {
             {managerStats.map(({ title, icon, number }, i) => (
               <div
                 key={i}
-                className="flex  items-center  px-6 h-[7rem] shadow-slate-300 w-full md:w-[17rem]  justify-between rounded bg-gradient-to-br p-4 text-slate-800 shadow-md"
+                className="flex  items-center  px-6 h-[7rem] shadow-slate-200 w-full md:w-[17rem]  justify-between rounded bg-gradient-to-br p-4 text-slate-800 shadow-lg"
               >
                 <div className="flex">
                   {icon}

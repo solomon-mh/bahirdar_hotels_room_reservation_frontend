@@ -13,6 +13,8 @@ import toast from "react-hot-toast";
 import { useGetUserByIdQuery } from "../../redux/api/userApi";
 import AddLocation from "../../features/hotels/components/AddLocation";
 import { LatLngExpression } from "leaflet";
+import { useAuthContext } from "../../context/AuthContext";
+import { Role } from "../../enums/roleEnum";
 interface Props {
   hotel?: IHotel;
   isAdding: boolean;
@@ -30,13 +32,16 @@ function ManageHotelForm({
   isInUpdateMode = false,
 }: Props) {
 
+
   const [selectedPosition, setSelectedPosition] = useState<LatLngExpression | null>(null);
 
+  const { user: manger } = useAuthContext();
   const { data: { data: user } = {}, error } = useGetUserByIdQuery(
     (hotel?.manager as string) || "",
-    { skip: !hotel?.manager },
+    { skip: !hotel?.manager || manger?.role === Role.MANAGER },
+
   );
-  const [seledtedManager, setSelectedManager] = useState<IUser | null>(null);
+  const [selectedManager, setSelectedManager] = useState<IUser | null>(null);
   const formMethods = useForm<
     IHotel & {
       address: IAddress;
@@ -50,6 +55,11 @@ function ManageHotelForm({
   const { handleSubmit, reset, setValue } = formMethods;
 
   useEffect(() => {
+    if (manger?.role === Role.MANAGER)
+    {
+      setSelectedManager(manger);
+      return;
+    }
     if (error)
     {
       toast.error("An error occurred while fetching the manager");
@@ -58,7 +68,8 @@ function ManageHotelForm({
     {
       setSelectedManager(user);
     }
-  }, [error, user]);
+
+  }, [error, manger, user]);
 
   // IF IN UPDATE MODE RESET THE HOTEL DATA TO THE FORM
   useEffect(() => {
@@ -67,10 +78,10 @@ function ManageHotelForm({
     {
       reset({
         ...hotel,
-        manager:
+        manager: 
           typeof hotel.manager === "string"
             ? hotel.manager
-            : hotel.manager?._id || "",
+            : hotel.manager?._id || manger?._id || "",
         address: hotel.address || {
           city: "",
           subcity: "",
@@ -112,7 +123,7 @@ function ManageHotelForm({
       formData.append("longitude", selectedPosition.toString().split(',')[0] || "");
       formData.append("latitude", selectedPosition.toString().split(',')[1] || "");
     }
-    if (seledtedManager?._id) formData.append("manager", seledtedManager._id);
+    if (selectedManager?._id) formData.append("manager", selectedManager._id);
     else
     {
       toast.error("Please select manger manager not selected yet");
@@ -180,16 +191,25 @@ function ManageHotelForm({
                   )}
 
                   <div className="flex w-full flex-col items-stretch gap-4 md:w-auto md:flex-row md:items-center">
-                    <SelectManager
-                      selectedManager={seledtedManager}
-                      setSelectedManager={setSelectedManager}
-                    />
+
+                    {
+                      manger?.role === Role.ADMIN && (
+                        <SelectManager
+                          selectedManager={selectedManager}
+                          setSelectedManager={setSelectedManager}
+                        />
+                      )
+                    }
                     <span>
-                      {seledtedManager
-                        ? `${seledtedManager.firstName} ${seledtedManager.lastName}`
+                      {selectedManager
+                        ? `${selectedManager.firstName} ${selectedManager.lastName}`
                         : "No manager selected yet"}
                     </span>
-                    <CreateUserDialog />
+                    {
+                      manger?.role === Role.ADMIN && (
+                        <CreateUserDialog />
+                      )
+                    }
                     <AddLocation
                       selectedPosition={selectedPosition}
                       setSelectedPosition={setSelectedPosition}
