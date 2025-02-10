@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { roomSchema } from "../schema/roomSchema";
 import { RoomType } from "../../enums/roomTypeEnum";
 import { useCreateRoomMutation } from "../../redux/api/roomsApi";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { IRoom } from "../../types/roomTypes";
 import { AMENITIES } from "../../constants/RoomAmenities";
 

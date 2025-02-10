@@ -36,7 +36,6 @@ import ProtectAdminRoutes from "./ui/ProtectAdminRoutes";
 import BookRoomPage from "./pages/BookRoomPage";
 import PaymentSuccessPage from "./pages/PaymentSuccessPage";
 import ForgotMyPassword from "./features/profile/ForgotMyPassword";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserDetail from "./features/users/UserDetail.js";
 import HotelsPage from "./features/hotels/HotelsPage.js";
@@ -80,7 +79,6 @@ function App() {
       />
 
       <BookingContextProvider>
-        <ToastContainer />
           <BrowserRouter>
             <Routes>
               {/* HOME ROUTES */}

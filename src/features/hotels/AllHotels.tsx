@@ -45,7 +45,9 @@ function AllHotels() {
           <LoadingPage />
         ) : error ? (
           <NotFoundPage>
-              <pre>{JSON.stringify(error, null, 2)}</pre>
+              <pre>
+                {JSON.stringify(error, null, 2)}
+              </pre>
             </NotFoundPage>
           ) : !hotels?.length ? (
             <NotFoundPage>

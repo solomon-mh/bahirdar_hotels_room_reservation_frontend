@@ -62,22 +62,22 @@ function ManagerDashboard() {
 
   const managerStats = [
     {
-      icon: <MdOutlineBedroomChild className="size-8" />,
+      icon: <MdOutlineBedroomChild className="size-12" />,
       title: "Rooms",
       number: numRooms,
     },
     {
-      icon: <MdOutlineManageSearch className="size-8" />,
+      icon: <MdOutlineManageSearch className="size-12" />,
       title: "Bookings",
       number: numBookings,
     },
     {
-      icon: <MdOutlineShoppingCartCheckout className="size-8" />,
+      icon: <MdOutlineShoppingCartCheckout className="size-12" />,
       title: "Users",
       number: numUsers,
     },
     {
-      icon: <MdOutlineFreeCancellation className="size-8" />,
+      icon: <MdOutlineFreeCancellation className="size-12" />,
       title: "Reviews",
       number: numReviews,
     },
@@ -85,23 +85,27 @@ function ManagerDashboard() {
 
   return (
     <>
-      <div className="flex w-full flex-col gap-5 overflow-hidden">
-        <MaxWidthWrapper className="border-black/7 w-full border bg-black/5">
-          <section className="m-3 mx-auto mb-8 grid w-full grid-cols-1 gap-4 gap-x-5 sm:grid-cols-2 lg:w-3/4 lg:grid-cols-4 lg:gap-x-10">
+      <div className="flex w-[80vw]   flex-col gap-5 overflow-hidden">
+        <div className="border-black/7   w-full border bg-black/5">
+          <section className="m-3  mb-8 grid w-full grid-cols-1 gap-4   gap-x-3 sm:grid-cols-2  lg:grid-cols-4 lg:gap-x-4">
             {managerStats.map(({ title, icon, number }, i) => (
               <div
                 key={i}
-                className="flex flex-col items-center rounded bg-gradient-to-br p-4 text-white shadow-xl"
+                className="flex  items-center  px-6 h-[7rem] shadow-slate-300 w-full md:w-[17rem]  justify-between rounded bg-gradient-to-br p-4 text-slate-800 shadow-md"
               >
-                {icon}
-                <span className="text-xl font-semibold md:text-2xl">
-                  {number}
-                </span>
-                <h3 className="text-sm">{title}</h3>
+                <div className="flex">
+                  {icon}
+                </div>
+                <div className="flex flex-col items-center justify-between">
+                  <span className="text-xl font-semibold md:text-2xl">
+                    {number}
+                  </span>
+                  <h3 className="text-sm">{title}</h3>
+                </div>
               </div>
             ))}
           </section>
-        </MaxWidthWrapper>
+        </div>
 
         <MaxWidthWrapper className="border-black/7 w-full border bg-black/5">
           <section className="h-96 w-full">

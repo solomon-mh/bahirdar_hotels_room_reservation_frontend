@@ -3,7 +3,7 @@ import { IBooking } from "../../types/bookingTypes";
 import BookingForm from "./BookingForm";
 import { useCreateBookingMutation } from "../../redux/api/bookingApi";
 import { BookingStatus } from "../../enums/bookingStatusEnum";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { useAuthContext } from "../../context/AuthContext";
 import { useGetRoomByIdQuery } from "../../redux/api/roomsApi";
 import { ArrowLeft } from "lucide-react";
@@ -159,7 +159,7 @@ export default function BookingPage() {
                 </div>
 
                 {/* Room Details Section */}
-                <div className="w-full md:w-[40%]">
+                <div className="w-full md:w-[35%]">
                     {fetchingRoom ? (
                         <p>Loading...</p>
                     ) : roomFetchingError ? (
@@ -167,7 +167,7 @@ export default function BookingPage() {
                             <pre>{JSON.stringify(roomFetchingError, null, 2)}</pre>
                         </p>
                     ) : (
-                        <div className="rounded border p-4 shadow-sm">
+                        <div className="rounded border p-4 shadow-md">
                             <h2 className="mb-2 text-xl font-bold">Room Details</h2>
                                     <div className="flex flex-col gap-2 p-2">
                                         <div className="flex items-stretch justify-stretch">

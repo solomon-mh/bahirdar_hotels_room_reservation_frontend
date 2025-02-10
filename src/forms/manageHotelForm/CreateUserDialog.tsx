@@ -11,7 +11,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { IUser } from '../../types/userTypes';
 import { DatePicker } from "../components/datePicker";
 import { useCreateUserMutation } from "../../redux/api/userApi";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { Gender } from "../../enums/genderEnum";
 import { Role } from "../../enums/roleEnum";
 import SpinnerMini from "../../ui/SpinnerMini";

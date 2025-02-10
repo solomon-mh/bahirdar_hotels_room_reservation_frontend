@@ -6,7 +6,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import Logo from "../../ui/Logo";
 import { useLoginMutation } from "../../redux/api/authApi";
 import { ILogin } from "../../types/authTypes";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { useState } from "react";
 import { useAuthContext } from "../../context/AuthContext";
 

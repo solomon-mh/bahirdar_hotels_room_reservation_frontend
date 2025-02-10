@@ -13,7 +13,7 @@ import {
 import { FormProvider, useForm } from "react-hook-form";
 import { IRoom } from "../../types/roomTypes";
 import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 interface Props {
   onSubmit: (room: FormData) => void;

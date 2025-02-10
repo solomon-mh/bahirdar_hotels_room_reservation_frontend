@@ -6,7 +6,7 @@ import { MdOutlineBookmarkAdded } from "react-icons/md";
 import { useAuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import { useLogoutMutation } from "../redux/api/authApi";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 const links = [
   {
