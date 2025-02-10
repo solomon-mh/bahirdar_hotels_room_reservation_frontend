@@ -5,8 +5,6 @@ import {
   MdOutlineShoppingCartCheckout,
 } from "react-icons/md";
 import { Link } from "react-router-dom";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 
 import BookingCard from "../bookings/BookingCard";
 import { useAuthContext } from "../../context/AuthContext";
@@ -21,10 +19,7 @@ import {
 } from "../../data/stat-data";
 import BarChartBox from "../stats/BarChartBox";
 import LineChartBox from "../stats/LineChartBox";
-import LoadingSkeleton from "../../ui/LoadingSkeleton";
 import MaxWidthWrapper from "../../ui/MaxWidthWrapper";
-import { useEffect } from "react";
-import { useGetAllHotelsQuery } from "../../redux/api/hotelApi";
 
 const RecentlyBookedRooms = [
   {
@@ -54,44 +49,8 @@ const RecentlyBookedRooms = [
 ];
 
 function ManagerDashboard() {
-  const navigate = useNavigate();
-  const { setCurrentHotelHandler, currentHotel } = useAuthContext();
+  const { currentHotel } = useAuthContext();
 
-
-  const { data: { data: { hotels } = {} } = {}, error, isLoading: isLoadingHotelStats } = useGetAllHotelsQuery("")
-
-
-  useEffect(() => {
-    if (error)
-    {
-      toast.error(
-        "Something went very wrong when fetching a hotel data : Please try again.",
-      );
-      navigate("/");
-    }
-
-    if (hotels?.length)
-    {
-      setCurrentHotelHandler(hotels[0]);
-    }
-
-  }, [error, hotels, navigate, setCurrentHotelHandler]);
-
-  if (isLoadingHotelStats)
-  {
-    return (
-      <div className="mx-auto flex min-h-screen justify-center">
-        <div className="mt-5 p-4 lg:mt-12">
-          <LoadingSkeleton className="h-3 w-[10rem] bg-gray-50 dark:bg-gray-300" />
-          <LoadingSkeleton className="h-3 w-[30rem] bg-gray-50 dark:bg-gray-300" />
-          <LoadingSkeleton className="h-3 w-[20rem] bg-gray-50 dark:bg-gray-300" />
-          <LoadingSkeleton className="h-3 w-[15rem] bg-gray-50 dark:bg-gray-300" />
-          <LoadingSkeleton className="h-3 w-[25rem] bg-gray-50 dark:bg-gray-300" />
-          <LoadingSkeleton className="h-3 w-[10rem] bg-gray-50 dark:bg-gray-300" />
-        </div>
-      </div>
-    );
-  }
   if (currentHotel) return null;
 
   const { numBookings, numReviews, numRooms, numUsers } = {
@@ -132,7 +91,7 @@ function ManagerDashboard() {
             {managerStats.map(({ title, icon, number }, i) => (
               <div
                 key={i}
-                className="flex flex-col items-center rounded bg-gradient-to-br from-[#E0A75E] to-[#E0A75E]/70 p-4 text-white shadow-xl"
+                className="flex flex-col items-center rounded bg-gradient-to-br p-4 text-white shadow-xl"
               >
                 {icon}
                 <span className="text-xl font-semibold md:text-2xl">

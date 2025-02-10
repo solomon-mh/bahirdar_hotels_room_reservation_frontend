@@ -19,9 +19,7 @@ function HeaderAccount() {
         onClick={() => setIsOpen(prev => !prev)}
         className="flex items-center justify-center gap-2 hover:cursor-pointer"
       >
-        <li>
-          {user?.role === Role.MANAGER && user?.hotel?.name}
-        </li>
+
         <span className="text-sm font-semibold text-black/50">
           {user?.role}
         </span>

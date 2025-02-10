@@ -72,8 +72,8 @@ const AllBookings = () => {
   };
 
   return (
-    <div className="min-h-screen relative bg-gray-100 px-6 py-10">
-      <div className="bg-white mx-auto max-w-7xl overflow-hidden rounded-lg shadow-lg">
+    <div className="min-h-screen w-full relative bg-gray-100 md:px-6 py-10">
+      <div className="bg-white md:mx-auto w-full md:max-w-7xl overflow-hidden rounded-lg shadow-lg">
         <div className="flex items-center justify-between border-b border-gray-200 p-6">
           <h2 className="text-3xl font-bold text-slate-800">All Bookings</h2>
           <div className="hidden md:flex w-full items-center justify-end gap-1 md:w-auto">

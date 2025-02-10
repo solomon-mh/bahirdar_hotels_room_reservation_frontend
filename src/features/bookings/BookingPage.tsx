@@ -119,16 +119,16 @@ export default function BookingPage() {
                 </h1>
             </div>
 
-            <div className="flex w-full gap-6 flex-col md:flex-row md:items-center items-stretch">
+            <div className="flex w-full gap-6 flex-col md:flex-row md:px-10 md:items-start items-stretch">
                 {/* Booking Form Section */}
-                <div className="flex flex-col md:flex-row md:items-center items-stretch gap-4 w-full ">
+                <div className="flex flex-col  items-stretch  gap-4 w-full ">
                     <BookingForm
                         room={room}
                         isBooking={isLoading}
                         onSubmit={handleBookingSubmit}
                     />
                     {booking && (
-                        <div className="flex items-center gap-10 justify-between w-full px-4 py-2">
+                        <div className="w-full sm:w-[60vw] p-6 rounded-lg shadow-md space-y-6 mx-auto">
                             <div className="flex-[1] flex flex-col gap-2">
                                 <h2 className="text-xl font-bold">Booking Summary</h2>
                                 <div className="flex justify-between">
