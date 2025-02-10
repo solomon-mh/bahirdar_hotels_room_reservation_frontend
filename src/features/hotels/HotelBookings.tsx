@@ -1,20 +1,35 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { BookingStatus } from "../../enums/bookingStatusEnum";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
-import { useGetHotelBookingsQuery } from "../../redux/api/bookingApi";
+import { bookingApi, BookingTags, useGetHotelBookingsQuery } from "../../redux/api/bookingApi";
+import { CustomPagination } from "../../components/Pagination";
+import { useEffect } from "react";
 const HotelBookings = () => {
+    const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
     const { pathname } = useLocation()
     const { hotelId } = useParams<{ hotelId: string }>();
 
     const bookingStatuses = Object.values(BookingStatus);
     const {
-        data: { data: { bookings } = {} } = {},
+        data: { data: { bookings } = {}, pagination } = {},
         isLoading,
         error,
     } = useGetHotelBookingsQuery(hotelId as string);
 
+
+    useEffect(() => {
+        bookingApi.util.invalidateTags([BookingTags.BOOKINGS]);
+        if (!searchParams.get("status"))
+        {
+            setSearchParams({ status: BookingStatus.PENDING });
+        }
+        else
+        {
+            setSearchParams(searchParams);
+        }
+    }, [searchParams, setSearchParams]);
     const getStatusButtonColor = (status: BookingStatus) => {
         switch (status)
         {
@@ -52,8 +67,8 @@ const HotelBookings = () => {
     };
 
     return (
-        <div className=" bg-gray-100 px-6 py-10">
-            <div className="bg-white mx-auto max-w-7xl overflow-hidden rounded-lg shadow-lg">
+        <div className=" bg-gray-100 w-full px-6 py-10">
+            <div className="bg-white mx-auto  overflow-hidden rounded-lg">
                 <div className="flex items-center justify-between border-b border-gray-200 p-6">
                     <h2 className="text-3xl font-bold text-slate-800">All Bookings</h2>
                     <div className="flex items-center justify-end gap-1">
@@ -158,7 +173,17 @@ const HotelBookings = () => {
                                         </tr>
                                     ))}
                                 </tbody>
-                            </table>
+                                        </table>
+                                        {pagination && (
+                                            <CustomPagination
+                                                totalPages={pagination.totalPages}
+                                                page={pagination?.page}
+                                                onPageChange={(page) => {
+                                                    searchParams.set("page", page.toString());
+
+                                                }}
+                                            />
+                                        )}
                         </div>
                     )}
                 </div>
