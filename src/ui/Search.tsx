@@ -36,15 +36,15 @@ function Search({ className = "" }: SearchProps) {
   return (
     <form
       className={cn(
-        "group relative flex items-center justify-center",
+        "group relative flex flex-1 items-center justify-center",
         className,
       )}
     >
-      <div className="flex flex-row rounded-full shadow-gray-400 shadow-lg">
+      <div className="flex flex-row w-full rounded-full shadow-gray-400 shadow-lg">
         <input
           type="search"
           autoFocus
-          className="rounded-full w-[18rem] bg-slate-100 px-6 text-slate-900 py-2 focus:outline-none disabled:cursor-not-allowed"
+          className="rounded-full w-full md:w-[18rem] bg-slate-100 px-6 text-slate-900 py-2 focus:outline-none disabled:cursor-not-allowed"
           placeholder="Search"
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}

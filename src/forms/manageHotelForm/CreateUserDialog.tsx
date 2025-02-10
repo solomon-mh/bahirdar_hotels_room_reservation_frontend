@@ -84,7 +84,7 @@ const CreateUserDialog = () => {
 
                 <div className=" py-6 bg-white rounded-lg ">
 
-                    <form onSubmit={handleSubmit(onSubmit)} className=" grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <form onSubmit={handleSubmit(onSubmit)} className=" grid grid-cols-1 p-3 md:grid-cols-3 gap-4">
                         {/* First Name */}
                         <div className="space-y-1">
                             <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">First Name</label>

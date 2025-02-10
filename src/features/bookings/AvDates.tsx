@@ -3,17 +3,13 @@ import { IRoom } from "../../types/roomTypes";
 import { ITimeStamp } from "../../types/general";
 import formatDate from "../../utils/formatDate";
 
-
-
-
 interface Props {
-  bookings: (IBookingResponse & ITimeStamp)[]
+  bookings: (IBookingResponse & ITimeStamp)[];
 }
+
 export default function AvailableDatesTable({ bookings }: Props) {
-
-
   return (
-    <div className="overflow-x-auto h-[20vh] w-full overflow-y-auto">
+    <div className="overflow-x-auto h-[30vh] md:w-full max-w-[82vw]  overflow-y-auto">
       <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
         <thead className="bg-gray-100 border-b border-gray-200">
           <tr>
@@ -25,20 +21,35 @@ export default function AvailableDatesTable({ bookings }: Props) {
           </tr>
         </thead>
         <tbody>
-          {bookings.map((booking, index) => (
-            <tr
-              key={index}
-              className={`${
-                index % 2 === 0 ? "bg-gray-50" : "bg-white"
-              } hover:bg-gray-100`}
-            >
-              <td className="px-4 py-2 text-sm text-gray-700">{formatDate(booking.checkIn.toString())}</td>
-              <td className="px-4 py-2 text-sm text-gray-700">{formatDate(booking.checkOut.toString())}</td>
-              <td className="px-4 py-2 text-sm text-gray-700">{booking.numOfNights}</td>
-              <td className="px-4 py-2 text-sm text-gray-700">${booking.pricePerNight?.toFixed(2)}</td>
-              <td className="px-4 py-2 text-sm text-gray-700">{(booking.room as unknown as IRoom)._id}</td>
+          {bookings.length === 0 ? (
+            <tr>
+              <td colSpan={5} className="px-4 py-2 text-sm text-center text-gray-500">
+                No bookings available.
+              </td>
             </tr>
-          ))}
+          ) : (
+            bookings.map((booking, index) => (
+              <tr
+                key={index}
+                className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                  } hover:bg-gray-100`}
+              >
+                <td className="px-4 py-2 text-sm text-gray-700">
+                  {formatDate(booking.checkIn.toString())}
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-700">
+                  {formatDate(booking.checkOut.toString())}
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-700">{booking.numOfNights}</td>
+                <td className="px-4 py-2 text-sm text-gray-700">
+                  ${booking.pricePerNight?.toFixed(2)}
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-700">
+                  {(booking.room as unknown as IRoom)._id}
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>

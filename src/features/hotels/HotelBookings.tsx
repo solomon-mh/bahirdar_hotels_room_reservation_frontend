@@ -1,14 +1,28 @@
-import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {
+    useLocation,
+    useNavigate,
+    useParams,
+    useSearchParams,
+} from "react-router-dom";
 import { BookingStatus } from "../../enums/bookingStatusEnum";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
-import { bookingApi, BookingTags, useGetHotelBookingsQuery } from "../../redux/api/bookingApi";
+import {
+    bookingApi,
+    BookingTags,
+    useGetHotelBookingsQuery,
+} from "../../redux/api/bookingApi";
 import { CustomPagination } from "../../components/Pagination";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Menu, X } from "lucide-react";
+import { useClickOutside } from "../../components/lib/useClickOutSide";
 const HotelBookings = () => {
+
+    const [openDropdown, setOpenDropdown] = useState(false);
+    const modalRef = useClickOutside<HTMLDivElement>(() => setOpenDropdown(false));
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
-    const { pathname } = useLocation()
+    const { pathname } = useLocation();
     const { hotelId } = useParams<{ hotelId: string }>();
 
     const bookingStatuses = Object.values(BookingStatus);
@@ -18,14 +32,12 @@ const HotelBookings = () => {
         error,
     } = useGetHotelBookingsQuery(hotelId as string);
 
-
     useEffect(() => {
         bookingApi.util.invalidateTags([BookingTags.BOOKINGS]);
         if (!searchParams.get("status"))
         {
             setSearchParams({ status: BookingStatus.PENDING });
-        }
-        else
+        } else
         {
             setSearchParams(searchParams);
         }
@@ -67,21 +79,48 @@ const HotelBookings = () => {
     };
 
     return (
-        <div className=" bg-gray-100 w-full px-6 py-10">
-            <div className="bg-white mx-auto  overflow-hidden rounded-lg">
-                <div className="flex items-center justify-between border-b border-gray-200 p-6">
-                    <h2 className="text-3xl font-bold text-slate-800">All Bookings</h2>
-                    <div className="flex items-center justify-end gap-1">
+        <div className="w-full relative bg-gray-100 px-6 py-10">
+            <div className="mx-auto overflow-hidden rounded-lg bg-white">
+                <div className="flex  items-center justify-between gap-4 border-b border-gray-200 md:p-6">
+                    <h2 className="w-full text-3xl font-bold text-slate-800 md:w-auto">
+                        All Bookings
+                    </h2>
+                    <div className="hidden md:flex w-full items-center justify-end gap-1 md:w-auto">
                         {bookingStatuses.map((status) => (
                             <button
+                                onClick={() => {
+                                    setSearchParams({ status });
+                                }}
                                 key={status}
-                                className={`flex items-center justify-center rounded-sm px-4 py-2 text-[#333333] ${getStatusButtonColor(
-                                    status,
-                                )}`}
+                                className={`flex items-center justify-center rounded-sm px-4 py-2 text-[#333333] ${getStatusButtonColor(status)}`}
                             >
                                 {status.replace(/-/g, " ").toUpperCase()}
                             </button>
                         ))}
+                    </div>
+                    <div className="flex md:hidden">
+                        <button
+                            onClick={() => setOpenDropdown(prev => !prev)}
+                            className="flex items-center justify-center rounded-sm px-4 py-2 text-accent-500 bg-gray-200">
+                            {
+                                openDropdown ? <X /> : <Menu />
+                            }
+                        </button>
+                        {openDropdown && (
+                            <div ref={modalRef} className=" absolute top-20 left-0 right-0 bg-slate-100 shadow-md flex flex-col w-[94%] items-stretch justify-end gap-1 md:w-auto">
+                                {bookingStatuses.map((status) => (
+                                    <button
+                                        onClick={() => {
+                                            setSearchParams({ status });
+                                            setOpenDropdown(false);
+                                        }}
+                                        key={status}
+                                        className={`flex items-center justify-center rounded-sm px-4 py-2 text-[#333333] ${getStatusButtonColor(status)}`}
+                                    >
+                                        {status.replace(/-/g, " ").toUpperCase()}
+                                    </button>
+                                ))}
+                            </div>)}
                     </div>
                 </div>
 
@@ -150,10 +189,7 @@ const HotelBookings = () => {
                                                 {new Date(booking.checkOut).toLocaleDateString()}
                                             </td>
                                             <td
-                                                className={
-                                                    "border border-gray-200 px-4 py-2 capitalize text-gray-600 " +
-                                                    `${getBgColor(booking.status as BookingStatus)}`
-                                                }
+                                                className={`border border-gray-200 px-4 py-2 capitalize text-gray-600 ${getBgColor(booking.status as BookingStatus)}`}
                                             >
                                                 {booking.status}
                                             </td>
@@ -162,9 +198,7 @@ const HotelBookings = () => {
                                             </td>
                                             <td className="border border-gray-200 px-4 py-2 text-gray-600">
                                                 <button
-                                                    onClick={() =>
-                                                        navigate(pathname + `/${booking._id}`)
-                                                    }
+                                                    onClick={() => navigate(pathname + `/${booking._id}`)}
                                                     className="text-accent-500/90 hover:text-accent-500 hover:underline"
                                                 >
                                                     View
@@ -172,7 +206,7 @@ const HotelBookings = () => {
                                             </td>
                                         </tr>
                                     ))}
-                                </tbody>
+                                            </tbody>
                                         </table>
                                         {pagination && (
                                             <CustomPagination
@@ -180,7 +214,6 @@ const HotelBookings = () => {
                                                 page={pagination?.page}
                                                 onPageChange={(page) => {
                                                     searchParams.set("page", page.toString());
-
                                                 }}
                                             />
                                         )}

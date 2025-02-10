@@ -62,14 +62,13 @@ export default function BookingForm({
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className=" bg-slate-100 w-[60vw] p-6 rounded-lg shadow-md space-y-6"
+            className="bg-slate-100 w-full sm:w-[60vw] p-6 rounded-lg shadow-md space-y-6 mx-auto"
         >
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                Book a Room
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Book a Room</h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Check-In Date */}
-                <div>
+                <div >
                     <div className="space-y-1">
                         <label htmlFor="checkIn" className="block text-sm font-medium text-gray-700">
                             Check-in Date
@@ -119,9 +118,7 @@ export default function BookingForm({
                             }}
                             render={({ field }) => (
                                 <DatePicker
-                                    activeDates={Array.from(new Set(activeDates)).map(date => {
-                                        return date;
-                                    })}
+                                    activeDates={Array.from(new Set(activeDates))}
                                     date={field.value}
                                     setDate={field.onChange}
                                     minDate={addDays(checkInDate ? new Date(checkInDate) : today, 1)}
@@ -134,69 +131,59 @@ export default function BookingForm({
                     )}
                 </div>
 
+                {/* Number of Nights */}
                 <div>
                     <label className="block text-sm font-medium text-gray-700">
                         Number of Nights
                     </label>
                     <p className="mt-1 font-semibold">
-                        {!!numOfNights && <span>
-                            {numOfNights} night{numOfNights > 1 && "s"}
-                        </span>
-                        }
+                        {!!numOfNights && (
+                            <span>
+                                {numOfNights} night{numOfNights > 1 && "s"}
+                            </span>
+                        )}
                     </p>
                 </div>
 
+                {/* Total Price */}
                 <div>
                     <label className="block text-sm font-medium text-gray-700">
                         Total Price
                     </label>
                     <p className="mt-1 font-semibold">
-                        {
-                            !!totalPrice && `$${totalPrice.toFixed(2)}`
-                        }
+                        {!!totalPrice && `$${totalPrice.toFixed(2)}`}
                     </p>
                 </div>
             </div>
 
-            <div className="flex">
-
-                {
-                    isLoading
-                        ?
-                        <LoadingPage />
-                        :
-                        error
-                            ?
-                            <NotFoundPage>
-                                <pre>
-                                    {
-                                        JSON.stringify(error, null, 2)
-                                    }
-                                </pre>
-                            </NotFoundPage>
-                            :
-                            !hotel
-                                ?
-                                <NotFoundPage>
-                                    <span>Hotel not found</span>
-                                </NotFoundPage>
-                                :
-
-                                hotel.bookings &&
-                                < AvailableDatesTable
-                                    bookings={hotel.bookings.filter(booking => booking.room._id === room._id)}
-                                />
-
-                }
-
+            {/* Loading or Error Handling */}
+            <div className="flex flex-col items-center">
+                {isLoading ? (
+                    <LoadingPage />
+                ) : error ? (
+                    <NotFoundPage>
+                            <pre>{JSON.stringify(error, null, 2)}</pre>
+                        </NotFoundPage>
+                    ) : !hotel ? (
+                        <NotFoundPage>
+                            <span>Hotel not found</span>
+                        </NotFoundPage>
+                        ) : hotel.bookings && (
+                            <AvailableDatesTable
+                                bookings={hotel.bookings.filter(booking => booking.room._id === room._id)}
+                            />
+                )}
             </div>
+
+            {/* Submit Button */}
             <button
                 disabled={isBooking}
                 type="submit"
-                className="w-full px-4 py-2 text-slate-100 bg-accent-500 text-white rounded-md hover:bg-accent-500-dark"
+                className="w-full px-4 py-2 0 bg-accent-500 text-white rounded-md hover:bg-accent-500-dark mt-4"
             >
                 Book Room
             </button>
         </form>
+
     );
 }

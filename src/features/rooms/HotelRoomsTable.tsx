@@ -24,7 +24,7 @@ function HotelRoomsTable() {
         </h1>
         <Link
           to={`/dashboard${user?.role === Role.ADMIN ? "/hotels" : ""}/${hotelId}/add-room`}
-          className="mr-2 cursor-pointer rounded-md bg-accent-500 text-slate-100 px-4 py-[6px] text-lg text-white transition-all duration-200 hover:scale-105"
+          className="mr-2 cursor-pointer rounded-md bg-accent-500  px-4 py-[6px] text-lg text-white transition-all duration-200 hover:scale-105"
         >
           Add Room
         </Link>

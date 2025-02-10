@@ -21,11 +21,11 @@ function RoomImages() {
 
   return (
     <div>
-      <div className="mb-10">
+      <div className="mb-10 flex flex-col md:flex-row md:items-center items-stretch">
         {existingImageUrls?.length > 0 ? (
           <div>
             <h2>Rooms Images</h2>
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-1  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {existingImageUrls.map((image, i) => (
                 <div key={i} className="group relative bg-gray-100">
                   <img
@@ -52,7 +52,7 @@ function RoomImages() {
 
       <div className="flex justify-center gap-3">
         <div className="flex-1 p-3">
-          <label className="mx-auto flex w-[40%] flex-col rounded-md border-2 bg-slate-100 p-2 hover:cursor-pointer">
+          <label className="mx-auto flex w-full md:w-[40%] flex-col rounded-md border-2 bg-slate-100 p-2 hover:cursor-pointer">
             upload room images - at-least 1 images
             {existingImageUrls?.length && (
               <span>

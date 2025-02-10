@@ -15,7 +15,7 @@ function SideBar({ menus }: Props) {
     <>
       {/* Mobile Menu Button */}
       <button
-        className="md:hidden fixed top-4 left-4 z-50 p-2 bg-accent-500 rounded-full text-white"
+        className="lg:hidden text-slate-100 fixed top-6 left-4 z-50 p-2 bg-accent-500 rounded-full "
         onClick={() => setIsOpen(!isOpen)}
       >
         {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -23,9 +23,9 @@ function SideBar({ menus }: Props) {
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-40 w-[260px] bg-slate-100 text-white transform transition-transform md:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"} md:relative md:flex md:flex-col md:min-h-screen md:gap-2 md:py-4`}
+        className={`fixed inset-y-0 left-0 z-40 w-[260px] bg-slate-100  transform transition-transform lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"} lg:relative lg:flex lg:flex-col lg:min-h-screen lg:gap-2 lg:py-4`}
       >
-        <Logo className="text-white px-4 py-3" />
+        <Logo className=" px-4 py-3" />
 
         <hr className="border-b-2 border-gray-700" />
 
@@ -64,7 +64,7 @@ function SideBar({ menus }: Props) {
       </div>
 
       {/* Overlay when sidebar is open in mobile */}
-      {isOpen && <div className="fixed inset-0 bg-[#454545]/50 z-30 md:hidden" onClick={() => setIsOpen(false)}></div>}
+      {isOpen && <div className="fixed inset-0 bg-[#454545]/50 z-30 lg:hidden" onClick={() => setIsOpen(false)}></div>}
     </>
   );
 }

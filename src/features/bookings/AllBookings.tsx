@@ -3,10 +3,15 @@ import { BookingStatus } from "../../enums/bookingStatusEnum";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
 import { bookingApi, BookingTags, useGetAllBookingsQuery } from "../../redux/api/bookingApi";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { CustomPagination } from "../../components/Pagination";
+import { useClickOutside } from "../../components/lib/useClickOutSide";
+import { Menu, X } from "lucide-react";
 
 const AllBookings = () => {
+
+  const [openDropdown, setOpenDropdown] = useState(false);
+  const modalRef = useClickOutside<HTMLDivElement>(() => setOpenDropdown(false));
   const [searchParams, setSearchParams] = useSearchParams();
 
   const navigate = useNavigate();
@@ -67,24 +72,46 @@ const AllBookings = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 px-6 py-10">
+    <div className="min-h-screen relative bg-gray-100 px-6 py-10">
       <div className="bg-white mx-auto max-w-7xl overflow-hidden rounded-lg shadow-lg">
         <div className="flex items-center justify-between border-b border-gray-200 p-6">
           <h2 className="text-3xl font-bold text-slate-800">All Bookings</h2>
-          <div className="flex items-center justify-end gap-1">
+          <div className="hidden md:flex w-full items-center justify-end gap-1 md:w-auto">
             {bookingStatuses.map((status) => (
               <button
-                key={status}
-                className={`flex items-center justify-center rounded-sm px-4 py-2 text-[#333333] ${getStatusButtonColor(
-                  status,
-                )}`}
                 onClick={() => {
                   setSearchParams({ status });
                 }}
+                key={status}
+                className={`flex items-center justify-center rounded-sm px-4 py-2 text-[#333333] ${getStatusButtonColor(status)}`}
               >
                 {status.replace(/-/g, " ").toUpperCase()}
               </button>
             ))}
+          </div>
+          <div className="flex md:hidden">
+            <button
+              onClick={() => setOpenDropdown(prev => !prev)}
+              className="flex items-center justify-center rounded-sm px-4 py-2 text-accent-500 bg-gray-200">
+              {
+                openDropdown ? <X /> : <Menu />
+              }
+            </button>
+            {openDropdown && (
+              <div ref={modalRef} className=" absolute top-24 px-3 left-0 right-0 bg-slate-100 shadow-md flex flex-col w-[94%] items-stretch justify-end gap-1 md:w-auto">
+                {bookingStatuses.map((status) => (
+                  <button
+                    onClick={() => {
+                      setSearchParams({ status });
+                      setOpenDropdown(false);
+                    }}
+                    key={status}
+                    className={`flex items-center justify-center rounded-sm px-4 py-2 text-[#333333] ${getStatusButtonColor(status)}`}
+                  >
+                    {status.replace(/-/g, " ").toUpperCase()}
+                  </button>
+                ))}
+              </div>)}
           </div>
         </div>
 

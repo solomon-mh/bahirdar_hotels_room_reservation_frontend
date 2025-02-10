@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import { useAuthContext } from "../../context/AuthContext";
 import { useGetRoomByIdQuery } from "../../redux/api/roomsApi";
 import { ArrowLeft } from "lucide-react";
-import SubHeader from "../../components/SubHeader";
 import { useState } from "react";
 import { useGetHotelByIdQuery } from "../../redux/api/hotelApi";
 import LoadingPage from "../../pages/utils/LoadingPage";
@@ -87,66 +86,80 @@ export default function BookingPage() {
     }
 
     return (
-        <div className="p-6 flex flex-col gap-4">
-
-            <SubHeader>
-                <button
-                    onClick={() => navigate(-1)}
-                    className="flex items-center gap-1 bg-gray-100 p-2 rounded-md"
-                >
-                    <span className="material-icons">
-                        <ArrowLeft />
+        <div className="p-6 flex w-full overflow-x-hidden flex-col gap-4">
+            <div className="flex items-center px-4 w-full ml-0  md:ml-24 justify-between  shadow-md"  >
+                <div className="flex">
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="flex items-center gap-1 bg-gray-100 p-2 rounded-md"
+                    >
+                        <span className="material-icons">
+                            <ArrowLeft />
+                        </span>
+                    </button>
+                    <span className="hidden text-2xl md:inline">Book a Room  number: {room?.roomNumber} </span>
+                </div>
+                <h1 className="md:text-2xl text-xl   flex items-center font-bold text-slate-700">
+                    <span className="inline md:hidden">
+                        Book a Room
                     </span>
-                </button>
-                <h1 className=" text-2xl font-bold text-slate-700">
-                    Book a Room number : {room?.roomNumber}  in hotel  {
-                        fetchingHotel ? "Loading..." :
-                            <a
-                                href={`/hotels/${hotelId}`}
-                                className="text-accent-500 underline cursor-pointer">
+                    {fetchingHotel ? (
+                        "Loading..."
+                    ) : (
+                        <a
+                            href={`/hotels/${hotelId}`}
+                                className="text-accent-500 hidden md:inline underline cursor-pointer"
+                            >
                                 {hotel?.hotel.name}
                             </a>
-
-                    }
-                    {
-                        hotelFetchingError && <span className="text-red-500">Failed to fetch hotel</span>
-                    }
+                    )}
+                    {hotelFetchingError && (
+                        <span className="text-red-500">Failed to fetch hotel</span>
+                    )}
                 </h1>
-            </SubHeader>
-            <div className="flex">
-                <div className="flex flex-col gap-4 w-full">
-                    <BookingForm room={room} isBooking={isLoading} onSubmit={handleBookingSubmit} />
-                    {
-                        booking && (
-                            <div className="flex  items-strech gap-10 w-full justify-stretch px-4 py-2">
-                                <div className="flex flex-[1] flex-col gap-2">
-                                    <h2 className="text-xl font-bold">Booking Summary</h2>
-                                    <div className="flex justify-between">
-                                        <p>Price per night:</p>
-                                        <p>${room?.pricePerNight}</p>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <p>Number of nights:</p>
-                                        <p>{booking?.numOfNights}</p>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <p>Total Price:</p>
-                                        <p>${booking?.totalPrice}</p>
-                                    </div>
+            </div>
+
+            <div className="flex w-full gap-6 flex-col md:flex-row md:items-center items-stretch">
+                {/* Booking Form Section */}
+                <div className="flex flex-col md:flex-row md:items-center items-stretch gap-4 w-full ">
+                    <BookingForm
+                        room={room}
+                        isBooking={isLoading}
+                        onSubmit={handleBookingSubmit}
+                    />
+                    {booking && (
+                        <div className="flex items-center gap-10 justify-between w-full px-4 py-2">
+                            <div className="flex-[1] flex flex-col gap-2">
+                                <h2 className="text-xl font-bold">Booking Summary</h2>
+                                <div className="flex justify-between">
+                                    <p>Price per night:</p>
+                                    <p>${room?.pricePerNight}</p>
                                 </div>
-                                <div className="flex flex-[2] flex-col items-center justify-end gap-2">
-                                    <button
-                                        className="w-[80%] px-4 py-2 text-slate-100 bg-accent-500 text-white rounded-md hover:bg-accent-500-dark"
-                                        onClick={() => navigate(`/hotels/${hotelId}/rooms/${roomId}/${booking?._id}/pay`)}
-                                    >
-                                        Continue with chapa
-                                    </button>
+                                <div className="flex justify-between">
+                                    <p>Number of nights:</p>
+                                    <p>{booking?.numOfNights}</p>
+                                </div>
+                                <div className="flex justify-between">
+                                    <p>Total Price:</p>
+                                    <p>${booking?.totalPrice}</p>
                                 </div>
                             </div>
-                        )
-                    }
+                            <div className="flex-[2] flex flex-col items-center justify-end gap-2">
+                                <button
+                                    className="w-[80%] px-4 py-2 text-slate-100 bg-accent-500  rounded-md hover:bg-accent-500-dark"
+                                    onClick={() =>
+                                        navigate(`/hotels/${hotelId}/rooms/${roomId}/${booking?._id}/pay`)
+                                    }
+                                >
+                                    Continue with Chapa
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
-                <div className="div w-72">
+
+                {/* Room Details Section */}
+                <div className="w-full md:w-[40%]">
                     {fetchingRoom ? (
                         <p>Loading...</p>
                     ) : roomFetchingError ? (
@@ -156,12 +169,12 @@ export default function BookingPage() {
                     ) : (
                         <div className="rounded border p-4 shadow-sm">
                             <h2 className="mb-2 text-xl font-bold">Room Details</h2>
-                            <div className="flex flex-col gap-2 p-2 ">
-                                <div className="flex">
+                                    <div className="flex flex-col gap-2 p-2">
+                                        <div className="flex items-stretch justify-stretch">
                                     <img
                                         src={room?.images[0]}
                                         alt="Room"
-                                        className="mb-2 h-36 object-cover"
+                                                className="mb-2 h-36 w-full object-cover"
                                     />
                                 </div>
                                 <div className="flex flex-col">
@@ -181,8 +194,7 @@ export default function BookingPage() {
                                         <strong>Description:</strong> {room?.description}
                                     </p>
                                     <p>
-                                        <strong>Facilities:</strong>{" "}
-                                        {room?.roomFacilities.join(", ")}
+                                                <strong>Facilities:</strong> {room?.roomFacilities.join(", ")}
                                     </p>
                                 </div>
                             </div>
@@ -191,5 +203,6 @@ export default function BookingPage() {
                 </div>
             </div>
         </div>
+
     );
 }

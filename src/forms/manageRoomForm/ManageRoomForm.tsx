@@ -85,9 +85,9 @@ function ManageRoomForm({
 
   return (
     <FormProvider {...formMethods}>
-      <div className="flex w-full px-6 flex-col items-center justify-center p-3">
+      <div className="flex w-full md:px-6 flex-col items-center justify-center p-3">
         <div className="flex w-full items-center justify-center py-3">
-          <div className="w-full relative flex items-center justify-center cursor-pointer rounded-sm text-slate-800  py-2 text-center text-2xl font-bold text-white shadow-xl">
+          <div className="w-full relative flex items-center justify-center cursor-pointer rounded-sm text-slate-800  py-2 text-center text-2xl font-bold shadow-xl">
             {/* <button
             className="absolute left-4"
             onClick={() => navigate(room?._id ? "/dashboard/rooms/" + room._id : "/dashboard/rooms")}
@@ -104,7 +104,7 @@ function ManageRoomForm({
       ) : (
         <form
           onSubmit={onSubmitHandler}
-          className="w-full  flex flex-col gap-8 rounded  p-10 shadow-lg"
+              className="w-full  flex flex-col gap-8 rounded py-4 px-4 md:p-10 shadow-lg"
           >
           <div className="flex flex-col gap-4">
             {/* ROOM NUMBER */}
