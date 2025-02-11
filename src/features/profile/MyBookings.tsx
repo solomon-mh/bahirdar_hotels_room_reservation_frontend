@@ -1,11 +1,11 @@
+import { useGetMyBookingsQuery } from "@/redux/api/userApi";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/table";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
-import { useGetAllBookingsQuery } from "../../redux/api/bookingApi";
 
 const MyBookings = () => {
 
-  const { data: { data: bookings } = {}, isLoading, error } = useGetAllBookingsQuery("")
+  const { data: { data: { bookings } = {} } = {}, isLoading, error } = useGetMyBookingsQuery()
 
 
   if (isLoading)

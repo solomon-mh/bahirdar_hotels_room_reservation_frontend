@@ -7,10 +7,13 @@ import { useCreateRoomMutation } from "../../redux/api/roomsApi";
 import toast from "react-hot-toast";
 import { IRoom } from "../../types/roomTypes";
 import { AMENITIES } from "../../constants/RoomAmenities";
+import { useParams } from "react-router-dom";
 
 
 
 const AddRoomPage: React.FC = () => {
+
+    const { hotelId } = useParams<{ hotelId: string }>()
 
     const [createRoom, { isLoading }] = useCreateRoomMutation()
 
@@ -68,7 +71,10 @@ const AddRoomPage: React.FC = () => {
             }
 
 
-            createRoom(formData).unwrap().then((response) => {
+            createRoom({
+                data: formData,
+                hotelId: hotelId as string
+            }).unwrap().then((response) => {
                 toast.success(response.message || "Room added succefully")
             }).catch((err) => {
                 if ('data' in err)

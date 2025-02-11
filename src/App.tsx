@@ -14,11 +14,9 @@ import Account from "./features/profile/Account";
 import ProtectRoutes from "./ui/ProtectRoutes";
 import AllBookings from "./features/bookings/AllBookings";
 import AllUsers from "./features/users/AllUsers";
-import HotelUsers from "./features/users/HotelUsers";
 import HotelRoomsTable from "./features/rooms/HotelRoomsTable";
 import AddRoom from "./features/rooms/AddRoom";
 import UpdateRoom from "./features/rooms/UpdateRoom";
-import Settings from "./features/settings/Settings";
 import {
   AboutPage,
   HomePage,
@@ -27,7 +25,6 @@ import {
   SignupPage,
 } from "./pages";
 import RoomsListPage from "./pages/RoomsListPage";
-import RoomListDetail from "./ui/RoomListDetail";
 import Profile from "./features/profile/Profile";
 import AccountSettings from "./features/profile/AccountSettings";
 import MyBookings from "./features/profile/MyBookings";
@@ -95,10 +92,6 @@ function App() {
                 <Route index element={<HotelDetail />} />
                 <Route path="rooms" element={<RoomList />} />
               </Route>
-              {/* <Route
-                path="complete-onboarding"
-                element={<UserRegistration />}
-              /> */}
               <Route
                 path="hotels/:hotelId/rooms/:roomId"
                 element={<RoomDetail />}
@@ -112,7 +105,6 @@ function App() {
                 element={<PaymentPage />}
               />
               <Route path="hotels/:hotelId/rooms" element={<RoomsListPage />}>
-                <Route path=":roomId" element={<RoomListDetail />} />
               </Route>
 
               <Route
@@ -218,10 +210,8 @@ function App() {
                     path="bookings/:bookingId"
                     element={<BookingDetails />}
                   />
-                  <Route path=":hotelId/edit" element={<UpdateHotel />} />
-                  <Route path="users" element={<HotelUsers />} />
-                  <Route path="bookings" element={<HotelBookings />} />
-                  <Route path="settings" element={<Settings />} />
+                    <Route path=":hotelId/edit" element={<UpdateHotel />} />
+                    <Route path="bookings" element={<HotelBookings />} />
                 </>
               ) : null}
             </Route>

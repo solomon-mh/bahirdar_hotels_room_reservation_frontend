@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IUser, User } from "../../types/userTypes";
 import { CreateResponse, ITimeStamp } from "../../types/general";
 import { BASE_URL } from "../../utils/url";
+import { IBookingResponse } from "@/types/bookingTypes";
 
 export enum UserTags {
   USERS = "users",
@@ -98,6 +99,17 @@ export const userApi = createApi({
       }),
       invalidatesTags: [UserTags.USERS, UserTags.USER],
     }),
+    getMyBookings: builder.query<
+      {
+        data: {
+          user: IUser;
+          bookings: (IBookingResponse & ITimeStamp)[];
+        };
+      },
+      void
+    >({
+      query: () => "/user-with-bookings",
+    }),
   }),
 });
 
@@ -113,4 +125,5 @@ export const {
   useVerifyUserAccountMutation,
   useVerificationRequestedUsersQuery,
   useDeclineVerificationRequestMutation,
+  useGetMyBookingsQuery,
 } = userApi;

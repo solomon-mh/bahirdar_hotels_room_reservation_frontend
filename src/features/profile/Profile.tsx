@@ -1,66 +1,78 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Avatar } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Pencil } from "lucide-react";
+import { Card } from "@/components/ui/card";
 import { useAuthContext } from "@/context/AuthContext";
 
-export default function UserProfile() {
+const UserProfile = () => {
   const { user } = useAuthContext()
-  if (!user)
+  if (user === null)
   {
-    return (
-      <div className="max-w-4xl mx-auto p-6">
-        <Card className="p-6 shadow-lg rounded-2xl">
-          <h1 className="text-2xl font-semibold">User not found</h1>
-        </Card>
-      </div>
-    )
-  }
-  return (
-    <div className="w-full  p-6">
-      <Card className="p-6 shadow-lg shadow-slate-200 rounded-lg">
-        <div className="flex items-center gap-6">
-          <Avatar className="w-24 h-24">
-            <img src={user.profilePicture} alt={user.firstName} className="rounded-full" />
-          </Avatar>
-          <div>
-            <h1 className="text-2xl font-semibold">
-              {user.firstName} {user.lastName}
-            </h1>
-            <p className="text-gray-500">@{user.username}</p>
-            <Badge className="mt-2 bg-blue-100 text-blue-600">{user.role}</Badge>
-          </div>
-        </div>
-
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card className="p-4">
-            <CardContent>
-              <h2 className="text-lg font-semibold">Personal Information</h2>
-              <p>Email: <span className="font-medium">{user.email}</span></p>
-              <p>Phone: <span className="font-medium">{user.phoneNumber}</span></p>
-              <p>Date of Birth: <span className="font-medium">{new Date(user.dateOfBirth).toLocaleDateString()}</span></p>
-              <p>Gender: <span className="font-medium">{user.gender}</span></p>
-            </CardContent>
-          </Card>
-
-          <Card className="p-4">
-            <CardContent>
-              <h2 className="text-lg font-semibold">Address</h2>
-              <p>City: <span className="font-medium">{user.address?.city}</span></p>
-              <p>Subcity: <span className="font-medium">{user.address?.subcity}</span></p>
-              <p>Woreda: <span className="font-medium">{user.address?.woreda}</span></p>
-              <p>Street: <span className="font-medium">{user.address?.street}</span></p>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="mt-6 flex justify-end">
-          <Button variant="outline" className="flex items-center gap-2">
-            <Pencil size={16} /> Edit Profile
-          </Button>
-        </div>
+    <div className="max-w-4xl mx-auto p-6">
+      <Card className="p-6 shadow-lg rounded-2xl">
+        <h1 className="text-2xl font-semibold">User not found</h1>
       </Card>
     </div>
+  }
+
+
+  return (
+    <div className="flex justify-center items-start w-full h-full bg-gray-100 p-4">
+      <div className="bg-white shadow-lg p-10 rounded-2xl  w-full">
+        <div className="flex items-strech p-4 gap-10 w-full">
+          <div className="flex flex-col  items-center">
+            <img
+              src={user?.profilePicture}
+              alt="Profile"
+              className="w-36 h-36 rounded-full border-4 border-accent-500 object-cover"
+            />
+            <div className="flex items-center flex-col">
+              <h2 className="mt-4 text-xl font-semibold text-gray-800">
+                {user?.firstName} {user?.lastName}
+              </h2>
+              <p className="text-gray-500">@{user?.username}</p>
+            </div>
+          </div>
+          <div className="mt-6 shadow-lg shadow-slate-100  p-4">
+            <h3 className="text-lg font-semibold text-gray-700">User Info</h3>
+            <ul className="mt-2 text-gray-600">
+              <li><strong>Email:</strong> {user?.email}</li>
+              <li><strong>Phone:</strong> {user?.phoneNumber}</li>
+              <li><strong>Gender:</strong> {user?.gender}</li>
+              <li><strong>Date of Birth:</strong> {new Date(user?.dateOfBirth || "").toDateString()}</li>
+              <li><strong>Role:</strong> {user?.role}</li>
+              <li><strong>Verified:</strong> {user?.isVerified ? "Verfied✅" : "Not Verfied❌"}</li>
+            </ul>
+          </div>
+          <div className="mt-6  shadow-lg shadow-slate-100  p-4">
+            <h3 className="text-lg font-semibold text-gray-700">Address information</h3>
+            <ul className="mt-2 text-gray-600">
+              <li><strong>Country:</strong> {user?.address.country}</li>
+              <li><strong>City:</strong> {user?.address.city}</li>
+              <li><strong>Subcity:</strong> {user?.address.subcity}</li>
+              <li><strong>Wereda:</strong> {user?.address.woreda}</li>
+              <li><strong>Street:</strong> {user?.address.street}</li>
+            </ul>
+          </div>
+        </div>
+        <div className="mt-6 flex flex-col md:flex-row items-center shadow-lg shadow-slate-200 justify-start gap-4">
+          <div className="flex items-center flex-col-reverse p-4 gap-2">
+            <h2 className="italic text-slate-700">Front Side of the ID</h2>
+            <img
+              src={user?.idPhoto_front}
+              alt="ID Front"
+              className="w-48 h-48 object-cover rounded-lg border"
+            />
+          </div>
+          <div className="flex items-center flex-col-reverse p-4 gap-2">
+            <h2 className="text-slate-700 italic">Back Side of the ID</h2>
+            <img
+              src={user?.idPhoto_back}
+              alt="ID Back"
+              className="w-48 h-48 object-cover rounded-lg border"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
   );
-}
+};
+
+export default UserProfile;
