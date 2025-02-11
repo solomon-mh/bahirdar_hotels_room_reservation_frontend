@@ -16,13 +16,13 @@ export default function ConfirmAction({ btnText, onConfirm, isOpen, setIsOpen, c
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <button className="px-4 py-1  border bg-[#34343400] border-red-500 text-red-500 hover:bg-red-500 rounded-md hover:text-slate-100">
+                <button className="px-4 py-1  border bg-[#34343400] border-accent-500 text-accent-500 hover:bg-accent-500 rounded-md hover:text-slate-100">
                     {btnText || `Confirm`}
                 </button>
             </DialogTrigger>
             <DialogContent className="max-w-sm bg-slate-200">
                 <DialogHeader>
-                    <DialogTitle>Confirm Deletion</DialogTitle>
+                    <DialogTitle>Confirm Booking status Change</DialogTitle>
                 </DialogHeader>
                 <p className="text-gray-600">
                     Are you sure you want to confirm this acction? This action cannot be undone.
@@ -41,7 +41,7 @@ export default function ConfirmAction({ btnText, onConfirm, isOpen, setIsOpen, c
                             onConfirm();
                             setIsOpen?.(false);
                         }}
-                        className="px-4 py-2 disabled:cursor-not-allowed text-slate-100 bg-red-500 text-white rounded-md hover:bg-red-600"
+                        className="px-4 py-2 disabled:cursor-not-allowed text-slate-100 bg-accent-500/95  rounded-md hover:bg-accent-600"
                     >
                         Confirm
                     </button>

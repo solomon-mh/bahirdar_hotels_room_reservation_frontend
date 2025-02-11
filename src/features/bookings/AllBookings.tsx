@@ -7,6 +7,7 @@ import { useState } from "react";
 import { CustomPagination } from "../../components/Pagination";
 import { useClickOutside } from "../../components/lib/useClickOutSide";
 import { Menu, X } from "lucide-react";
+import { getBookingStatusBgColor, getBookingStatusTextColor } from "./color-utils";
 
 const AllBookings = () => {
 
@@ -25,41 +26,8 @@ const AllBookings = () => {
   });
 
 
-  const getStatusButtonColor = (status: BookingStatus) => {
-    switch (status)
-    {
-      case BookingStatus.PENDING:
-        return "bg-yellow-400/90 hover:bg-yellow-400";
-      case BookingStatus.CONFIRMED:
-        return "bg-green-400/90 hover:bg-green-400";
-      case BookingStatus.CANCELLED:
-        return "bg-red-400/90 hover:bg-red-400";
-      case BookingStatus.CHECKED_IN:
-        return "bg-accent-400/90 hover:bg-accent-400";
-      case BookingStatus.CHECKED_OUT:
-        return "bg-slate-300/90 hover:bg-slate-300";
-      default:
-        return "bg-gray-400/90 hover:bg-gray-400";
-    }
-  };
 
-  const getBgColor = (status: BookingStatus) => {
-    switch (status)
-    {
-      case BookingStatus.PENDING:
-        return "text-yellow-500/90 ";
-      case BookingStatus.CONFIRMED:
-        return "text-green-500/90 ";
-      case BookingStatus.CANCELLED:
-        return "text-red-500/90 ";
-      case BookingStatus.CHECKED_IN:
-        return "text-accent-500/90 ";
-      case BookingStatus.CHECKED_OUT:
-        return "text-slate-500/90";
-      default:
-        return "text-gray-500/90 ";
-    }
-  };
+
 
   return (
     <div className="min-h-screen w-full relative bg-gray-100 md:px-6 py-10">
@@ -74,7 +42,7 @@ const AllBookings = () => {
                   setSearchParams(searchParams);
                 }}
                 key={status}
-                className={`flex items-center justify-center rounded-sm px-4 py-2 text-[#333333] ${getStatusButtonColor(status)}`}
+                className={`flex items-center justify-center rounded-sm px-4 py-2 text-[#333333] ${getBookingStatusBgColor(status)}`}
               >
                 {status.replace(/-/g, " ").toUpperCase()}
               </button>
@@ -97,7 +65,7 @@ const AllBookings = () => {
                       setOpenDropdown(false);
                     }}
                     key={status}
-                    className={`flex items-center justify-center rounded-sm px-4 py-2 text-[#333333] ${getStatusButtonColor(status)}`}
+                    className={`flex items-center justify-center rounded-sm px-4 py-2 text-[#333333] ${getBookingStatusBgColor(status)}`}
                   >
                     {status.replace(/-/g, " ").toUpperCase()}
                   </button>
@@ -170,7 +138,7 @@ const AllBookings = () => {
                             <td
                               className={
                                 "border border-gray-200 px-4 py-2 capitalize text-gray-600 " +
-                                `${getBgColor(booking.status as BookingStatus)}`
+                                `${getBookingStatusTextColor(booking.status as BookingStatus)}`
                               }
                             >
                               {booking.status}

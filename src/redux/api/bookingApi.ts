@@ -126,16 +126,40 @@ export const bookingApi = createApi({
         pagination: IPagination;
         room: IRoom & ITimeStamp;
       },
-      { roomId: string }
+      {
+        roomId: string;
+        params?: string;
+      }
     >({
-      query: ({ roomId }) => {
-        return `/all-bookings-of-a-room/${roomId}`;
+      query: ({ roomId, params }) => {
+        return `/all-bookings-of-a-room/${roomId}?${params ? params : ""}`;
       },
       providesTags: (_, __, { roomId }) => {
         return [
           {
             id: roomId,
             type: BookingTags.ROOM_BOOKINGS,
+          },
+        ];
+      },
+    }),
+    getUserBookingsByUserId: builder.query<
+      {
+        data: (IBookingResponse & ITimeStamp)[];
+        pagination: IPagination;
+      },
+      {
+        userId: string;
+        params?: string;
+      }
+    >({
+      query: ({ userId, params }) =>
+        `/all-bookings-of-a-user/${userId}?${params ? params : ""}`,
+      providesTags: (_, __, { userId }) => {
+        return [
+          {
+            id: userId,
+            type: BookingTags.BOOKINGS,
           },
         ];
       },
@@ -153,4 +177,5 @@ export const {
   useLazyGetHotelBookingsQuery,
   useUpdateBookingStatusMutation,
   useGetRoomBookingsByRoomIdQuery,
+  useGetUserBookingsByUserIdQuery,
 } = bookingApi;

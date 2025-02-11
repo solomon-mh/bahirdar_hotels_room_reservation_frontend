@@ -156,7 +156,7 @@ const PaymentPage = () => {
                   toast.success("Redirecting to Chapa payment gateway");
                   navigate("/account/bookings");
                 }}
-                className="rounded-lg bg-green-400 px-4 py-2 text-center text-dark-200"
+                className="rounded-lg bg-accent-500/95 hover:bg-accent-500 px-4 py-2 text-center text-slate-100"
               >
                 Continue Payment With Chapa
               </a>

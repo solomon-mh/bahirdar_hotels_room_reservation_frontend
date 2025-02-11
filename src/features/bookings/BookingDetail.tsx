@@ -20,10 +20,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from "../../components/ui/select";
+import { getBookingStatusTextColor } from "./color-utils";
 
 export default function BookingDetails() {
     const bookingStatuses = Object.values(BookingStatus);
-    const { hotelId } = useParams<{ hotelId: string }>();
+  const { hotelId, userId } = useParams<{ hotelId: string, userId: string }>();
     const { bookingId } = useParams<{ bookingId: string }>();
     const { data: { data: booking } = {}, isLoading, error } = useGetBookingByIdQuery(bookingId as string);
     const [confirimAction, { isLoading: updating }] = useUpdateBookingStatusMutation();
@@ -61,11 +62,12 @@ export default function BookingDetails() {
         setStatus(booking?.status || null);
     }, [booking?.status]);
 
-    const isHotelBookingDetail = !!hotelId
+  const isHotelBookingDetail = !!hotelId
+  const isUserBookingDetail = !!userId
     return (
       <div className="flex max-w-[95vw] md:max-w-max flex-col gap-4 p-4">
         <div className="flex w-full shadow-lg p-2 items-center justify-between gap-1 md:gap-4 ">
-          {!isHotelBookingDetail ? (
+          {(!isHotelBookingDetail && !isUserBookingDetail) ? (
             <div className="flex items-center gap-4 w-full md:w-auto">
               <button
                 onClick={() => window.history.back()}
@@ -87,7 +89,7 @@ export default function BookingDetails() {
                 <SelectContent>
                   <SelectGroup>
                     {bookingStatuses.map((status, index) => (
-                      <SelectItem key={index} value={status}>{status}</SelectItem>
+                      <SelectItem className={`${getBookingStatusTextColor(status)}`} key={index} value={status}>{status}</SelectItem>
                     ))}
                   </SelectGroup>
                 </SelectContent>
@@ -169,7 +171,19 @@ export default function BookingDetails() {
               {/* Room Images */}
               <div className="mt-6">
                 <h2 className="text-lg font-semibold mb-2">Room Images</h2>
-                <ImageSlider slidesToShow={2} images={booking.room?.images} />
+                {
+                  booking.room?.images.length > 1 ? (
+                    <ImageSlider slidesToShow={2} images={booking.room?.images} />
+                  ) : (
+                    <div className="flex gap-4">
+                      {booking.room?.images.map((image, index) => (
+                        <div key={index} className="h-64 w-1/2">
+                          <img src={image} alt={`Room Image ${index + 1}`} className="h-full w-full object-cover rounded-md" />
+                        </div>
+                      ))}
+                    </div>
+                  )
+                }
               </div>
 
               {/* Booking Details */}

@@ -37,7 +37,6 @@ import BookRoomPage from "./pages/BookRoomPage";
 import PaymentSuccessPage from "./pages/PaymentSuccessPage";
 import ForgotMyPassword from "./features/profile/ForgotMyPassword";
 import "react-toastify/dist/ReactToastify.css";
-import UserDetail from "./features/users/UserDetail.js";
 import HotelsPage from "./features/hotels/HotelsPage.js";
 import HotelDetailPage from "./features/hotels/HotelDetailPage.js";
 import { HotelDetail } from "./features/hotels/components/HotelDetail.js";
@@ -52,6 +51,9 @@ import IdentityVerification from "./features/profile/IdentityVerification.js";
 import PaymentPage from "./features/payments/MakePayment.js";
 import IdentityVerificationRequests from "./features/users/IdentityVerificationRequests.js";
 import UserDetailForVerification from "./features/users/UserDetailForVerification.js";
+import UserPage from "./features/users/UserPage.js";
+import UserDetail from "./features/users/UserDetail.js";
+import UserBookings from "./features/users/UserBookings.js";
 const queryClient = new QueryClient();
 
 function App() {
@@ -184,7 +186,14 @@ function App() {
                     element={<BookingDetails />}
                   />
                   <Route path="users" element={<AllUsers />} />
-                  <Route path="users/:userId" element={<UserDetail />} />
+                  <Route path="users/:userId" element={<UserPage />} >
+                    <Route index element={<UserDetail />} />
+                    <Route path="bookings" element={<UserBookings />} />
+                    <Route
+                      path="bookings/:bookingId"
+                      element={<BookingDetails />}
+                    />
+                  </Route>
                   <Route path="add-hotel" element={<AddHotel />} />
                   <Route
                     path="identity-verification-requests"
