@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useNavigate, useParams } from "react-router-dom";
 import {
   useDeclineVerificationRequestMutation,
@@ -199,7 +200,7 @@ function UserDetailForVerification() {
           </NotFoundPage>
         ) : (
           <div className="space-y-5">
-            <div className="bg-white relative w-full space-y-4 overflow-hidden px-10">
+                  <div className="relative w-full space-y-4 overflow-hidden bg-white px-10">
               <div className="border-b border-gray-200 p-6">
                 <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
                   <div className="space-y-2">
@@ -297,56 +298,55 @@ function UserDetailForVerification() {
                 </div>
               </div>
             </div>
-            <div>
-              {/* Admin verification dialog */}
+                  <div className="flex w-full flex-row-reverse items-center justify-start gap-2 space-y-2 px-4 pb-4">
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button className="w-full bg-accent-600 text-light-300 hover:bg-accent-700">
+                        <Button className="mt-2 w-1/2 bg-accent-500/95 text-slate-100 hover:bg-accent-500">
                     Verify User Account
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="bg-slate-200 sm:max-w-[425px]">
                   <DialogHeader>
-                    <DialogTitle>Verify User Account</DialogTitle>
-                    <DialogDescription>
-                      <span className="font-semibold text-red-600">
-                        ⚠ Warning:
-                      </span>
-                      <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-gray-700">
-                        <li>
-                          Ensure you have thoroughly reviewed the user's
-                          documents and identity before proceeding.
-                        </li>
-                        <li>
-                          Account verification is{" "}
-                          <span className="font-semibold">permanent</span> and
-                          cannot be undone.
-                        </li>
-                        <li>
-                          Any mistakes in verification can lead to unauthorized
-                          access or security risks.
-                        </li>
-                        <li>
-                          If you are unsure,{" "}
-                          <span className="font-semibold">
-                            consult with a senior administrator
-                          </span>{" "}
-                          before proceeding.
-                        </li>
-                      </ul>
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="text-gray-800">
-                    Are you sure you want to verify this user?
-                  </div>
+                          <DialogTitle>Verifiying User Account</DialogTitle>
+                        </DialogHeader>
+                        <DialogDescription>
+                          <span className="font-semibold text-red-500">
+                            ⚠ Warning:
+                          </span>
+                          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-gray-700">
+                            <li>
+                              Ensure you have thoroughly reviewed the user's documents
+                              and identity before proceeding.
+                            </li>
+                            <li>
+                              Account verification is{" "}
+                              <span className="font-semibold">permanent</span> and
+                              cannot be undone.
+                            </li>
+                            <li>
+                              Any mistakes in verification can lead to unauthorized
+                              access or security risks.
+                            </li>
+                            <li>
+                              If you are unsure,{" "}
+                              <span className="font-semibold">
+                                consult with a senior administrator
+                              </span>{" "}
+                              before proceeding.
+                            </li>
+                          </ul>
+                          <div className="text-gray-800">
+                            Are you sure you want to verify this user?
+                          </div>
+                        </DialogDescription>
                   <DialogFooter>
                     <Button
                       disabled={isLoadingVerifyAccount}
-                      className="bg-red-600 hover:bg-red-700"
+                            className="bg-accent-500/95 text-white hover:bg-accent-500"
                       onClick={onConfirmHandler}
                     >
                       {isLoadingVerifyAccount ? (
-                        <SpinnerMini className="text-white h-5 w-5" />
+                              <SpinnerMini className="h-5 w-5 " />
                       ) : (
                         "Confirm Verification"
                       )}
@@ -356,7 +356,7 @@ function UserDetailForVerification() {
               </Dialog>
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button className="my-2 w-full bg-red-400 text-light-300 hover:bg-red-500 disabled:cursor-not-allowed">
+                        <Button className="w-1/2 bg-red-500/95 text-light-100 hover:bg-red-500 disabled:cursor-not-allowed">
                     Decline Verification
                   </Button>
                 </DialogTrigger>
@@ -364,7 +364,7 @@ function UserDetailForVerification() {
                   <DialogHeader>
                     <DialogTitle>Decline User Account</DialogTitle>
                     <DialogDescription>
-                      <span className="font-semibold text-red-600">
+                            <span className="font-semibold text-red-500">
                         ⚠ Warning:
                       </span>
                       <div className="text-gray-800">
@@ -377,10 +377,10 @@ function UserDetailForVerification() {
                     <Button
                       onClick={onDeclineHandler}
                       disabled={isLoadingDeclineVerification}
-                      className="bg-red-600 hover:bg-red-700"
+                            className="bg-red-500/95 text-white hover:bg-red-500"
                     >
                       {isLoadingDeclineVerification ? (
-                        <SpinnerMini className="text-white h-5 w-5" />
+                              <SpinnerMini className="h-5 w-5 " />
                       ) : (
                         "Decline Verification"
                       )}

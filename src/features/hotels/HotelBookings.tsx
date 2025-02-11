@@ -8,12 +8,10 @@ import { BookingStatus } from "../../enums/bookingStatusEnum";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
 import {
-    bookingApi,
-    BookingTags,
     useGetHotelBookingsQuery,
 } from "../../redux/api/bookingApi";
 import { CustomPagination } from "../../components/Pagination";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { useClickOutside } from "../../components/lib/useClickOutSide";
 const HotelBookings = () => {
@@ -27,21 +25,17 @@ const HotelBookings = () => {
 
     const bookingStatuses = Object.values(BookingStatus);
     const {
-        data: { data: { bookings } = {}, pagination } = {},
+        data: { data: bookings, pagination } = {},
         isLoading,
         error,
-    } = useGetHotelBookingsQuery(hotelId as string);
+    } = useGetHotelBookingsQuery({
+        hotelId: hotelId as string,
+        params: searchParams.toString() || "",
+    }, {
+        refetchOnMountOrArgChange: true,
 
-    useEffect(() => {
-        bookingApi.util.invalidateTags([BookingTags.BOOKINGS]);
-        if (!searchParams.get("status"))
-        {
-            setSearchParams({ status: BookingStatus.PENDING });
-        } else
-        {
-            setSearchParams(searchParams);
-        }
-    }, [searchParams, setSearchParams]);
+    });
+
     const getStatusButtonColor = (status: BookingStatus) => {
         switch (status)
         {
@@ -89,7 +83,8 @@ const HotelBookings = () => {
                         {bookingStatuses.map((status) => (
                             <button
                                 onClick={() => {
-                                    setSearchParams({ status });
+                                    searchParams.set("status", status);
+                                    setSearchParams(searchParams);
                                 }}
                                 key={status}
                                 className={`flex items-center justify-center rounded-sm px-4 py-2 text-[#333333] ${getStatusButtonColor(status)}`}

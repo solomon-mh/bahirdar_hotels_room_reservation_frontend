@@ -67,12 +67,12 @@ function SigninPage() {
             <CardDescription>
               <div>
                 Don't have an account?{" "}
-                <Link to="/signup" className="underline">
+                <Link to="/signup" className=" text-accent-500 cursor-pointer hover:underline">
                   Sign Up
                 </Link>
               </div>
               <div>
-                <Link to="/forgot-password" className="underline">
+                <Link to="/forgot-password" className="text-accent-500 cursor-pointer hover:underline">
                   Forgot Password?
                 </Link>
               </div>

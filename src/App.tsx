@@ -55,7 +55,7 @@ import UserDetailForVerification from "./features/users/UserDetailForVerificatio
 const queryClient = new QueryClient();
 
 function App() {
-  const { role, isLoggedIn } = useAuthContext();
+  const { role, isLoggedIn, user, } = useAuthContext();
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -135,9 +135,10 @@ function App() {
                   <Route path="settings" element={<AccountSettings />} />
                   <Route path="bookings" element={<MyBookings />} />
                   <Route
-                    path="complete-onboarding"
+                    path={user?.isVerified ? "edit-profile" : "complete-onboarding"}
                     element={<CompleteOnboarding />}
                   />
+
                   <Route
                     path="identity-verification"
                     element={<IdentityVerification />}

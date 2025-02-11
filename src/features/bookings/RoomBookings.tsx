@@ -1,13 +1,15 @@
 import { IBookingResponse } from "../../types/bookingTypes";
 import { IRoom } from "../../types/roomTypes";
-import { ITimeStamp } from "../../types/general";
+import { IPagination, ITimeStamp } from "../../types/general";
 import formatDate from "../../utils/formatDate";
+import { CustomPagination } from "@/components/Pagination";
 
 interface Props {
   bookings: (IBookingResponse & ITimeStamp)[];
+  pagination: IPagination | undefined
 }
 
-export default function AvailableDatesTable({ bookings }: Props) {
+export default function RoomBookings({ bookings, pagination }: Props) {
   return (
     <div className="overflow-x-auto h-[30vh] md:w-full max-w-[82vw]  overflow-y-auto">
       <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
@@ -52,6 +54,13 @@ export default function AvailableDatesTable({ bookings }: Props) {
           )}
         </tbody>
       </table>
+      {pagination && <CustomPagination
+        totalPages={pagination.totalPages}
+        page={pagination.page}
+        onPageChange={() => {
+
+        }}
+      />}
     </div>
   );
 }

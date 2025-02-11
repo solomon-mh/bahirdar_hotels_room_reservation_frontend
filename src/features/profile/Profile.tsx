@@ -47,10 +47,10 @@ export default function UserProfile() {
           <Card className="p-4">
             <CardContent>
               <h2 className="text-lg font-semibold">Address</h2>
-              <p>City: <span className="font-medium">{user.address.city}</span></p>
-              <p>Subcity: <span className="font-medium">{user.address.subcity}</span></p>
-              <p>Woreda: <span className="font-medium">{user.address.woreda}</span></p>
-              <p>Street: <span className="font-medium">{user.address.street}</span></p>
+              <p>City: <span className="font-medium">{user.address?.city}</span></p>
+              <p>Subcity: <span className="font-medium">{user.address?.subcity}</span></p>
+              <p>Woreda: <span className="font-medium">{user.address?.woreda}</span></p>
+              <p>Street: <span className="font-medium">{user.address?.street}</span></p>
             </CardContent>
           </Card>
         </div>

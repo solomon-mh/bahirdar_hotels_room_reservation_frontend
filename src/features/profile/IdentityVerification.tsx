@@ -62,32 +62,8 @@ function IdentityVerification() {
     );
   }
 
-  if (user.isVerificationRequested) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-xl font-bold">
-            Verification Pending ⏳
-          </CardTitle>
-          <CardDescription>
-            <p>
-              Your identity verification request has been submitted and is
-              currently under review.
-            </p>
-            <p className="mt-2">
-              This process may take some time. You will be notified once your
-              verification is complete.
-            </p>
-            <p className="mt-2 font-medium">
-              If you believe there is an issue, please contact support.
-            </p>
-          </CardDescription>
-        </CardHeader>
-      </Card>
-    );
-  }
-
-  if (user.isVerified) {
+  if (user.isVerified)
+  {
     return (
       <Card>
         <CardHeader>
@@ -101,6 +77,35 @@ function IdentityVerification() {
             </p>
             <p className="mt-2">
               If you have any issues, please contact support.
+            </p>
+          </CardDescription>
+        </CardHeader>
+      </Card>
+    );
+  }
+
+
+  if (user.isVerificationRequested)
+  {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-xl font-bold">
+            Verification <span
+              style={{ color: "#FFA500" }}
+            > Pending </span>⏳
+          </CardTitle>
+          <CardDescription>
+            <p>
+              Your identity verification request has been submitted and is
+              currently under review.
+            </p>
+            <p className="mt-2">
+              This process may take some time. You will be notified once your
+              verification is complete.
+            </p>
+            <p className="mt-2 font-medium">
+              If you believe there is an issue, please contact support.
             </p>
           </CardDescription>
         </CardHeader>

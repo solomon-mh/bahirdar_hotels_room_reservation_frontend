@@ -35,7 +35,8 @@ export default function BookingPage() {
       user: user?._id as string,
       checkIn: data.checkIn,
       checkOut: data.checkOut,
-      status: BookingStatus.PENDING,
+        status: BookingStatus.PENDING,
+        hotelId: hotelId as string
     })
       .unwrap()
       .then((res) => {

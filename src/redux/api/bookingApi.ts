@@ -4,11 +4,13 @@ import { CreateResponse, IPagination, ITimeStamp } from "../../types/general";
 import { BASE_URL } from "../../utils/url";
 import { IHotel } from "../../types/hotelTypes";
 import { BookingStatus } from "../../enums/bookingStatusEnum";
+import { IRoom } from "@/types/roomTypes";
 
 export enum BookingTags {
   BOOKINGS = "bookings",
   BOOKING = "booking",
   HOTEL_BOOKINGS = "hotel_bookings",
+  ROOM_BOOKINGS = "room_bookings",
 }
 export const bookingApi = createApi({
   reducerPath: "bookingApi",
@@ -16,6 +18,7 @@ export const bookingApi = createApi({
     BookingTags.BOOKINGS,
     BookingTags.BOOKING,
     BookingTags.HOTEL_BOOKINGS,
+    BookingTags.ROOM_BOOKINGS,
   ],
   baseQuery: fetchBaseQuery({
     baseUrl: `${BASE_URL}/bookings`,
@@ -42,14 +45,27 @@ export const bookingApi = createApi({
     }),
     createBooking: builder.mutation<
       { data: IBooking } & Omit<CreateResponse, "data">,
-      IBooking
+      IBooking & { hotelId: string }
     >({
       query: (newBooking) => ({
         url: "/",
         method: "POST",
         body: newBooking,
       }),
-      invalidatesTags: [BookingTags.BOOKINGS],
+      invalidatesTags: (_, __, { room, hotelId }) => {
+        return [
+          {
+            id: room,
+            type: BookingTags.ROOM_BOOKINGS,
+          },
+          BookingTags.BOOKINGS,
+          BookingTags.HOTEL_BOOKINGS,
+          {
+            id: hotelId,
+            type: BookingTags.HOTEL_BOOKINGS,
+          },
+        ];
+      },
     }),
     updateBooking: builder.mutation<
       CreateResponse,
@@ -71,16 +87,24 @@ export const bookingApi = createApi({
     }),
     getHotelBookings: builder.query<
       {
-        data: {
-          hotel: IHotel & ITimeStamp;
-          bookings: (IBookingResponse & ITimeStamp)[];
-        };
         pagination: IPagination;
+        hotel: IHotel & ITimeStamp;
+        data: (IBookingResponse & ITimeStamp)[];
       },
-      string
+      { hotelId: string; params: string }
     >({
-      query: (hotelId) => `/all-bookings-of-a-hotel/${hotelId}`,
-      providesTags: [BookingTags.HOTEL_BOOKINGS],
+      query: ({ hotelId, params }) => {
+        return `/all-bookings-of-a-hotel/${hotelId}?${params ? params : ""}`;
+      },
+      providesTags: (_, __, { hotelId }) => {
+        return [
+          {
+            id: hotelId,
+            type: BookingTags.HOTEL_BOOKINGS,
+          },
+          BookingTags.HOTEL_BOOKINGS,
+        ];
+      },
     }),
     updateBookingStatus: builder.mutation<
       { data: IBooking } & Omit<CreateResponse, "data">,
@@ -96,6 +120,26 @@ export const bookingApi = createApi({
       }),
       invalidatesTags: [BookingTags.BOOKINGS, BookingTags.BOOKING],
     }),
+    getRoomBookingsByRoomId: builder.query<
+      {
+        data: (IBookingResponse & ITimeStamp)[];
+        pagination: IPagination;
+        room: IRoom & ITimeStamp;
+      },
+      { roomId: string }
+    >({
+      query: ({ roomId }) => {
+        return `/all-bookings-of-a-room/${roomId}`;
+      },
+      providesTags: (_, __, { roomId }) => {
+        return [
+          {
+            id: roomId,
+            type: BookingTags.ROOM_BOOKINGS,
+          },
+        ];
+      },
+    }),
   }),
 });
 
@@ -106,5 +150,7 @@ export const {
   useGetBookingByIdQuery,
   useUpdateBookingMutation,
   useGetHotelBookingsQuery,
+  useLazyGetHotelBookingsQuery,
   useUpdateBookingStatusMutation,
+  useGetRoomBookingsByRoomIdQuery,
 } = bookingApi;

@@ -2,8 +2,8 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { BookingStatus } from "../../enums/bookingStatusEnum";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
-import { bookingApi, BookingTags, useGetAllBookingsQuery } from "../../redux/api/bookingApi";
-import { useEffect, useState } from "react";
+import { useGetAllBookingsQuery } from "../../redux/api/bookingApi";
+import { useState } from "react";
 import { CustomPagination } from "../../components/Pagination";
 import { useClickOutside } from "../../components/lib/useClickOutSide";
 import { Menu, X } from "lucide-react";
@@ -20,21 +20,11 @@ const AllBookings = () => {
     data: { data: bookings, pagination } = {},
     isLoading,
     error,
-  } = useGetAllBookingsQuery(searchParams.toString() as string);
+  } = useGetAllBookingsQuery(searchParams.toString() as string, {
+    refetchOnMountOrArgChange: true
+  });
 
 
-
-  useEffect(() => {
-    if (!searchParams.get("status"))
-    {
-      setSearchParams({ status: BookingStatus.PENDING });
-    }
-    else
-    {
-      setSearchParams(searchParams);
-      bookingApi.util.invalidateTags([BookingTags.BOOKINGS]);
-    }
-  }, [searchParams, setSearchParams]);
   const getStatusButtonColor = (status: BookingStatus) => {
     switch (status)
     {
@@ -80,7 +70,8 @@ const AllBookings = () => {
             {bookingStatuses.map((status) => (
               <button
                 onClick={() => {
-                  setSearchParams({ status });
+                  searchParams.set("status", status);
+                  setSearchParams(searchParams);
                 }}
                 key={status}
                 className={`flex items-center justify-center rounded-sm px-4 py-2 text-[#333333] ${getStatusButtonColor(status)}`}

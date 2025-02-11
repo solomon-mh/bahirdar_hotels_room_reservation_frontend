@@ -2,18 +2,16 @@ import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { IBooking } from "@/types/bookingTypes";
 import { DatePicker } from "@/forms/components/datePicker";
-import AvailableDatesTable from "./AvDates";
 import { addDays } from "date-fns";
 import { calculateNumOfNights } from "@/utils/numOfNights";
-import { useGetHotelBookingsQuery } from "@/redux/api/bookingApi";
+import { useGetRoomBookingsByRoomIdQuery } from "@/redux/api/bookingApi";
 import LoadingPage from "@/pages/utils/LoadingPage";
 import NotFoundPage from "@/pages/utils/NotFoundPage";
 import { IRoom } from "@/types/roomTypes";
 import { ITimeStamp } from "@/types/general";
 import { getDateRange } from "@/utils/date";
-import { useNavigate, useParams } from "react-router-dom";
-import { useGetRoomByIdQuery } from "@/redux/api/roomsApi";
-import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
+import RoomBookings from "./RoomBookings";
 
 export default function BookingForm({
   onSubmit,
@@ -30,18 +28,14 @@ export default function BookingForm({
         formState: { errors },
     } = useForm<IBooking>();
     const [activeDates, setActiveDates] = useState<Date[]>([]);
-    const { hotelId, roomId } = useParams<{ roomId: string, hotelId: string }>();
+  const { roomId } = useParams<{ roomId: string, }>();
 
-    const navigate = useNavigate();
-    const {
-        isError,
-        data: { data } = {},
-    } = useGetRoomByIdQuery(roomId as string);
-    const [pricePerNight, setPricePerNight] = useState(data?.pricePerNight); // Example price per night
+
     const checkInDate = watch("checkIn");
     const checkOutDate = watch("checkOut");
 
-    const { data: { data: hotel } = {}, isLoading, error } = useGetHotelBookingsQuery(hotelId as string);
+  const { data: { data: bookings, room, pagination } = {}, isLoading, error } = useGetRoomBookingsByRoomIdQuery({ roomId: roomId as string });
+  const [pricePerNight, setPricePerNight] = useState(room?.pricePerNight); // Example price per night
 
 
   const numOfNights = calculateNumOfNights(
@@ -52,7 +46,7 @@ export default function BookingForm({
 
 
     useEffect(() => {
-        hotel?.bookings.filter(booking => booking.room._id === data?._id).forEach(booking => {
+      bookings?.forEach(booking => {
             const firstDate = new Date(booking.checkIn);
             const lastDate = new Date(booking.checkOut);
 
@@ -62,23 +56,19 @@ export default function BookingForm({
         });
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [hotel?.bookings])
+    }, [bookings])
   useEffect(() => {
-    if (data) {
-      setPricePerNight(data.pricePerNight);
+    if (room)
+    {
+      setPricePerNight(room.pricePerNight);
     }
-  }, [data]);
+  }, [room]);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Reset to midnight for accurate comparisons
 
   if (isLoading) {
     return <div>Loading</div>;
-  }
-
-  if (isError) {
-    toast.error("Failed to fetch booking details");
-    navigate("/hotels");
   }
 
 
@@ -187,21 +177,29 @@ export default function BookingForm({
 
             {/* Loading or Error Handling */}
             <div className="flex flex-col items-center">
-                {isLoading ? (
-                    <LoadingPage />
-                ) : error ? (
-                    <NotFoundPage>
-                            <pre>{JSON.stringify(error, null, 2)}</pre>
-                        </NotFoundPage>
-                    ) : !hotel ? (
-                        <NotFoundPage>
-                            <span>Hotel not found</span>
-                        </NotFoundPage>
-                        ) : hotel.bookings && (
-                            <AvailableDatesTable
-                                  bookings={hotel.bookings.filter(booking => booking.room._id === data?._id)}
-                            />
-                )}
+        {
+          isLoading
+            ? (
+              <LoadingPage />
+            )
+            :
+            error
+              ?
+              (
+                <NotFoundPage>
+                  <pre>{JSON.stringify(error, null, 2)}</pre>
+                </NotFoundPage>
+              )
+              :
+              bookings
+              &&
+              (
+                <RoomBookings
+                  pagination={pagination}
+                  bookings={bookings}
+                />
+              )
+        }
             </div>
 
             {/* Submit Button */}

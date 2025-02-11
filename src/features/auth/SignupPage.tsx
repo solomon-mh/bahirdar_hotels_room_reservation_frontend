@@ -59,7 +59,7 @@ function SignupPage() {
           <div>
             <CardDescription>
               have an account?{" "}
-              <Link to="/login" className="underline">
+              <Link to="/login" className="cursor-pointer text-accent-500 hover:underline ">
                 Sign in
               </Link>
             </CardDescription>

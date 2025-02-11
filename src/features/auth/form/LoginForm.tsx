@@ -50,7 +50,7 @@ function LogInForm({ onSubmitHandler, isPending }: Props) {
       <Button
         disabled={isPending}
         type="submit"
-        className="mt-2 w-full text-light-200 disabled:cursor-not-allowed"
+        className="mt-2 w-full bg-accent-500/95 hover:bg-accent-500 text-light-200 disabled:cursor-not-allowed"
       >
         {isPending ? <SpinnerMini /> : "Loin in to your account"}
       </Button>

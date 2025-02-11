@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
-import { Card, CardContent } from "../../components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../components/ui/card";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { UserRegistrationData } from "../../types/userTypes";
@@ -9,8 +10,10 @@ import { completeOnboardingSchema } from "../../forms/schema/userSchema";
 import { useEffect, useState } from "react";
 import { useCompleteOnboardingMutation } from "@/redux/api/userApi";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "@/context/AuthContext";
 
 function CompleteOnboarding() {
+  const { user } = useAuthContext()
   const [selectProfilePicture, setSelectProfilePicture] = useState("");
   const [selectIdPhotoFront, setSelectIdPhotoFront] = useState("");
   const [selectIdPhotoBack, setSelectIdPhotoBack] = useState("");
@@ -25,6 +28,7 @@ function CompleteOnboarding() {
     handleSubmit,
     formState: { errors },
     watch,
+    reset,
   } = useForm<UserRegistrationData>({
     resolver: zodResolver(completeOnboardingSchema),
   });
@@ -77,6 +81,15 @@ function CompleteOnboarding() {
   }, [isSuccess]);
 
   useEffect(() => {
+    if (user && user._id)
+    {
+      reset({
+        ...JSON.parse(JSON.stringify(user))
+      })
+    }
+  }, [reset, user])
+
+  useEffect(() => {
     if (isError) {
       console.error("Error:", error);
       toast.error(
@@ -85,56 +98,45 @@ function CompleteOnboarding() {
     }
   }, [isError, error]);
 
+
+  if (user?.isVerificationRequested && !user.isVerified)
+
+    if (user.isVerificationRequested)
+    {
+      return (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-xl text-yellow-700 font-bold">
+              Your Onboarding process is under review
+            </CardTitle>
+            <CardDescription>
+              <p>
+                Your identity verification request has been submitted and is
+                currently under review.
+              </p>
+              <p className="mt-2">
+                This process may take some time. You will be notified once your
+                verification is complete.
+              </p>
+              <p className="mt-2 font-medium">
+                If you believe there is an issue, please contact support.
+              </p>
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      );
+    }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-100">
       <Card className="bg-accent w-full rounded-xl p-6">
-        <h2 className="mb-4 text-center text-xl font-semibold">
-          Compete Your Information
+        <h2 className="mb-4 text-center text-slate-900 text-xl font-semibold">
+          {user?.isVerified ? "Edit" : "Complete"} Your Information
         </h2>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-1 gap-y-4">
-              {/* Profile picture */}
-              {/* <div>
-                <h2 className="col-span-2 py-2 text-2xl">Profile Picture</h2>
-                <div className="flex gap-5">
-                  <div className="hover:cursor-pointer">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="mx-auto w-2/3"
-                      {...register("profilePicture", {
-                        onChange: (e) => {
-                          const file = e.target.files?.[0];
-                          const reader = new FileReader();
-                          reader.onload = (e) => {
-                            setSelectProfilePicture(e.target?.result as string);
-                          };
-                          reader.readAsDataURL(file);
-                        },
-                      })}
-                    />
-                    {errors.profilePicture && (
-                      <p className="font-normal text-red-700">
-                        {errors.profilePicture.message as string}
-                      </p>
-                    )}
-                  </div>
-                  <div className="h-[250px] w-[300px] overflow-hidden sm:block">
-                    <img
-                      src={
-                        typeof profilePicture === "string"
-                          ? profilePicture
-                          : selectProfilePicture.length > 0
-                            ? selectProfilePicture
-                            : "/user.jpg"
-                      }
-                      alt=""
-                      className="h-full w-full object-cover object-center"
-                    />
-                  </div>
-                </div>
-              </div> */}
+
               <h2 className="col-span-2 py-2 text-2xl font-semibold text-gray-800">
                 Profile Picture
               </h2>
@@ -171,7 +173,7 @@ function CompleteOnboarding() {
                   </ul>
                   <div className="gap-2">
                     {/* Styled File Input Label */}
-                    <label className="cursor-pointer rounded-lg bg-blue-700 px-4 py-2 text-light-200 shadow-md transition-all hover:bg-blue-700">
+                    <label className="cursor-pointer rounded-md bg-accent-500/95 hover:bg-accent-500 px-4 py-2 text-light-200 shadow-md transition-all  ">
                       Upload Profile Picture
                       {/* Hidden File Input */}
                       <input
@@ -233,8 +235,8 @@ function CompleteOnboarding() {
                     </h3>
                     <div className="space-y-4">
                       <div className="space-y-4">
-                        <label className="mb-2 cursor-pointer rounded-lg bg-blue-700 px-4 py-2 text-light-200 shadow-md transition-all hover:bg-blue-700">
-                          Upload Profile Picture
+                        <label className="mb-2 cursor-pointer rounded-md bg-accent-500/95 hover:bg-accent-500 px-4 py-2 text-light-200 shadow-md transition-all ">
+                          Upload The Front Side of Your ID
                           <input
                             type="file"
                             accept="image/*"
@@ -282,8 +284,8 @@ function CompleteOnboarding() {
                     </h3>
                     <div className="space-y-4">
                       <div className="space-y-4">
-                        <label className="cursor-pointer rounded-lg bg-blue-700 px-4 py-2 text-light-200 shadow-md transition-all hover:bg-blue-700">
-                          Upload the back side of your Id
+                        <label className="cursor-pointer rounded-md bg-accent-500/95 hover:bg-accent-500 px-4 py-2 text-light-200 shadow-md transition-all ">
+                          Upload The Back Side of Your ID
                           <input
                             type="file"
                             accept="image/*"
@@ -486,7 +488,7 @@ function CompleteOnboarding() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-accent-500/90 hover:bg-accent-500 disabled:cursor-not-allowed"
+              className="w-full bg-accent-500/95 hover:bg-accent-500 text-slate-100 disabled:cursor-not-allowed"
             >
               Complete Onboarding
             </Button>
