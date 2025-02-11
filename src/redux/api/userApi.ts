@@ -110,6 +110,24 @@ export const userApi = createApi({
     >({
       query: () => "/user-with-bookings",
     }),
+    updateMyPassword: builder.mutation<
+      CreateResponse,
+      { passwordCurrent: string; password: string; confirmPassword: string }
+    >({
+      query: (data) => ({
+        url: "/update-my-password",
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: [UserTags.USERS, UserTags.USER],
+    }),
+    forgotPassword: builder.mutation<CreateResponse, { email: string }>({
+      query: (data) => ({
+        url: "/forgot-password",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -126,4 +144,6 @@ export const {
   useVerificationRequestedUsersQuery,
   useDeclineVerificationRequestMutation,
   useGetMyBookingsQuery,
+  useForgotPasswordMutation,
+  useUpdateMyPasswordMutation,
 } = userApi;

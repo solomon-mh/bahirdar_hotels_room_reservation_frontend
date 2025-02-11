@@ -86,7 +86,7 @@ const HotelCard = ({ hotel }: { hotel: IHotel & ITimeStamp }) => {
               </svg>
             ))}
           </div>
-          <button className="rounded text-slate-100 bg-accent-500 px-3 py-1 text-lg text-white">
+          <button className="rounded  bg-accent-500 px-3 py-1 text-lg text-white">
             ${hotel.minPricePerNight}/night
           </button>
         </div>

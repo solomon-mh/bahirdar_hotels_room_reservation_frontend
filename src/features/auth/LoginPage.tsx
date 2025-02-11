@@ -1,7 +1,5 @@
 import { FormProvider, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-// import SpinnerMini from "../../ui/SpinnerMini";
-// import { useLoginMutation } from "../../redux/api/authApi";
 import { ILogin } from "../../types/authTypes";
 import {
   Card,
@@ -16,7 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "@/features/auth/form/schema/LoginSchema";
 import { useLoginMutation } from "@/redux/api/authApi";
 import { useAuthContext } from "@/context/AuthContext";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 function SigninPage() {
   const { setUser } = useAuthContext();
@@ -40,6 +38,11 @@ function SigninPage() {
         else window.location.href = "/dashboard";
       })
       .catch((error) => {
+        if (error.status === 401)
+        {
+          toast.error("Invalid email or password");
+          return;
+        }
         toast.error(error.data.message || "Something went wrong");
       });
   });

@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { FaArrowRightLong } from "react-icons/fa6";
-import { useUsers } from "./useUsers";
 import Spinner from "../../ui/Spinner";
-import { User as IUser } from "../../types/userTypes";
+import { useGetAllUsersQuery } from "@/redux/api/userApi";
+import { IUser } from "@/types/userTypes";
 function RecentUsers() {
-  const { data: { data } = {}, isLoading } = useUsers();
+  const { data: { data: users } = {}, isLoading, error } = useGetAllUsersQuery("")
 
   if (isLoading)
     return (
@@ -13,7 +13,21 @@ function RecentUsers() {
       </section>
     );
 
-  const { users } = data || {};
+  if (error)
+    return (
+      <section className="bg-black/2 h-[50vh] w-[300px] overflow-y-auto rounded-sm border border-black/10 p-3">
+        <span className="text-red-500">An error occurred</span>
+      </section>
+    );
+
+  if (!users || users.length === 0)
+  {
+    return (
+      <section className="bg-black/2 h-[50vh] w-[300px] overflow-y-auto rounded-sm border border-black/10 p-3">
+        <span className="text-black/50">No users found</span>
+      </section>
+    );
+  }
 
   return (
     <section className="bg-black/2 w-[300px] overflow-y-auto rounded-sm shadow-lg">
@@ -21,7 +35,7 @@ function RecentUsers() {
         <h2 className="w-full bg-black/5 p-4 text-center">Recent Users</h2>
         <div className="flex w-full flex-col items-center gap-x-12 gap-y-5">
           {users?.map((user) => (
-            <User key={user.id} user={user} />
+            <User key={user._id} user={user} />
           ))}
         </div>
         <Link
@@ -38,11 +52,11 @@ function RecentUsers() {
 function User({ user }: { user: IUser }) {
   return (
     <>
-      <div key={user.id} className="w-full">
+      <div key={user._id} className="w-full">
         <div className="flex justify-center gap-2 transition duration-300 hover:bg-black/10">
           <img
             className="h-10 w-10 rounded-full object-cover"
-            src={user.photo}
+            src={user.profilePicture}
             alt=""
           />
           <div className="flex flex-col gap-1">

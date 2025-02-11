@@ -1,9 +1,6 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
 import { useAuthContext } from "./context/AuthContext.jsx";
-import { BookingContextProvider } from "./context/BookingContext.jsx";
 import AppLayout from "./ui/AppLayout";
 import AddHotel from "./features/hotels/AddHotel";
 import UpdateHotel from "./features/hotels/UpdateHotel";
@@ -11,7 +8,6 @@ import Dashboard from "./features/dashboard/Dashboard";
 import DashboardLayout from "./features/dashboard/DashboardLayout";
 import AllHotels from "./features/hotels/AllHotels";
 import Account from "./features/profile/Account";
-import ProtectRoutes from "./ui/ProtectRoutes";
 import AllBookings from "./features/bookings/AllBookings";
 import AllUsers from "./features/users/AllUsers";
 import HotelRoomsTable from "./features/rooms/HotelRoomsTable";
@@ -24,16 +20,10 @@ import {
   SigninPage,
   SignupPage,
 } from "./pages";
-import RoomsListPage from "./pages/RoomsListPage";
 import Profile from "./features/profile/Profile";
 import AccountSettings from "./features/profile/AccountSettings";
 import MyBookings from "./features/profile/MyBookings";
-import ResetMyPassword from "./features/profile/ResetMyPassword";
 import ProtectAdminRoutes from "./ui/ProtectAdminRoutes";
-import BookRoomPage from "./pages/BookRoomPage";
-import PaymentSuccessPage from "./pages/PaymentSuccessPage";
-import ForgotMyPassword from "./features/profile/ForgotMyPassword";
-import "react-toastify/dist/ReactToastify.css";
 import HotelsPage from "./features/hotels/HotelsPage.js";
 import HotelDetailPage from "./features/hotels/HotelDetailPage.js";
 import { HotelDetail } from "./features/hotels/components/HotelDetail.js";
@@ -51,14 +41,12 @@ import UserDetailForVerification from "./features/users/UserDetailForVerificatio
 import UserPage from "./features/users/UserPage.js";
 import UserDetail from "./features/users/UserDetail.js";
 import UserBookings from "./features/users/UserBookings.js";
-const queryClient = new QueryClient();
 
 function App() {
   const { role, isLoggedIn, user, } = useAuthContext();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
+    <>
       <Toaster
         position="top-center"
         gutter={12}
@@ -80,7 +68,6 @@ function App() {
         }}
       />
 
-      <BookingContextProvider>
           <BrowserRouter>
             <Routes>
               {/* HOME ROUTES */}
@@ -104,25 +91,25 @@ function App() {
                 path="hotels/:hotelId/rooms/:roomId/:bookingId/pay"
                 element={<PaymentPage />}
               />
-              <Route path="hotels/:hotelId/rooms" element={<RoomsListPage />}>
-              </Route>
+            {/* <Route path="hotels/:hotelId/rooms" element={<RoomsListPage />}>
+              </Route> */}
 
-              <Route
+            {/* <Route
                 path="hotels/:hotelId/rooms/:roomId/booking"
                 element={
                   <ProtectRoutes>
                     <BookRoomPage />
                   </ProtectRoutes>
                 }
-              />
-              <Route
+              /> */}
+            {/* <Route
                 path={`payment-successful/:roomId`}
                 element={
                   <ProtectRoutes>
                     <PaymentSuccessPage />
                   </ProtectRoutes>
                 }
-              />
+              /> */}
               {isLoggedIn && (
                 <Route path="account" element={<Account />}>
                   <Route path="profile" index element={<Profile />} />
@@ -214,19 +201,13 @@ function App() {
                     <Route path="bookings" element={<HotelBookings />} />
                 </>
               ) : null}
-            </Route>
-            <Route path="/settings/:resetToken" element={<ResetMyPassword />} />
+          </Route>
             <Route path="/login" element={<SigninPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            {/* forgot pass */}
-            <Route path="/forgot-password" element={<ForgotMyPassword />} />
-
-            {/* NOT FOUND ROUTES */}
+          <Route path="/signup" element={<SignupPage />} />
             <Route path="/*" element={<Navigate to="/" />} />
           </Routes>
         </BrowserRouter>
-      </BookingContextProvider>
-    </QueryClientProvider>
+    </>
   );
 }
 

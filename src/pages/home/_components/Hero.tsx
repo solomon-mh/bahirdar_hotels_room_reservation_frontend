@@ -40,7 +40,7 @@ function Hero() {
           </p>
           <Link
             to="/hotels"
-            className="inline-flex items-center justify-center text-slate-100 rounded-lg bg-accent-500/90 px-5 py-3 text-center text-base font-medium text-white hover:bg-accent-500 focus:ring-4 focus:ring-accent-300"
+            className="inline-flex items-center justify-center  rounded-lg bg-accent-500/90 px-5 py-3 text-center text-base font-medium text-white hover:bg-accent-500 focus:ring-4 focus:ring-accent-300"
           >
             Explore more hotels <FaArrowRightLong className="ml-2" />
           </Link>

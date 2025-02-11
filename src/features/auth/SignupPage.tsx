@@ -13,7 +13,7 @@ import { SignupSchema } from "@/features/auth/form/schema/SignupSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
 import { useSignupMutation } from "@/redux/api/authApi";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 function SignupPage() {
   const formMethods = useForm<ISignup>({

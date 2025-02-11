@@ -43,21 +43,21 @@ function AllUsers() {
           <button
             onClick={() => onSearchByRoleHandler("")}
             disabled={activeBtn === ""}
-            className="rounded border px-3 text-sm transition-all py-2 duration-300 hover:bg-accent-500 hover:text-white disabled:cursor-not-allowed hover:text-slate-100  disabled:bg-accent-500 disabled:text-slate-100"
+            className="rounded border px-3 text-sm transition-all py-2 duration-300 hover:bg-accent-500  disabled:cursor-not-allowed hover:text-slate-100  disabled:bg-accent-500 disabled:text-slate-100"
           >
             all
           </button>
           <button
             onClick={() => onSearchByRoleHandler("user")}
             disabled={activeBtn === "user"}
-            className="rounded border px-3 text-sm transition-all py-2 duration-300 hover:bg-accent-500 hover:text-white disabled:cursor-not-allowed hover:text-slate-100  disabled:bg-accent-500 disabled:text-slate-100"
+            className="rounded border px-3 text-sm transition-all py-2 duration-300 hover:bg-accent-500  disabled:cursor-not-allowed hover:text-slate-100  disabled:bg-accent-500 disabled:text-slate-100"
           >
             all users
           </button>
           <button
             onClick={() => onSearchByRoleHandler("manager")}
             disabled={activeBtn === "manager"}
-            className="rounded border px-3 text-sm transition-all py-2 duration-300 hover:text-slate-100 hover:bg-accent-500 hover:text-white disabled:cursor-not-allowed disabled:bg-accent-500 disabled:text-slate-100"
+            className="rounded border px-3 text-sm transition-all py-2 duration-300 hover:text-slate-100 hover:bg-accent-500  disabled:cursor-not-allowed disabled:bg-accent-500 disabled:text-slate-100"
           >
             all managers
           </button>

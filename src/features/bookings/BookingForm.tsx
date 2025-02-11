@@ -53,9 +53,7 @@ export default function BookingForm({
             setActiveDates((prev) => {
                 return [...prev, ...getDateRange(firstDate, lastDate)]
             })
-        });
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+      });
     }, [bookings])
   useEffect(() => {
     if (room)

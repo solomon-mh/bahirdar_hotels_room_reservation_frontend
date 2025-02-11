@@ -9,7 +9,7 @@ import { useAuthContext } from "@/context/AuthContext";
 import { useRequestIdentityVerificationMutation } from "@/redux/api/userApi";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 function IdentityVerification() {
   const { user } = useAuthContext();

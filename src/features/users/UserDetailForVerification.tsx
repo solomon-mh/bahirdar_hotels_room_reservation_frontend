@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/dialog";
 import SpinnerMini from "@/ui/SpinnerMini";
 import { useEffect } from "react";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 function UserDetailForVerification() {
   const navigate = useNavigate();

@@ -96,7 +96,7 @@ function AllHotels() {
                         <TableCell>
                           <Link
                             to={`/dashboard/hotels/${hotel._id}`}
-                            className="rounded text-slate-100 bg-accent-500 p-2 font-semibold text-white"
+                            className="rounded  bg-accent-500 p-2 font-semibold text-white"
                           >
                             Details
                           </Link>

@@ -343,7 +343,7 @@ const CreateUserDialog = () => {
             <button
               disabled={isLoading}
               type="submit"
-              className="text-white col-span-3 rounded-md bg-accent-500 p-2 text-slate-100 hover:bg-accent-500"
+              className=" col-span-3 rounded-md bg-accent-500 p-2 text-slate-100 hover:bg-accent-500"
             >
               {isLoading ? <SpinnerMini /> : " Create User"}
             </button>

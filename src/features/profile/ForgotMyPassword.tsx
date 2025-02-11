@@ -1,10 +1,8 @@
-import { useMutation } from "@tanstack/react-query";
 import { useAuthContext } from "../../context/AuthContext";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import apiUsers from "../../services/apiUsers";
-import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useForgotPasswordMutation } from "@/redux/api/userApi";
 
 function ForgotMyPassword() {
   const { user } = useAuthContext();
@@ -17,26 +15,15 @@ function ForgotMyPassword() {
     formState: { errors },
   } = useForm<{ email: string }>();
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: apiUsers.forgotPassword,
-    onSuccess: () => {
-      toast.success("password reset token send to your email");
-    },
-    onError: (err) => {
-      toast.error("unable to send password reset token, please try again");
-      console.log(err);
-    },
-    retry: false,
-  });
+
+  const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
 
   const onSubmitHandler = handleSubmit((data) => {
     const { email } = data;
-    mutate(email);
+    forgotPassword({ email });
   });
 
-  const onClickHandler = () => {
-    if (user) mutate(user.email);
-  };
+
 
   return (
     <div className="mx-auto mt-10 max-w-4xl rounded-md bg-white p-6 shadow-md">
@@ -52,8 +39,7 @@ function ForgotMyPassword() {
               </p>
               <button
                 className="mt-2 flex items-center rounded bg-gray-700 px-2 py-1 text-slate-200 duration-300 disabled:scale-95 disabled:cursor-not-allowed disabled:bg-slate-500"
-                onClick={onClickHandler}
-                disabled={isPending}
+                disabled={isLoading}
               >
                 Forgot my password
               </button>
@@ -91,7 +77,7 @@ function ForgotMyPassword() {
 
                 <button
                   className="mt-2 flex items-center rounded bg-gray-700 px-2 py-1 text-slate-200 duration-300 disabled:cursor-not-allowed"
-                  disabled={isPending}
+                    disabled={isLoading}
                 >
                   send password reset link
                 </button>
