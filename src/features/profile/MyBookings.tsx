@@ -2,6 +2,8 @@ import { useGetMyBookingsQuery } from "@/redux/api/userApi";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/table";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
+import { createLabel } from "@/utils/text";
+import { getBookingStatusTextColor } from "../bookings/color-utils";
 
 const MyBookings = () => {
 
@@ -62,7 +64,7 @@ const MyBookings = () => {
               </TableCell>
               <TableCell className="border border-gray-300 p-2">{booking.numOfNights} night{booking?.numOfNights && booking.numOfNights > 1 && "s"} </TableCell>
               <TableCell className="border border-gray-300 p-2">${booking.totalPrice}</TableCell>
-              <TableCell className="border border-gray-300 p-2 capitalize">{booking.status}</TableCell>
+              <TableCell className={`border border-gray-300 p-2 capitalize ${getBookingStatusTextColor(booking.status)}`}>{createLabel(booking.status)}</TableCell>
             </TableRow>
           ))}
         </TableBody>

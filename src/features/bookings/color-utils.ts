@@ -3,7 +3,7 @@ import { BookingStatus } from "@/enums/bookingStatusEnum";
 export const getBookingStatusTextColor = (status: BookingStatus) => {
   switch (status) {
     case BookingStatus.PENDING:
-      return "text-yellow-500/90 ";
+      return "text-[#6106ff] ";
     case BookingStatus.CONFIRMED:
       return "text-green-500/90 ";
     case BookingStatus.CANCELLED:
@@ -20,7 +20,7 @@ export const getBookingStatusTextColor = (status: BookingStatus) => {
 export const getBookingStatusBgColor = (status: BookingStatus) => {
   switch (status) {
     case BookingStatus.PENDING:
-      return "bg-yellow-400/90 hover:bg-yellow-400";
+      return "bg-yellow-400/90 hover:bg-[#6106ff";
     case BookingStatus.CONFIRMED:
       return "bg-green-400/90 hover:bg-green-400";
     case BookingStatus.CANCELLED:
