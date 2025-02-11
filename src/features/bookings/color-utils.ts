@@ -8,6 +8,8 @@ export const getBookingStatusTextColor = (status: BookingStatus) => {
       return "text-green-500/90 ";
     case BookingStatus.CANCELLED:
       return "text-red-500/90 ";
+    case BookingStatus.REJECTED:
+      return "text-red-500/90 ";
     case BookingStatus.CHECKED_IN:
       return "text-accent-500/90 ";
     case BookingStatus.CHECKED_OUT:
@@ -25,6 +27,8 @@ export const getBookingStatusBgColor = (status: BookingStatus) => {
       return "bg-green-400/90 hover:bg-green-400";
     case BookingStatus.CANCELLED:
       return "bg-red-400/90 hover:bg-red-400";
+    case BookingStatus.REJECTED:
+      return "bg-red-500/90 hover:bg-red-500";
     case BookingStatus.CHECKED_IN:
       return "bg-accent-400/90 hover:bg-accent-400";
     case BookingStatus.CHECKED_OUT:

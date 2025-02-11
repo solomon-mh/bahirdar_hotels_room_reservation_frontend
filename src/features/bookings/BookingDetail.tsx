@@ -21,6 +21,7 @@ import {
     SelectValue,
 } from "../../components/ui/select";
 import { getBookingStatusTextColor } from "./color-utils";
+import { createLabel } from "@/utils/text";
 
 export default function BookingDetails() {
     const bookingStatuses = Object.values(BookingStatus);
@@ -36,10 +37,11 @@ export default function BookingDetails() {
 
             if (!status) return;
             confirimAction({
-                id: bookingId as string,
-                status: status
-            }).then(() => {
-                toast.success(`Book status from ${booking?.status} to ${status} successfully`);
+              bookingId: bookingId as string,
+              status: status,
+              userId: booking?.user._id as string,
+            }).unwrap().then(() => {
+              toast.success(`Book  ${status} successfully`);
                 setIsOpen(false);
             }).catch((err) => {
                 if ('data' in err)
@@ -89,7 +91,7 @@ export default function BookingDetails() {
                 <SelectContent>
                   <SelectGroup>
                     {bookingStatuses.map((status, index) => (
-                      <SelectItem className={`${getBookingStatusTextColor(status)}`} key={index} value={status}>{status}</SelectItem>
+                      <SelectItem className={`${getBookingStatusTextColor(status)}`} key={index} value={status}>{createLabel(status)}</SelectItem>
                     ))}
                   </SelectGroup>
                 </SelectContent>
@@ -142,6 +144,16 @@ export default function BookingDetails() {
                         <p className="text-sm text-gray-500">{booking.user?.email}</p>
                         <p className="text-sm text-gray-500">{booking.user?.phoneNumber}</p>
                       </div>
+                    </div>
+                    <div className="flex p-4 items-center gap-4">
+                      <p>Payment Status</p>
+                      {
+                        booking.isPaid ? (
+                          <Badge className="bg-green-100 hover:bg-green-200 text-green-500">{"Paid"}</Badge>
+                        ) : (
+                          <Badge className="bg-red-100 hover:bg-red-200 text-red-600">{"Not Paid"}</Badge>
+                        )
+                      }
                     </div>
                   </CardContent>
                 </Card>

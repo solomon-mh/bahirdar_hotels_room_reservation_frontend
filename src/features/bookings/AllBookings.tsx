@@ -112,6 +112,9 @@ const AllBookings = () => {
                             Status
                           </th>
                           <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
+                            Payment  Status
+                          </th>
+                          <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
                             Action
                           </th>
                   </tr>
@@ -142,6 +145,14 @@ const AllBookings = () => {
                               }
                             >
                               {booking.status}
+                            </td>
+                            <td
+                              className={`border border-gray-200 px-4 py-2 capitalize text-gray-600 `}
+                            >
+                              {booking.isPaid ?
+                                <span className="text-green-500">Paid</span> :
+                                <span className="text-red-500">Not Paid</span>
+                              }
                             </td>
                             <td className="border border-gray-200 px-4 py-2 text-gray-600">
                               <button

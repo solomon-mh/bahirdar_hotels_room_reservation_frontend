@@ -156,6 +156,10 @@ const HotelBookings = () => {
                                         <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
                                             Status
                                         </th>
+                                                    <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
+                                                        Payment Status
+                                                    </th>
+
                                         <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
                                             Total Price
                                         </th>
@@ -187,6 +191,14 @@ const HotelBookings = () => {
                                                 className={`border border-gray-200 px-4 py-2 capitalize text-gray-600 ${getBgColor(booking.status as BookingStatus)}`}
                                             >
                                                 {booking.status}
+                                            </td>
+                                            <td
+                                                className={`border border-gray-200 px-4 py-2 capitalize text-gray-600 ${getBgColor(booking.status as BookingStatus)}`}
+                                            >
+                                                {booking.isPaid ?
+                                                    <span className="text-green-500">Paid</span> :
+                                                    <span className="text-red-500">Not Paid</span>
+                                                }
                                             </td>
                                             <td className="border border-gray-200 px-4 py-2 text-gray-600">
                                                 ${booking.totalPrice}

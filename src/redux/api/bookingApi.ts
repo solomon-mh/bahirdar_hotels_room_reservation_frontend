@@ -109,15 +109,32 @@ export const bookingApi = createApi({
     updateBookingStatus: builder.mutation<
       { data: IBooking } & Omit<CreateResponse, "data">,
       {
-        id: string;
+        bookingId: string;
+        userId: string;
         status: BookingStatus;
       }
     >({
-      query: ({ id, status }) => ({
-        url: `/${id}`,
-        method: "PATCH",
-        body: { status },
-      }),
+      query: ({ userId, bookingId, status }) => {
+        const getUrl = () => {
+          switch (status) {
+            case BookingStatus.CONFIRMED:
+              return `/confirm-user-booking/${userId}`;
+            case BookingStatus.CHECKED_IN:
+              return `/checkin-user-booking/${userId}`;
+            case BookingStatus.CHECKED_OUT:
+              return `/checkout-user-booking/${userId}`;
+            case BookingStatus.REJECTED:
+              return `/reject-user-booking/${userId}`;
+            default:
+              return "";
+          }
+        };
+        return {
+          url: `/${bookingId}${getUrl()}`,
+          method: "PATCH",
+          body: { status },
+        };
+      },
       invalidatesTags: [BookingTags.BOOKINGS, BookingTags.BOOKING],
     }),
     getRoomBookingsByRoomId: builder.query<

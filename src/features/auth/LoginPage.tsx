@@ -37,7 +37,7 @@ function SigninPage() {
           window.location.href = "/";
         } else if (response.data.role === "admin")
           window.location.href = "/dashboard";
-        else window.location.href = "/dashboard/hotels";
+        else window.location.href = "/dashboard";
       })
       .catch((error) => {
         toast.error(error.data.message || "Something went wrong");
