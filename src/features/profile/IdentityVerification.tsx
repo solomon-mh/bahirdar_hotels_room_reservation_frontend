@@ -53,7 +53,7 @@ function IdentityVerification() {
         <CardContent>
           <Link
             to="/account/complete-onboarding"
-            className="text-white rounded-md bg-blue-600 px-4 py-2"
+            className="text-white rounded-md bg-accent-500 px-4 py-2"
           >
             Continue Onboarding
           </Link>
@@ -146,7 +146,7 @@ function IdentityVerification() {
         <button
           disabled={isLoading}
           onClick={async () => requestIdentityVerification()}
-          className="text-white rounded-md bg-primary px-4 py-2 disabled:cursor-not-allowed"
+          className="text-white rounded-md bg-accent-500/95 hover:bg-accent-500 px-4 py-2 disabled:cursor-not-allowed"
         >
           {isSuccess ? "Request Submitted" : "Request Identity Verification"}
         </button>

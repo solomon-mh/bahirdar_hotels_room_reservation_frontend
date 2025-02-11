@@ -7,8 +7,6 @@ import {
 } from "@/components/ui/card";
 import LoadingPage from "@/pages/utils/LoadingPage";
 import { useVerificationRequestedUsersQuery } from "@/redux/api/userApi";
-import { useEffect } from "react";
-import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import {
   Table,
@@ -25,21 +23,24 @@ function IdentityVerificationRequests() {
   const {
     data: { data } = {},
     isLoading,
-    isError,
     error,
   } = useVerificationRequestedUsersQuery();
 
-  useEffect(() => {
-    if (isError) {
-      toast.error("Failed to fetch identity verification requests");
-      console.log(error);
-      navigate("/dashboard");
-    }
-  }, [isError, error]);
 
   if (isLoading) {
     return <LoadingPage />;
   }
+
+  if (error)
+  {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <p className="text-red-500">{(error as { data: { message: string } }).data.message || "Failed to laod Identity verication requests"}</p>
+      </div>
+    )
+  }
+
+
 
   return (
     <Card>
@@ -51,6 +52,12 @@ function IdentityVerificationRequests() {
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-2">
+
+          {
+            data?.length === 0 ? (
+              <p className="text-center">No identity verification requests found</p>
+            )
+              :
           <Table className="shadow-md shadow-red-300">
             <TableHeader className="bg-slate-200">
               <TableHead>Profile</TableHead>
@@ -97,7 +104,9 @@ function IdentityVerificationRequests() {
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
+              </Table>
+          }
+
         </div>
       </CardContent>
     </Card>

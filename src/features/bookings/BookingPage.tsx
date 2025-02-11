@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { useAuthContext } from "../../context/AuthContext";
 import { useGetRoomByIdQuery } from "../../redux/api/roomsApi";
 import { ArrowLeft } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetHotelByIdQuery } from "../../redux/api/hotelApi";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
@@ -57,6 +57,14 @@ export default function BookingPage() {
       });
   };
 
+
+    useEffect(() => {
+        if (!user?.isVerified)
+        {
+            toast.error("Please verify your account to continue booking");
+            navigate("/account/complete-onboarding")
+        }
+    }, [navigate, user?.isVerified]);
   if (fetchingRoom) {
     return <LoadingPage />;
   }

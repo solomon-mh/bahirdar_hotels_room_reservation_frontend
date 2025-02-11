@@ -30,7 +30,7 @@ export default function RoomBookings({ bookings, pagination }: Props) {
               </td>
             </tr>
           ) : (
-            bookings.map((booking, index) => (
+              bookings.filter(booking => new Date(booking.checkIn) >= new Date()).map((booking, index) => (
               <tr
                 key={index}
                 className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"
