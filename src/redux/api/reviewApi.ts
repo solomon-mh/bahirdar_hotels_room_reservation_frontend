@@ -15,7 +15,7 @@ export const reviewApi = createApi({
     credentials: "include",
   }),
   endpoints: (builder) => ({
-    getAllReviews: builder.query<{ data: IReviewResponse[] }, void>({
+    getAllReviews: builder.query<{ data: IReview[] }, void>({
       query: () => "/",
       providesTags: [ReviewTags.REVIEWS],
     }),

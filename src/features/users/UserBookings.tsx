@@ -71,7 +71,7 @@ const UserBookings = () => {
                                                     Booking ID
                                                 </th>
                                                 <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
-                                                    Hotel Name
+                                                    Payment Status
                                                 </th>
                                                 <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
                                                     Check-In
@@ -94,7 +94,11 @@ const UserBookings = () => {
                                                         {booking._id}
                                                     </td>
                                                     <td className="border border-gray-200 px-4 py-2 text-gray-600">
-                                                        {booking.user?.firstName} {booking.user?.lastName}
+                                                        {
+                                                            booking.isPaid
+                                                                ? <span className="text-green-500">Paid</span>
+                                                                : <span className="text-red-500">Not Paid</span>
+                                                        }
                                                     </td>
                                                     <td className="border border-gray-200 px-4 py-2 text-gray-600">
                                                         {new Date(booking.checkIn).toLocaleDateString()}

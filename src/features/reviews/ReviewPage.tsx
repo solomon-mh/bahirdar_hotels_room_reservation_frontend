@@ -46,7 +46,8 @@ export default function RoomReview() {
             });
             reset();
             toast.success("Review submitted successfully");
-            navigate('/bookings/' + bookingId);
+            navigate(-1);
+            window.location.reload();
         }).catch((error) => {
             if ('data' in error)
             {

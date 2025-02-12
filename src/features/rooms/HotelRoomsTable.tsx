@@ -25,8 +25,8 @@ function HotelRoomsTable() {
         {
           (user?.role === Role.ADMIN || user?.role === Role.MANAGER) &&
           <button
-            className="p-2 text-accent-500 rounded-md"
-            onClick={() => navigate(`/dashboard/hotels/${hotelId}/rooms/create`)}
+            className="p-2 px-3 text-slate-100 bg-accent-500/90 hover:bg-accent-500 rounded-md"
+              onClick={() => navigate(`/dashboard/hotels/${hotelId}/add-room`)}
           >
             Add Room
           </button>

@@ -7,7 +7,7 @@ import SpinnerMini from "../../ui/SpinnerMini";
 import { IHotel } from "../../types/hotelTypes";
 import { SelectManager } from "./SelectManagerDrawer";
 import { IAddress } from "../../types/addressTypes";
-import CreateUserDialog from "./CreateUserDialog";
+// import CreateUserDialog from "./CreateUserDialog";
 import { IUser } from "../../types/userTypes";
 import toast from "react-hot-toast";
 import { useGetUserByIdQuery } from "../../redux/api/userApi";
@@ -205,11 +205,11 @@ function ManageHotelForm({
                         ? `${selectedManager.firstName} ${selectedManager.lastName}`
                         : "No manager selected yet"}
                     </span>
-                    {
+                    {/* {
                       manger?.role === Role.ADMIN && (
                         <CreateUserDialog />
                       )
-                    }
+                    } */}
                     <AddLocation
                       selectedPosition={selectedPosition}
                       setSelectedPosition={setSelectedPosition}

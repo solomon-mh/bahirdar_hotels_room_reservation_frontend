@@ -8,7 +8,7 @@ import { IUser } from "@/types/userTypes";
 export enum HotelTags {
   HOTELS = "hotels",
   HOTEL = "hotel",
-  HOTEL_ROOMS = "hotel_Rooms",
+  HOTEL_ROOMS = "hotel_rooms",
   HOTEL_CASHIERS = "hotel_cashiers",
 }
 export const hotelApi = createApi({
@@ -70,7 +70,7 @@ export const hotelApi = createApi({
     getHotelRooms: builder.query<{ data: IHotel & { rooms: IRoom[] } }, string>(
       {
         query: (id) => `/with-rooms/${id}`,
-        providesTags: (_, __, id) => [{ type: HotelTags.HOTEL_ROOMS, id }],
+        providesTags: (result, error, id) => [{ type: HotelTags.HOTEL_ROOMS, id }],
       },
     ),
     createCashier: builder.mutation<

@@ -1,6 +1,7 @@
+import DeleteFeature, { FeatureDeleteActionType } from "@/components/DeleteDialog";
 import LoadingPage from "@/pages/utils/LoadingPage";
 import NotFoundPage from "@/pages/utils/NotFoundPage";
-import { useGetUserByIdQuery } from "@/redux/api/userApi";
+import { useDeleteUserMutation, useGetUserByIdQuery } from "@/redux/api/userApi";
 import { useParams } from "react-router-dom";
 
 const UserDetail = () => {
@@ -24,8 +25,8 @@ const UserDetail = () => {
               </NotFoundPage>
           ) : (
                           <div className="relative w-full overflow-hidden rounded-lg bg-white px-10 shadow-lg">
-                              <div className="flex justify-stretch border-b border-gray-200 p-6">
-                                  <div className="mb-6 mr-2 flex w-[300px] items-center gap-4">
+                                <div className="flex  justify-stretch border-b border-gray-200 p-6">
+                                    <div className="  mb-6 mr-2 flex w-[300px] items-center gap-4">
                                       <img
                                           src={user.profilePicture}
                                           alt="Profile Picture"
@@ -36,7 +37,16 @@ const UserDetail = () => {
                                               {user.firstName} {user.lastName}
                                           </h2>
                                           <p className="text-lg text-gray-600">@{user.username}</p>
-                                      </div>
+                                        </div>
+                                        <div className="absolute top-3 right-3">
+                                            {user._id &&
+                                                <DeleteFeature
+                                                    redirectUrl="/dashboard/users"
+                                                    feature="User"
+                                                    featureId={user._id}
+                                                    useDelete={useDeleteUserMutation as FeatureDeleteActionType}
+                                                />}
+                                        </div>
                                   </div>
 
                                   <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -44,23 +54,24 @@ const UserDetail = () => {
                                           <h3 className="text-lg font-semibold text-gray-800">
                                               Personal Information:
                                           </h3>
-                                          <p className="mt-2 text-gray-600">
+                                            {user.dateOfBirth && <p className="mt-2 text-gray-600">
                                               <span className="font-semibold">Date of Birth:</span>{" "}
                                               {new Date(user.dateOfBirth).toLocaleDateString()}
-                                          </p>
-                                          <p className="text-gray-600">
+                                            </p>}
+                                            {user.gender && <p className="text-gray-600">
                                               <span className="font-semibold">Gender:</span> {user.gender}
-                                          </p>
-                                          <p className="text-gray-600">
+                                            </p>
+                                            }
+                                            {user.email && <p className="text-gray-600">
                                               <span className="font-semibold">Email:</span> {user.email}
-                                          </p>
-                                          <p className="text-gray-600">
+                                            </p>}
+                                            {user.phoneNumber && < p className="text-gray-600">
                                               <span className="font-semibold">Phone:</span>{" "}
                                               {user.phoneNumber}
-                                          </p>
+                                            </p>}
                                       </div>
 
-                                      <div>
+                                        {user.address && <div>
                                           <h3 className="text-lg font-semibold text-gray-800">
                                               Address:
                                           </h3>
@@ -72,10 +83,11 @@ const UserDetail = () => {
                                               Role:
                                           </h3>
                                           <p className="capitalize text-gray-600">{user.role}</p>
-                                      </div>
-                                  </div>
-                  </div>
-              </div>
+                                        </div>}
+                                    </div>
+                                </div>
+                            </div>
+
           )}
       </div>
   );

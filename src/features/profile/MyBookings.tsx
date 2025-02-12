@@ -54,7 +54,14 @@ const MyBookings = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-4 text-slate-800">My  Bookings</h2>
+      <div className="flex items-center w-full justify-between pb-4">
+        <h2 className="text-xl font-bold mb-4 text-slate-800">My  Bookings</h2>
+        <div className="flex">
+          <button className="bg-accent-500/95 text-slate-100 bg-accent-500 text-slate-50 px-4 py-2 rounded-md">
+            <Link to="/hotels">Book now</Link>
+          </button>
+        </div>
+      </div>
       <Table className="w-full border-collapse border border-gray-300">
         <TableHeader>
           <TableRow className="bg-gray-200">

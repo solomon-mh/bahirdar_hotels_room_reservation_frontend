@@ -4,6 +4,7 @@ import { useCreateRoomMutation } from "../../redux/api/roomsApi";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuthContext } from "../../context/AuthContext";
 import { Role } from "../../enums/roleEnum";
+import { hotelApi, HotelTags } from "@/redux/api/hotelApi";
 
 function AddRoom() {
 
@@ -20,6 +21,10 @@ function AddRoom() {
         data: room,
         hotelId: hotelId as string
       }).unwrap().then(() => {
+        hotelApi.util.invalidateTags([{
+          type: HotelTags.HOTEL_ROOMS,
+          id: hotelId as string
+        }])
         navigate(`/dashboard${user?.role === Role.ADMIN ? "/hotels" : ""}/${hotelId}/rooms`)
         toast.success("Room added succefully")
       }).catch((err) => {
