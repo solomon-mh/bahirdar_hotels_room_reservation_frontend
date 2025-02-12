@@ -44,7 +44,7 @@ import UserBookings from "./features/users/UserBookings.js";
 import MyBookingDetail from "./features/profile/MyBookingDetail.js";
 import RoomReview from "./features/reviews/ReviewPage.js";
 import HotelCashiers from "./features/hotels/HotelCashiers.js";
-import ForgotMyPassword from "./features/profile/ForgotMyPassword.js";
+import ForgotMyPassword from "./features/auth/ForgotMyPassword.js";
 
 function App() {
   const { role, isLoggedIn, user } = useAuthContext();
