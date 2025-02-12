@@ -1,5 +1,12 @@
 import { useGetMyBookingsQuery } from "@/redux/api/userApi";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../../components/ui/table";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
 import { createLabel } from "@/utils/text";
@@ -7,49 +14,47 @@ import { getBookingStatusTextColor } from "../bookings/color-utils";
 import { Link, useNavigate } from "react-router-dom";
 
 const MyBookings = () => {
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
+  const {
+    data: { data: { bookings } = {} } = {},
+    isLoading,
+    error,
+  } = useGetMyBookingsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+  });
 
-  const { data: { data: { bookings } = {} } = {}, isLoading, error } = useGetMyBookingsQuery()
-
-
-  if (isLoading)
-  {
-    return (
-      <LoadingPage />
-    )
+  if (isLoading) {
+    return <LoadingPage />;
   }
 
-  if (error)
-  {
+  if (error) {
     return (
       <NotFoundPage>
-        <p className="text-red-400">Something went wrong. Please try again later.</p>
-        <pre>
-          {
-            JSON.stringify(error, null, 2)
-          }
-        </pre>
+        <p className="text-red-400">
+          Something went wrong. Please try again later.
+        </p>
+        <pre>{JSON.stringify(error, null, 2)}</pre>
       </NotFoundPage>
-    )
+    );
   }
 
-  if (!bookings?.length)
-  {
+  if (!bookings?.length) {
     return (
-      <NotFoundPage >
+      <NotFoundPage>
         <div className="flex flex-col items-center justify-center gap-4">
           <div className="flex">
-            <button className="bg-accent-500/95 text-slate-100 bg-accent-500 text-slate-50 px-4 py-2 rounded-md">
+            <button className="text-slate-50 rounded-md bg-accent-500 bg-accent-500/95 px-4 py-2 text-slate-100">
               <Link to="/hotels">Book now</Link>
             </button>
           </div>
-          <div className="flex ">
+          <div className="flex">
             <p className="text-slate-800">No bookings found.</p>
           </div>
         </div>
       </NotFoundPage>
-    )
+    );
   }
 
   return (
@@ -65,12 +70,20 @@ const MyBookings = () => {
       <Table className="w-full border-collapse border border-gray-300">
         <TableHeader>
           <TableRow className="bg-gray-200">
-            <TableHead className="border border-gray-300 p-2">Check-In</TableHead>
-            <TableHead className="border border-gray-300 p-2">Check-Out</TableHead>
+            <TableHead className="border border-gray-300 p-2">
+              Check-In
+            </TableHead>
+            <TableHead className="border border-gray-300 p-2">
+              Check-Out
+            </TableHead>
             <TableHead className="border border-gray-300 p-2">Nights</TableHead>
-            <TableHead className="border border-gray-300 p-2">Total Price</TableHead>
+            <TableHead className="border border-gray-300 p-2">
+              Total Price
+            </TableHead>
             <TableHead className="border border-gray-300 p-2">Status</TableHead>
-            <TableHead className="border border-gray-300 p-2">Payment Status</TableHead>
+            <TableHead className="border border-gray-300 p-2">
+              Payment Status
+            </TableHead>
             <TableHead className="border border-gray-300 p-2">Action</TableHead>
           </TableRow>
         </TableHeader>
@@ -83,19 +96,29 @@ const MyBookings = () => {
               <TableCell className="border border-gray-300 p-2">
                 {new Date(booking.checkOut).toLocaleDateString()}
               </TableCell>
-              <TableCell className="border border-gray-300 p-2">{booking.numOfNights} night{booking?.numOfNights && booking.numOfNights > 1 && "s"} </TableCell>
-              <TableCell className="border border-gray-300 p-2">${booking.totalPrice}</TableCell>
-              <TableCell className={`border border-gray-300 p-2 capitalize ${getBookingStatusTextColor(booking.status)}`}>{createLabel(booking.status)}</TableCell>
+              <TableCell className="border border-gray-300 p-2">
+                {booking.numOfNights} night
+                {booking?.numOfNights && booking.numOfNights > 1 && "s"}{" "}
+              </TableCell>
+              <TableCell className="border border-gray-300 p-2">
+                ${booking.totalPrice}
+              </TableCell>
+              <TableCell
+                className={`border border-gray-300 p-2 capitalize ${getBookingStatusTextColor(booking.status)}`}
+              >
+                {createLabel(booking.status)}
+              </TableCell>
               <TableCell className="border border-gray-300 p-2 capitalize">
-                {booking.isPaid ?
-                  <span className="text-green-500">Paid</span> :
+                {booking.isPaid ? (
+                  <span className="text-green-500">Paid</span>
+                ) : (
                   <span className="text-red-500">Not Paid</span>
-                }
+                )}
               </TableCell>
               <TableCell className="border border-gray-300 p-2">
                 <button
                   onClick={() => navigate(`/account/bookings/${booking._id}`)}
-                  className="py-2 px-3 text-accent-500 hover:underline"
+                  className="px-3 py-2 text-accent-500 hover:underline"
                 >
                   View Details
                 </button>
