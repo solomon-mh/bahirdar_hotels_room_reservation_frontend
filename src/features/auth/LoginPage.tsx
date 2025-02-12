@@ -38,8 +38,7 @@ function SigninPage() {
         else window.location.href = "/dashboard";
       })
       .catch((error) => {
-        if (error.status === 401)
-        {
+        if (error.status === 401) {
           toast.error("Invalid email or password");
           return;
         }
@@ -70,12 +69,18 @@ function SigninPage() {
             <CardDescription>
               <div>
                 Don't have an account?{" "}
-                <Link to="/signup" className=" text-accent-500 cursor-pointer hover:underline">
+                <Link
+                  to="/signup"
+                  className="cursor-pointer text-accent-500 hover:underline"
+                >
                   Sign Up
                 </Link>
               </div>
               <div>
-                <Link to="/forgot-password" className="text-accent-500 cursor-pointer hover:underline">
+                <Link
+                  to="/forgot-password"
+                  className="cursor-pointer text-accent-500 hover:underline"
+                >
                   Forgot Password?
                 </Link>
               </div>
