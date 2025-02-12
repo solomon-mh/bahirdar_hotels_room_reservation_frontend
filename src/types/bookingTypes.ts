@@ -50,10 +50,9 @@ export interface AvailableDates {
   room: string;
 }
 
-export interface IBookingResponse
-  extends Omit<IBooking, "room" | "user">,
-  ITimeStamp {
+export interface IBookingResponse extends Omit<IBooking, "room" | "user">, ITimeStamp {
   isPaid: boolean;
   user: User;
   room: Room & { hotel: Hotel };
+  hotel: Hotel;
 }

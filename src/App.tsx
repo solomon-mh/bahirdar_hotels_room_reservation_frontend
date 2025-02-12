@@ -42,6 +42,7 @@ import UserPage from "./features/users/UserPage.js";
 import UserDetail from "./features/users/UserDetail.js";
 import UserBookings from "./features/users/UserBookings.js";
 import MyBookingDetail from "./features/profile/MyBookingDetail.js";
+import RoomReview from "./features/reviews/ReviewPage.js";
 
 function App() {
   const { role, isLoggedIn, user, } = useAuthContext();
@@ -91,26 +92,8 @@ function App() {
               <Route
                 path="hotels/:hotelId/rooms/:roomId/:bookingId/pay"
                 element={<PaymentPage />}
-              />
-            {/* <Route path="hotels/:hotelId/rooms" element={<RoomsListPage />}>
-              </Route> */}
+            />
 
-            {/* <Route
-                path="hotels/:hotelId/rooms/:roomId/booking"
-                element={
-                  <ProtectRoutes>
-                    <BookRoomPage />
-                  </ProtectRoutes>
-                }
-              /> */}
-            {/* <Route
-                path={`payment-successful/:roomId`}
-                element={
-                  <ProtectRoutes>
-                    <PaymentSuccessPage />
-                  </ProtectRoutes>
-                }
-              /> */}
               {isLoggedIn && (
                 <Route path="account" element={<Account />}>
                   <Route path="profile" index element={<Profile />} />
@@ -118,6 +101,7 @@ function App() {
                 <Route path="bookings" element={<MyBookings />} />
                 <Route path="bookings/:bookingId" element={<MyBookingDetail />} />
                 <Route path="bookings/:bookingId/pay" element={<PaymentPage />} />
+                <Route path="bookings/:bookingId/review" element={<RoomReview />} />
 
                   <Route
                     path={user?.isVerified ? "edit-profile" : "complete-onboarding"}

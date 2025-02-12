@@ -82,6 +82,18 @@ export default function MyBookingDetail() {
                                                     </button>
                                                 )
                                             }
+                                            {
+                                                !booking.isPaid && (
+                                                    <button
+                                                        onClick={() => {
+                                                            navigate(`/account/bookings/${booking._id}/review`)
+                                                        }}
+                                                        className="px-3 py-1 bg-slate-500/90 rounded-sm text-white hover:bg-slate-500"
+                                                    >
+                                                        Review
+                                                    </button>
+                                                )
+                                            }
                                         </div>
                                     </CardContent>
                                 </Card>

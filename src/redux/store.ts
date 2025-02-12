@@ -5,6 +5,7 @@ import { roomApi } from "./api/roomsApi";
 import { bookingApi } from "./api/bookingApi";
 import { paymentsApi } from "./api/paymentsApi";
 import { authApi } from "./api/authApi";
+import { reviewApi } from "./api/reviewApi";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     [bookingApi.reducerPath]: bookingApi.reducer,
     [paymentsApi.reducerPath]: paymentsApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
+    [reviewApi.reducerPath]: reviewApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -22,7 +24,8 @@ export const store = configureStore({
       .concat(roomApi.middleware)
       .concat(bookingApi.middleware)
       .concat(paymentsApi.middleware)
-      .concat(authApi.middleware),
+      .concat(authApi.middleware)
+      .concat(reviewApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

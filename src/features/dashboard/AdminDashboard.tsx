@@ -12,9 +12,6 @@ import {
   hotelUserBookingMonthlyStatusData,
   lineChartData,
 } from "../../data/stat-data";
-import { FaUsersLine } from "react-icons/fa6";
-import { LiaHotelSolid } from "react-icons/lia";
-import { MdOutlineBedroomParent } from "react-icons/md";
 import { BsBookmarksFill } from "react-icons/bs";
 import { MdOutlineRateReview } from "react-icons/md";
 import { useGetAllHotelsQuery } from "@/redux/api/hotelApi";
@@ -28,7 +25,6 @@ function AdminDashboard() {
   const {
     numUsers = 23,
     numHotels = 12,
-    numRooms = 98,
     numBookings = 38,
     numReviews = 123,
   } = {};
@@ -37,17 +33,20 @@ function AdminDashboard() {
     {
       title: "Hotels",
       number: numHotels,
-      Icon: <LiaHotelSolid className="size-8" />,
+      Icon: <img
+        src="/icons/hotels.png"
+        alt="booking"
+        className="w-16 h-16"
+      />,
     },
     {
       title: "Users",
       number: numUsers,
-      Icon: <FaUsersLine className="size-8" />,
-    },
-    {
-      title: "Rooms",
-      number: numRooms,
-      Icon: <MdOutlineBedroomParent className="size-8" />,
+      Icon: <img
+        src="/icons/customers.png"
+        alt="booking"
+        className="w-16 h-16"
+      />,
     },
     {
       title: "Bookings",
@@ -63,15 +62,17 @@ function AdminDashboard() {
 
   return (
     <div className="flex w-full flex-col">
-      <section className="m-3 mb-8 grid grid-cols-1 justify-between gap-4 gap-x-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 lg:gap-x-10">
+      <section className="m-3 mb-8 grid grid-cols-1 justify-between gap-4 gap-x-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 lg:gap-x-10">
         {countData.map(({ title, Icon, number }, i) => (
           <div
             key={i}
-            className="text-white flex flex-col items-center rounded bg-gradient-to-br from-[#E0A75E] to-[#E0A75E]/70 p-2 shadow-xl"
+            className="text-slate-800 justify-between p-4 flex flex-row items-center rounded  shadow-xl"
           >
             {Icon}
-            <span className="text-xl font-semibold md:text-2xl">{number}</span>
-            <h3 className="text-sm">{title}</h3>
+            <div className="flex items-center   flex-col justify-center  p-4">
+              <span className="text-xl text-accent-500 font-semibold md:text-2xl">{number}</span>
+              <h3 className="text-sm italic">{title}</h3>
+            </div>
           </div>
         ))}
       </section>
