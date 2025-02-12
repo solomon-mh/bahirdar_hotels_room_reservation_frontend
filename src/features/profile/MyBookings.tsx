@@ -4,8 +4,11 @@ import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
 import { createLabel } from "@/utils/text";
 import { getBookingStatusTextColor } from "../bookings/color-utils";
+import { useNavigate } from "react-router-dom";
 
 const MyBookings = () => {
+
+  const navigate = useNavigate()
 
   const { data: { data: { bookings } = {} } = {}, isLoading, error } = useGetMyBookingsQuery()
 
@@ -51,6 +54,7 @@ const MyBookings = () => {
             <TableHead className="border border-gray-300 p-2">Nights</TableHead>
             <TableHead className="border border-gray-300 p-2">Total Price</TableHead>
             <TableHead className="border border-gray-300 p-2">Status</TableHead>
+            <TableHead className="border border-gray-300 p-2">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -65,6 +69,14 @@ const MyBookings = () => {
               <TableCell className="border border-gray-300 p-2">{booking.numOfNights} night{booking?.numOfNights && booking.numOfNights > 1 && "s"} </TableCell>
               <TableCell className="border border-gray-300 p-2">${booking.totalPrice}</TableCell>
               <TableCell className={`border border-gray-300 p-2 capitalize ${getBookingStatusTextColor(booking.status)}`}>{createLabel(booking.status)}</TableCell>
+              <TableCell className="border border-gray-300 p-2">
+                <button
+                  onClick={() => navigate(`/account/bookings/${booking._id}`)}
+                  className="py-2 px-3 text-accent-500 hover:underline"
+                >
+                  View Details
+                </button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

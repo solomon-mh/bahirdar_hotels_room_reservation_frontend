@@ -85,6 +85,22 @@ function Header() {
               </li>
             )
           }
+          {
+            isLoggedIn && user?.role && [Role.ADMIN, Role.MANAGER, Role.CASHIER].includes(user?.role) && (
+              <li className="hidden mt-3 md:inline">
+                <Link
+                  to="/dashboard"
+                  className={cn(
+                    " w-full   hover:bg-accent-500 text-slate-100  hover:text-white bg-accent-500 rounded px-3 py-2",
+                    pathname === '/dashboard' && "text-slate-100 bg-accent-500"
+                  )}
+                >
+                  Dashboard
+                </Link>
+              </li>
+            )
+
+          }
           {isLoggedIn && <li className="hidden md:inline">
             <HeaderAccount />
           </li>}

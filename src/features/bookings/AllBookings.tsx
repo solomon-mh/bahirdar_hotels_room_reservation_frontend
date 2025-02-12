@@ -119,7 +119,7 @@ const AllBookings = () => {
                           </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="text-sm">
                         {bookings?.map((booking) => (
                     <tr key={booking._id}>
                             <td className="border border-gray-200 px-4 py-2 text-gray-600">

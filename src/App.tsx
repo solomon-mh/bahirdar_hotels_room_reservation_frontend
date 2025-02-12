@@ -41,6 +41,7 @@ import UserDetailForVerification from "./features/users/UserDetailForVerificatio
 import UserPage from "./features/users/UserPage.js";
 import UserDetail from "./features/users/UserDetail.js";
 import UserBookings from "./features/users/UserBookings.js";
+import MyBookingDetail from "./features/profile/MyBookingDetail.js";
 
 function App() {
   const { role, isLoggedIn, user, } = useAuthContext();
@@ -114,7 +115,10 @@ function App() {
                 <Route path="account" element={<Account />}>
                   <Route path="profile" index element={<Profile />} />
                   <Route path="settings" element={<AccountSettings />} />
-                  <Route path="bookings" element={<MyBookings />} />
+                <Route path="bookings" element={<MyBookings />} />
+                <Route path="bookings/:bookingId" element={<MyBookingDetail />} />
+                <Route path="bookings/:bookingId/pay" element={<PaymentPage />} />
+
                   <Route
                     path={user?.isVerified ? "edit-profile" : "complete-onboarding"}
                     element={<CompleteOnboarding />}

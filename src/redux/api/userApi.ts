@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IUser, User } from "../../types/userTypes";
-import { CreateResponse, ITimeStamp } from "../../types/general";
+import { CreateResponse, IPagination, ITimeStamp } from "../../types/general";
 import { BASE_URL } from "../../utils/url";
 import { IBookingResponse } from "@/types/bookingTypes";
 
@@ -17,7 +17,10 @@ export const userApi = createApi({
   }),
   endpoints: (builder) => ({
     getAllUsers: builder.query<
-      { data: (IUser & ITimeStamp)[] },
+      {
+        data: (IUser & ITimeStamp)[];
+        pagination: IPagination;
+      },
       string | undefined
     >({
       query: (params) => {

@@ -25,7 +25,11 @@ const PaymentPage = () => {
   if (isError || !data) {
     console.log(error);
     toast.error("Failed to fetch booking details, try again later");
-    navigate(`/hotels/${hotelId}`);
+    if (hotelId) navigate(`/hotels/${hotelId}`);
+    else
+    {
+      navigate("/account/bookings/" + bookingId);
+    }
     return null;
   }
 

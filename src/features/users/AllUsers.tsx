@@ -5,12 +5,13 @@ import { useGetAllUsersQuery, userApi, UserTags } from "../../redux/api/userApi"
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/table";
+import { CustomPagination } from "@/components/Pagination";
 
 function AllUsers() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeBtn, setActiveBtn] = useState("");
   const navigate = useNavigate()
-  const { data: { data: users } = {}, isLoading } = useGetAllUsersQuery(searchParams.toString());
+  const { data: { data: users, pagination } = {}, isLoading } = useGetAllUsersQuery(searchParams.toString());
 
   useEffect(() => {
     userApi.util.invalidateTags([UserTags.USERS])
@@ -128,6 +129,14 @@ function AllUsers() {
                   }
                 </TableBody>
               </Table>
+              {
+                pagination && (
+                  <CustomPagination
+                    page={pagination?.page}
+                    totalPages={pagination?.totalPages}
+                  />
+                )
+              }
             </div>
           )
       }
