@@ -37,7 +37,7 @@ function Header() {
         <ul className=" gap-2 hidden md:flex">
 
           {
-            user?.role === Role.USER && (
+            (!isLoggedIn || user?.role === Role.USER) && (
               <>
                 <li className={cn(
                   " w-full   hover:bg-accent-500  hover:text-white rounded px-3 py-2",
@@ -72,9 +72,22 @@ function Header() {
               </>
             )
           }
-          <li className="hidden md:inline">
+          {
+            !isLoggedIn && (
+              <li>
+                <Link
+                  to="/login"
+                  className="flex items-center w-32 gap-2 rounded-lg bg-accent-500 px-5 py-2 text-slate-100"
+                >
+                  Sign In
+                  <FaArrowRight />
+                </Link>
+              </li>
+            )
+          }
+          {isLoggedIn && <li className="hidden md:inline">
             <HeaderAccount />
-          </li>
+          </li>}
         </ul>
         <div className={cn("flex fixed top-0 left-4 bottom-0 right-0 w-full h-[100vh] bg-slate-900 bg-opacity-50 z-40 md:hidden", menuOpen ? "block" : "hidden")}>
           <nav

@@ -17,36 +17,14 @@ import { LiaHotelSolid } from "react-icons/lia";
 import { MdOutlineBedroomParent } from "react-icons/md";
 import { BsBookmarksFill } from "react-icons/bs";
 import { MdOutlineRateReview } from "react-icons/md";
+import { useGetAllHotelsQuery } from "@/redux/api/hotelApi";
+import LoadingPage from "@/pages/utils/LoadingPage";
+import NotFoundPage from "@/pages/utils/NotFoundPage";
 
-const Hotels = [
-  {
-    image: "/hotel-images/img-2.jpg",
-    name: "Palm International Hotel ",
-    pricePerNight: 542,
-  },
-  {
-    image: "/hotel-images/img-2.jpg",
-    name: "Palm Palace International Hotel",
-    pricePerNight: 542,
-  },
-  {
-    image: "/hotel-images/img-2.jpg",
-    name: "Palm Palace International Hotel",
-    pricePerNight: 542,
-  },
-  {
-    image: "/hotel-images/img-2.jpg",
-    name: "Palm Palace International Hotel",
-    pricePerNight: 542,
-  },
-  {
-    image: "/hotel-images/img-2.jpg",
-    name: "Palm Palace International Hotel",
-    pricePerNight: 542,
-  },
-];
 
 function AdminDashboard() {
+
+  const { data: { data: hotels } = {}, isLoading, error } = useGetAllHotelsQuery("")
   const {
     numUsers = 23,
     numHotels = 12,
@@ -98,7 +76,7 @@ function AdminDashboard() {
         ))}
       </section>
 
-      <section className="bg-white m-3 my-6 flex justify-between p-4">
+      <section className="bg-white m-3 my-6 flex flex-col w-full justify-between p-4">
         <RecentUsers />
         <BookingPieChart />
       </section>
@@ -138,19 +116,44 @@ function AdminDashboard() {
           </h2>
           <Link
             to="/dashboard/hotels"
-            className="text-white flex items-center rounded-full bg-accent-500 px-2 py-1 text-sm transition-all duration-200 hover:scale-105"
+            className="text-white flex items-center rounded-md bg-accent-500/95 hover:bg-accent-500 px-2 py-1 text-sm transition-all duration-200 hover:scale-105"
           >
             See more &gt;&gt;
           </Link>
         </div>
         <div className="relative grid md:grid-cols-3 lg:grid-cols-4">
-          {Hotels.slice(0, 4).map((room, i) => (
+          {
+
+            isLoading
+              ?
+              (
+                <LoadingPage />
+
+              )
+              :
+              error
+                ?
+                <NotFoundPage>
+                  <h1 className="text-2xl font-semibold text-center text-gray-500">
+                    {(error as { data: { message: string } }).data.message || "Failed to fetch data"}
+                  </h1>
+                </NotFoundPage>
+
+                :
+                !hotels?.length
+                  ?
+                  <NotFoundPage>
+                    <span>Hotels not found</span>
+                  </NotFoundPage>
+                  :
+
+                  (hotels.length > 4 ? hotels.slice(0, 4) : hotels).map((hotel, i) => (
             <HotelCard
               key={i}
-              hotelPhoto={room.image}
-              hotelName={room.name}
-              availableRooms={74}
-              pricePerDay={room.pricePerNight}
+                      hotelPhoto={hotel.imageCover}
+                      hotelName={hotel.name}
+                      availableRooms={hotel.numOfRooms}
+                      pricePerDay={hotel.minPricePerNight}
             />
           ))}
         </div>

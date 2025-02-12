@@ -30,19 +30,22 @@ function RecentUsers() {
   }
 
   return (
-    <section className="bg-black/2 w-[300px] overflow-y-auto rounded-sm shadow-lg">
-      <div className="flex flex-col items-center gap-5">
-        <h2 className="w-full bg-black/5 p-4 text-center">Recent Users</h2>
+    <section className="bg-black/2 w-full overflow-y-auto rounded-sm shadow-lg">
+      <div className="flex flex-col w-full  items-center gap-5">
+        <h2 className="w-full text-slate-900 p-4 text-2xl">Recent Users</h2>
         <div className="flex w-full flex-col items-center gap-x-12 gap-y-5">
-          {users?.map((user) => (
+          {users?.slice(0, 5).map((user) => (
             <User key={user._id} user={user} />
           ))}
         </div>
+
+      </div>
+      <div className="flex p-2 w-full justify-end">
         <Link
           to="/dashboard/users"
-          className="inline-flex items-center justify-center rounded-lg bg-accent-700 px-5 py-3 text-center text-base font-medium text-white hover:bg-accent-800 focus:ring-4 focus:ring-accent-300"
+          className="flex items-center justify-end   rounded-lg bg-accent-500/95 px-5 py-2 text-center text-base font-medium text-white hover:bg-accent-500 focus:ring-4 focus:ring-accent-300"
         >
-          View All Users <FaArrowRightLong className="ml-2" />
+          View All Users <FaArrowRightLong className="" />
         </Link>
       </div>
     </section>
@@ -52,14 +55,14 @@ function RecentUsers() {
 function User({ user }: { user: IUser }) {
   return (
     <>
-      <div key={user._id} className="w-full">
-        <div className="flex justify-center gap-2 transition duration-300 hover:bg-black/10">
+      <div key={user._id} className="w-full px-4 shadow-md shadow-slate-200">
+        <div className="flex justify-start items-center gap-2 transition duration-300 hover:bg-black/10">
           <img
             className="h-10 w-10 rounded-full object-cover"
             src={user.profilePicture}
             alt=""
           />
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col py-1">
             <span className="font-semibold">{user.firstName}</span>
             <span className="text-sm">{user.email}</span>
           </div>

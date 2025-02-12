@@ -17,11 +17,11 @@ function HotelCard({ hotelPhoto, hotelName, availableRooms, pricePerDay }: Props
       </div>
       <div className="flex justify-between p-2">
         <p className="flex flex-col items-center">
-          <span className="rounded bg-accent-500 p-2 text-white">
+          <span className="rounded text-accent-500 p-2">
             {availableRooms} Rooms
           </span>
         </p>
-        <p className="rounded bg-[#E0A75E] p-2 text-white">
+        <p className="rounded bg-accent-500 p-2 text-white">
           ${pricePerDay}/Night
         </p>
       </div>

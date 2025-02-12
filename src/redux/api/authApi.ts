@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ILogin } from "../../types/authTypes";
+import { ILogin, IUpdatePassword } from "../../types/authTypes";
 import { CreateResponse, ITimeStamp } from "../../types/general";
 import { BASE_URL } from "../../utils/url";
 import { ISignup, ISignupRes, IUser } from "../../types/userTypes";
@@ -40,8 +40,27 @@ export const authApi = createApi({
       }),
       invalidatesTags: [Tags.AUTHS],
     }),
+    updateMyPassword: builder.mutation<CreateResponse, IUpdatePassword>({
+      query: (data) => ({
+        url: "/update-my-password",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    forgotPassword: builder.mutation<CreateResponse, { email: string }>({
+      query: (data) => ({
+        url: "/forgot-password",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useSignupMutation } =
-  authApi;
+export const {
+  useLoginMutation,
+  useLogoutMutation,
+  useSignupMutation,
+  useUpdateMyPasswordMutation,
+  useForgotPasswordMutation,
+} = authApi;

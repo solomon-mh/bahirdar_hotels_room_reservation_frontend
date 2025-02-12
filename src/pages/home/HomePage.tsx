@@ -43,7 +43,7 @@ function HomePage() {
             <span>Cann't get hotel data</span>
           </NotFoundPage>
         ) : (
-          <Map markers={markers} center={markers?.[0]?.location} />
+          <Map zoom={14} markers={markers} center={markers?.[0]?.location} />
         )}
       </div>
       <OurServices />

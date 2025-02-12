@@ -16,7 +16,11 @@ import { Gender } from "../../enums/genderEnum";
 import { Role } from "../../enums/roleEnum";
 import SpinnerMini from "../../ui/SpinnerMini";
 import { useState } from "react";
-const CreateUserDialog = () => {
+
+interface Props {
+  role?: Role;
+}
+const CreateUserDialog = ({ role }: Props) => {
   const [open, setOpen] = useState(false);
   const [createUser, { isLoading }] = useCreateUserMutation();
   const {
@@ -45,6 +49,7 @@ const CreateUserDialog = () => {
     formData.append("address.subcity", data.address.subcity);
     formData.append("address.woreda", data.address.woreda);
     formData.append("address.street", data.address.street);
+    if (role) formData.append("role", role);
     if (data.profilePicture)
       formData.append("profilePicture", data.profilePicture);
     try {
@@ -78,7 +83,7 @@ const CreateUserDialog = () => {
         <DialogHeader>
           <DialogTitle>Create user</DialogTitle>
           <DialogDescription>
-            Please fill the form below to create user account.
+            Please fill the form below to {role === Role.MANAGER ? "add cashier" : "register a user"}
           </DialogDescription>
         </DialogHeader>
 
