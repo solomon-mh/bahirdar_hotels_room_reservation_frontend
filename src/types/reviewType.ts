@@ -10,7 +10,8 @@ export interface IReview {
 
 export interface IReviewResponse {
   _id: string;
-  user: IUser;
+  user: IUser | string;
+  hotel: string;
   comment: string;
   rating: number;
   createdAt: string;

@@ -47,6 +47,7 @@ import HotelCashiers from "./features/hotels/HotelCashiers.js";
 import ForgotMyPassword from "./features/auth/ForgotMyPassword.js";
 import ResetMyPassword from "./features/auth/ResetMyPassword.js";
 import { Role } from "./enums/roleEnum.js";
+import HotelsTobeReviewd from "./features/reviews/HotelsTobeReviewed.js";
 
 function App() {
   const { role, isLoggedIn, user } = useAuthContext();
@@ -127,6 +128,11 @@ function App() {
                   path="identity-verification"
                   element={<IdentityVerification />}
                 />
+                {
+                  role === Role.USER && (
+                    <Route path="to-review" element={<HotelsTobeReviewd />} />
+                  )
+                }
               </Route>
             )}
           </Route>
