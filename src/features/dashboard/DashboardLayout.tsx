@@ -63,8 +63,8 @@ function DashboardLayout() {
       Icon: <MdOutlineBookmarkAdded size={20} />,
     },
     {
-      title: "Users",
-      url: "/dashboard/users",
+      title: "Cashiers",
+      url: "/dashboard/cashiers",
       Icon: <HiOutlineUsers size={20} />,
     },
     {

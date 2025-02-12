@@ -43,6 +43,7 @@ import UserDetail from "./features/users/UserDetail.js";
 import UserBookings from "./features/users/UserBookings.js";
 import MyBookingDetail from "./features/profile/MyBookingDetail.js";
 import RoomReview from "./features/reviews/ReviewPage.js";
+import HotelCashiers from "./features/hotels/HotelCashiers.js";
 
 function App() {
   const { role, isLoggedIn, user, } = useAuthContext();
@@ -160,7 +161,7 @@ function App() {
                       path="bookings/:bookingId"
                       element={<BookingDetails />}
                     />
-                  </Route>
+                </Route>
                   <Route path="add-hotel" element={<AddHotel />} />
                   <Route
                     path="identity-verification-requests"
@@ -181,6 +182,8 @@ function App() {
                     <Route path="rooms/:roomId/edit" element={<UpdateRoom />} />
                     <Route path="bookings" element={<AllBookings />} />
                   </Route>
+                  <Route path="cashiers" element={<HotelCashiers />} />
+
                   <Route
                     path="bookings/:bookingId"
                     element={<BookingDetails />}

@@ -113,6 +113,13 @@ export const userApi = createApi({
     >({
       query: () => "/user-with-bookings",
     }),
+    addCashier: builder.mutation<CreateResponse, { id: string; data: IUser }>({
+      query: ({ id, data }) => ({
+        url: `/add-cashier/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+    }),
   }),
 });
 

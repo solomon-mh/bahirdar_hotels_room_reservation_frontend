@@ -86,88 +86,91 @@ const AllBookings = () => {
                 <p>Bookings not found</p>
               </NotFoundPage>
               ) : (
-                <div className="max-h-[70vh] overflow-x-auto overflow-y-auto">
-              <table className="w-full table-auto border-collapse border border-gray-200">
-                <thead>
-                  <tr className="bg-gray-100">
-                          <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
-                            Booking ID
-                          </th>
-                          <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
-                            User
-                          </th>
-                          <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
-                            Phone
-                          </th>
-                          <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
-                            Room
-                          </th>
-                          <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
-                            Check-In
-                          </th>
-                          <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
-                            Check-Out
-                          </th>
-                          <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
-                            Status
-                          </th>
-                          <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
-                            Payment  Status
-                          </th>
-                          <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
-                            Action
-                          </th>
-                  </tr>
-                </thead>
-                <tbody className="text-sm">
-                        {bookings?.map((booking) => (
-                    <tr key={booking._id}>
-                            <td className="border border-gray-200 px-4 py-2 text-gray-600">
-                              {booking?._id && booking?._id.slice(0, 5)}
-                            </td>
-                            <td className="border border-gray-200 px-4 py-2 text-gray-600">{`${booking.user?.firstName} ${booking.user?.lastName}`}</td>
-                            <td className="border border-gray-200 px-4 py-2 text-gray-600">
-                              {booking.user.phoneNumber}
-                            </td>
-                      <td className="border border-gray-200 px-4 py-2 text-gray-600">
-                              Room {booking?.room?.roomNumber}
-                      </td>
-                      <td className="border border-gray-200 px-4 py-2 text-gray-600">
-                              {new Date(booking.checkIn).toLocaleDateString()}
-                      </td>
-                      <td className="border border-gray-200 px-4 py-2 text-gray-600">
-                              {new Date(booking.checkOut).toLocaleDateString()}
-                      </td>
-                            <td
-                              className={
-                                "border border-gray-200 px-4 py-2 capitalize text-gray-600 " +
-                                `${getBookingStatusTextColor(booking.status as BookingStatus)}`
-                              }
-                            >
-                              {booking.status}
-                            </td>
-                            <td
-                              className={`border border-gray-200 px-4 py-2 capitalize text-gray-600 `}
-                            >
-                              {booking.isPaid ?
-                                <span className="text-green-500">Paid</span> :
-                                <span className="text-red-500">Not Paid</span>
-                              }
-                            </td>
-                            <td className="border border-gray-200 px-4 py-2 text-gray-600">
-                              <button
-                                onClick={() =>
-                                  navigate(`/dashboard/bookings/${booking._id}`)
+                  <>
+                    <div className="max-h-[70vh] overflow-x-auto overflow-y-auto">
+                      <table className="w-full table-auto border-collapse border border-gray-200">
+                        <thead>
+                          <tr className="bg-gray-100">
+                            <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
+                              Booking ID
+                            </th>
+                            <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
+                              User
+                            </th>
+                            <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
+                              Phone
+                            </th>
+                            <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
+                              Room
+                            </th>
+                            <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
+                              Check-In
+                            </th>
+                            <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
+                              Check-Out
+                            </th>
+                            <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
+                              Status
+                            </th>
+                            <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
+                              Payment  Status
+                            </th>
+                            <th className="border border-gray-200 px-4 py-2 text-left text-gray-800">
+                              Action
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody className="text-sm">
+                          {bookings?.map((booking) => (
+                            <tr key={booking._id}>
+                              <td className="border border-gray-200 px-4 py-2 text-gray-600">
+                                {booking?._id && booking?._id.slice(0, 5)}
+                              </td>
+                              <td className="border border-gray-200 px-4 py-2 text-gray-600">{`${booking.user?.firstName} ${booking.user?.lastName}`}</td>
+                              <td className="border border-gray-200 px-4 py-2 text-gray-600">
+                                {booking.user.phoneNumber}
+                              </td>
+                              <td className="border border-gray-200 px-4 py-2 text-gray-600">
+                                Room {booking?.room?.roomNumber}
+                              </td>
+                              <td className="border border-gray-200 px-4 py-2 text-gray-600">
+                                {new Date(booking.checkIn).toLocaleDateString()}
+                              </td>
+                              <td className="border border-gray-200 px-4 py-2 text-gray-600">
+                                {new Date(booking.checkOut).toLocaleDateString()}
+                              </td>
+                              <td
+                                className={
+                                  "border border-gray-200 px-4 py-2 capitalize text-gray-600 " +
+                                  `${getBookingStatusTextColor(booking.status as BookingStatus)}`
                                 }
-                                className="text-accent-500/90 hover:text-accent-500 hover:underline"
                               >
-                                View
-                              </button>
-                            </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                                {booking.status}
+                              </td>
+                              <td
+                                className={`border border-gray-200 px-4 py-2 capitalize text-gray-600 `}
+                              >
+                                {booking.isPaid ?
+                                  <span className="text-green-500">Paid</span> :
+                                  <span className="text-red-500">Not Paid</span>
+                                }
+                              </td>
+                              <td className="border border-gray-200 px-4 py-2 text-gray-600">
+                                <button
+                                  onClick={() =>
+                                    navigate(`/dashboard/bookings/${booking._id}`)
+                                  }
+                                  className="text-accent-500/90 hover:text-accent-500 hover:underline"
+                                >
+                                  View
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+
+                    </div>
                     {pagination && (
                       <CustomPagination
                         totalPages={pagination.totalPages}
@@ -178,7 +181,8 @@ const AllBookings = () => {
                         }}
                       />
                     )}
-            </div>
+
+                  </>
           )}
         </div>
       </div>

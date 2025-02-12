@@ -45,16 +45,12 @@ const RoomList = () => {
                                             <h2 className="text-lg font-semibold">
                                                 Room {room.roomNumber} - {room.roomType.toUpperCase()}
                                             </h2>
-                                            <p className="text-sm text-gray-500">Hotel: {room.hotel}</p>
                                             <div className="mt-2 flex items-center justify-between">
                                                 <span className="text-accent-500 font-bold">${room.pricePerNight}/night</span>
                                                 <span
-                                                    className={`px-2 py-1 rounded-full text-xs ${!room.isAvailable
-                                                        ? "bg-green-100 text-green-500"
-                                                        : "bg-red-100 text-red-500"
-                                                        }`}
+                                                    className={`px-2 py-1 rounded-lg text-xs bg-green-100 text-green-500`}
                                                 >
-                                                    {room.isAvailable ? "Available" : "Unavailable"}
+                                                    {"Available"}
                                                 </span>
                                             </div>
                                             <div className="mt-2 text-sm text-gray-600">Capacity: {room.capacity} persons</div>

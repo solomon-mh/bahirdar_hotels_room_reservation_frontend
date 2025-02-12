@@ -55,8 +55,9 @@ export default function AddLocation({ setSelectedPosition, selectedPosition }: P
                 <DialogHeader>
                     <DialogTitle>Confirm Location</DialogTitle>
                 </DialogHeader>
-                <MapContainer className="flex-1 min-h-[70vh] w-full" center={[11.59244238014163, 37.423214410732655]} zoom={10} scrollWheelZoom={true}>
+                <MapContainer className="flex-1 min-h-[70vh] w-full"  center={[11.59244238014163, 37.423214410732655]} zoom={14} scrollWheelZoom={true}>
                     <TileLayer
+                        
                         attribution='&copy; <a href="https://www.openstreetmap.fr/hot/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
                     />

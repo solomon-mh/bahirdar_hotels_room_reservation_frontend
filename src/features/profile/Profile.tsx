@@ -41,34 +41,36 @@ const UserProfile = () => {
               <li><strong>Verified:</strong> {user?.isVerified ? "Verfied✅" : "Not Verfied❌"}</li>
             </ul>
           </div>
-          <div className="mt-6  shadow-lg shadow-slate-100  p-4">
-            <h3 className="text-lg font-semibold text-gray-700">Address information</h3>
-            <ul className="mt-2 text-gray-600">
-              <li><strong>Country:</strong> {user?.address.country}</li>
-              <li><strong>City:</strong> {user?.address.city}</li>
-              <li><strong>Subcity:</strong> {user?.address.subcity}</li>
-              <li><strong>Wereda:</strong> {user?.address.woreda}</li>
-              <li><strong>Street:</strong> {user?.address.street}</li>
-            </ul>
-          </div>
+          {
+            user?.address && (<div className="mt-6  shadow-lg shadow-slate-100  p-4">
+              <h3 className="text-lg font-semibold text-gray-700">Address information</h3>
+              <ul className="mt-2 text-gray-600">
+                <li><strong>Country:</strong> {user?.address.country}</li>
+                <li><strong>City:</strong> {user?.address.city}</li>
+                <li><strong>Subcity:</strong> {user?.address.subcity}</li>
+                <li><strong>Wereda:</strong> {user?.address.woreda}</li>
+                <li><strong>Street:</strong> {user?.address.street}</li>
+              </ul>
+            </div>)
+          }
         </div>
         <div className="mt-6 flex flex-col md:flex-row items-center shadow-lg shadow-slate-200 justify-start gap-4">
-          <div className="flex items-center flex-col-reverse p-4 gap-2">
+          {user?.idPhoto_front && <div className="flex items-center flex-col-reverse p-4 gap-2">
             <h2 className="italic text-slate-700">Front Side of the ID</h2>
             <img
               src={user?.idPhoto_front}
               alt="ID Front"
               className="w-48 h-48 object-cover rounded-lg border"
             />
-          </div>
-          <div className="flex items-center flex-col-reverse p-4 gap-2">
+          </div>}
+          {user?.idPhoto_back && <div className="flex items-center flex-col-reverse p-4 gap-2">
             <h2 className="text-slate-700 italic">Back Side of the ID</h2>
             <img
               src={user?.idPhoto_back}
               alt="ID Back"
               className="w-48 h-48 object-cover rounded-lg border"
             />
-          </div>
+          </div>}
         </div>
       </div>
     </div>

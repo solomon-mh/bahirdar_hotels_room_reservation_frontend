@@ -8,10 +8,16 @@ export enum HotelTags {
   HOTELS = "hotels",
   HOTEL = "hotel",
   HOTEL_ROOMS = "hotel_Rooms",
+  HOTEL_CASHIERS = "hotel_cashiers",
 }
 export const hotelApi = createApi({
   reducerPath: "hotelApi",
-  tagTypes: [HotelTags.HOTELS, HotelTags.HOTEL, HotelTags.HOTEL_ROOMS],
+  tagTypes: [
+    HotelTags.HOTELS,
+    HotelTags.HOTEL,
+    HotelTags.HOTEL_ROOMS,
+    HotelTags.HOTEL_CASHIERS,
+  ],
   baseQuery: fetchBaseQuery({
     baseUrl: `${BASE_URL}/hotels`,
     credentials: "include",
@@ -66,6 +72,26 @@ export const hotelApi = createApi({
         providesTags: (_, __, id) => [{ type: HotelTags.HOTEL_ROOMS, id }],
       },
     ),
+    createCashier: builder.mutation<
+      CreateResponse,
+      { hotelId: string; userId: string }
+    >({
+      query: ({ hotelId, userId }) => ({
+        url: `/${hotelId}/create-cashiers/${userId}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: [HotelTags.HOTELS],
+    }),
+    deleteCashier: builder.mutation<
+      CreateResponse,
+      { hotelId: string; userId: string }
+    >({
+      query: ({ hotelId, userId }) => ({
+        url: `/${hotelId}/delete-cashiers/${userId}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: [HotelTags.HOTELS],
+    }),
   }),
 });
 
@@ -76,5 +102,7 @@ export const {
   useGetHotelByIdQuery,
   useUpdateHotelMutation,
   useGetHotelRoomsQuery,
+  useCreateCashierMutation,
+  useDeleteCashierMutation,
 } = hotelApi;
 

@@ -111,13 +111,10 @@ const RoomDetail = () => {
                             <span className="text-lg font-bold text-accent-500">
                                 ${room.pricePerNight}/night
                             </span>
-                            <span
-                                className={`ml-4 rounded-full px-3 py-1 text-xs ${room.isAvailable
-                                    ? "bg-green-100 text-green-500"
-                                    : "bg-red-100 text-red-500"
-                                    }`}
+                                        <span
+                                            className={`ml-4 rounded-full px-3 py-1 text-xs bg-green-100 text-green-500`}
                             >
-                                {room.isAvailable ? "Available" : "Unavailable"}
+                                            Available
                             </span>
                         </div>
                         <p className="mt-2 text-gray-600">

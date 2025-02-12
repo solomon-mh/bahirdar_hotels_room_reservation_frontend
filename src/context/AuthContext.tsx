@@ -96,15 +96,34 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       </AuthContext.Provider>
     );
   }
-  else
+  else if (window.location.pathname === "/login")
+  {
     return (
-      <div className="mx-auto flex min-h-screen justify-center lg:w-1/4">
-        <div className="mt-5 p-4 lg:mt-12">
-          <h1 className="text-red-500">Error fetching user data</h1>
-          <p>{JSON.stringify(error, null, 2)}</p>
-        </div>
-      </div>
+      <AuthContext.Provider
+        value={{
+          isLoggedIn: false,
+          isOpenModal,
+          handleOpenModal,
+          user,
+          role: user?.role || null,
+          currentHotel,
+          setCurrentHotelHandler,
+          handleOpenModalWindow,
+          openModalWindow,
+          handleSetUserOnLogout,
+          setUser,
+        }}
+      >
+        {children}
+      </AuthContext.Provider>
     );
+  }
+  {
+    window.localStorage.removeItem("token");
+    window.location.href = "/login";
+
+
+  }
 };
 
 export const useAuthContext = (): AuthContextType => {
