@@ -45,6 +45,7 @@ import MyBookingDetail from "./features/profile/MyBookingDetail.js";
 import RoomReview from "./features/reviews/ReviewPage.js";
 import HotelCashiers from "./features/hotels/HotelCashiers.js";
 import ForgotMyPassword from "./features/auth/ForgotMyPassword.js";
+import ResetMyPassword from "./features/auth/ResetMyPassword.js";
 
 function App() {
   const { role, isLoggedIn, user } = useAuthContext();
@@ -205,6 +206,10 @@ function App() {
           {!isLoggedIn && (
             <>
               <Route path="/forgot-password" element={<ForgotMyPassword />} />
+              <Route
+                path="/reset-password/:resetToken"
+                element={<ResetMyPassword />}
+              />
 
               <Route path="/login" element={<SigninPage />} />
               <Route path="/signup" element={<SignupPage />} />

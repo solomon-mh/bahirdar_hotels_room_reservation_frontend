@@ -22,7 +22,7 @@ function ForgotMyPassword() {
     formState: { errors },
   } = useForm<{ email: string }>();
 
-  const [forgotPassword, { isLoading, isSuccess, data }] =
+  const [forgotPassword, { isLoading, isSuccess, isError, error }] =
     useForgotPasswordMutation();
 
   const onSubmitHandler = handleSubmit((data) => {
@@ -32,9 +32,15 @@ function ForgotMyPassword() {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success(data.message);
+      toast.success(
+        "Password reset link sent to your email, please check your inbox",
+      );
     }
-  }, [isSuccess]);
+    if (isError) {
+      console.log(error);
+      toast.error("Failed to send password reset link");
+    }
+  }, [isSuccess, isError]);
 
   return (
     <Card className="mx-auto mt-10 max-w-4xl rounded-md bg-white p-6 shadow-md">
@@ -64,7 +70,7 @@ function ForgotMyPassword() {
                 <Input
                   type="email"
                   className="bg-black/10 rounded px-5 py-2 ring-0 ring-red-500 focus:outline-none"
-                  placeholder="email"
+                  placeholder="your_name@abc.com"
                   {...register("email", {
                     required: "Please provide your email",
                   })}
