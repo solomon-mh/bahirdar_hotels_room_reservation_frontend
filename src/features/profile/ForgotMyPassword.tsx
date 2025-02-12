@@ -2,7 +2,7 @@ import { useAuthContext } from "../../context/AuthContext";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useForgotPasswordMutation } from "@/redux/api/userApi";
+import { useForgotPasswordMutation } from "@/redux/api/authApi";
 
 function ForgotMyPassword() {
   const { user } = useAuthContext();
