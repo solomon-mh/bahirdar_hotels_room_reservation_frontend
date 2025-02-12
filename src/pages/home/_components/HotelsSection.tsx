@@ -1,59 +1,83 @@
-
 import { Link } from "react-router-dom";
 import MaxWidthWrapper from "../../../ui/MaxWidthWrapper";
 import { IHotel } from "../../../types/hotelTypes";
-import { useGetAllHotelsQuery } from "../../../redux/api/hotelApi";
 import LoadingPage from "../../utils/LoadingPage";
-import NotFoundPage from "../../utils/NotFoundPage";
 import { ITimeStamp } from "../../../types/general";
+import { useAuthContext } from "@/context/AuthContext";
+import {
+  useGetPersonalizedRecommendationsQuery,
+  useGetPopularHotelsQuery,
+} from "@/redux/api/recommendationsApi";
+import { Card, CardContent } from "@/components/ui/card";
 
 export const HotelsSection = () => {
+  const { isLoggedIn } = useAuthContext();
 
-  const { data: { data: hotels } = {}, isLoading, error
-  } = useGetAllHotelsQuery("")
+  return isLoggedIn ? <PersonalizedSection /> : <PopularSection />;
+};
 
-  if (isLoading) return <p>Loading...</p>;
+// for logged in users
+// recommendation based on their previous bookings and favorite history
+export const PersonalizedSection = () => {
+  const { data: { data: hotels } = {}, isLoading } =
+    useGetPersonalizedRecommendationsQuery();
 
+  if (isLoading) return <LoadingPage />;
 
   return (
     <section className="">
-      {
-        isLoading
-          ?
-          <LoadingPage />
-          :
-          error
-            ?
-            <NotFoundPage>
-              <pre>
-                {
-                  JSON.stringify(error, null, 2)
-                }
-              </pre>
-            </NotFoundPage>
-            :
-            !hotels?.length
-              ?
-              <NotFoundPage>
-                <span>
-                  Hotel data not found
-                </span>
-              </NotFoundPage>
-              :
-              <MaxWidthWrapper>
-                <div className="my-5 flex flex-col items-center justify-center space-y-10 p-4">
-                  <h2 className="border-b p-4 text-xl text-black/70 shadow md:text-2xl md:font-bold lg:text-4xl">
-                    Popular Hotels
-                  </h2>
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 xl:gap-16">
-                    {hotels?.map((hotel) => (
-                      <HotelCard hotel={hotel} key={hotel._id} />
-                    ))}
-                  </div>
-                </div>
-              </MaxWidthWrapper>
+      <MaxWidthWrapper>
+        <div className="my-5 space-y-10 p-4">
+          <h2 className="text-black/70 border-b p-4 text-center text-xl shadow md:text-2xl md:font-bold lg:text-4xl">
+            Personalized Hotels
+          </h2>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 xl:gap-16">
+            {hotels?.map((hotel, i) => (
+              <Card key={i}>
+                <CardContent>
+                  <HotelCard hotel={hotel} key={hotel._id} />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </MaxWidthWrapper>
+    </section>
+  );
+};
 
-      }
+// this a recommendation of hotels for users that do not logged in to our app
+// we get hotel recommendation based on their average number of reviews, thier hotel star and also based on min price per night
+export const PopularSection = () => {
+  const {
+    data: { data: hotels } = {},
+    isLoading,
+    isError,
+  } = useGetPopularHotelsQuery();
+
+  if (isLoading) return <LoadingPage />;
+  console.log(hotels);
+
+  return (
+    <section className="">
+      {hotels?.length && !isError && (
+        <MaxWidthWrapper>
+          <div className="my-5 flex flex-col items-center justify-center space-y-10 p-4">
+            <h2 className="text-black/70 border-b p-4 text-xl shadow md:text-2xl md:font-bold lg:text-4xl">
+              Popular Hotels
+            </h2>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 xl:gap-16">
+              {hotels?.map((hotel, i) => (
+                <Card key={i}>
+                  <CardContent>
+                    <HotelCard hotel={hotel} key={hotel._id} />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </MaxWidthWrapper>
+      )}
     </section>
   );
 };
@@ -67,12 +91,12 @@ const HotelCard = ({ hotel }: { hotel: IHotel & ITimeStamp }) => {
       <img
         className="h-48 w-full object-cover"
         src={hotel.imageCover}
-        alt={hotel.name}
+        alt={""}
       />
       <div className="p-4">
         <p className="mb-2 text-2xl font-bold">{hotel.name}</p>
-        <p className="text-gray-600">{hotel.address.city}</p>
-        <p className="mt-2 text-sm text-black/30">{hotel.summary}</p>
+        <p className="text-gray-600">{hotel.address?.city}</p>
+        <p className="text-black/30 mt-2 text-sm">{hotel.summary}</p>
         <div className="mt-4 flex items-center justify-between">
           <div className="flex items-center">
             {[...Array(hotel.hotelStar)].map((_, index) => (
@@ -86,7 +110,7 @@ const HotelCard = ({ hotel }: { hotel: IHotel & ITimeStamp }) => {
               </svg>
             ))}
           </div>
-          <button className="rounded  bg-accent-500 px-3 py-1 text-lg text-white">
+          <button className="rounded bg-accent-500 px-3 py-1 text-lg text-white">
             ${hotel.minPricePerNight}/night
           </button>
         </div>
@@ -94,44 +118,3 @@ const HotelCard = ({ hotel }: { hotel: IHotel & ITimeStamp }) => {
     </Link>
   );
 };
-
-/*
- [
-            {
-                "_id": "66cc9e7ad11fe9fe45ba7911",
-                "name": "Addis International Hotel",
-                "hotelStar": 5,
-                "imageCover": "http://res.cloudinary.com/dvp1mjhd9/image/upload/v1724685942/HotelBookingApp_Intern/hotels/myz1edlgmcybyqmsnhwm.jpg",
-                "address": "Bahir Dar, Amhara, 16km from the main straight",
-                "summary": "5-star hotel located in the heart of Addis Ababa, Ethiopia",
-                "minPricePerNight": 350,
-                "numOfRooms": 2,
-                "avgRating": 4.5,
-                "id": "66cc9e7ad11fe9fe45ba7911"
-            },
-            {
-                "_id": "6724ce454c8babc72db74daf",
-                "name": "Bahir Dar Sunshine Inn",
-                "hotelStar": 4,
-                "imageCover": "http://res.cloudinary.com/dvp1mjhd9/image/upload/v1730465319/HotelBookingApp_Intern/hotels/qef0t5ahpbkc2sw2da69.jpg",
-                "address": "Bahir Dar, Amhara, 16km from the main straight",
-                "summary": "The hotel offers a luxurious experience with its spacious rooms, modern amenities, and exceptional service.",
-                "minPricePerNight": 0,
-                "numOfRooms": 1,
-                "avgRating": 4.5,
-                "id": "6724ce454c8babc72db74daf"
-            },
-            {
-                "_id": "6724d0b462cd27952fce2bc2",
-                "name": "Lake Tana Palace",
-                "hotelStar": 3,
-                "imageCover": "http://res.cloudinary.com/dvp1mjhd9/image/upload/v1730465967/HotelBookingApp_Intern/hotels/gpfofzrhxy2i9ihs4f8k.jpg",
-                "address": "Bahir Dar, Amhara, 2km from Bahir Dar Market",
-                "summary": "4-star hotel in Bahir Dar offering modern amenities with convenient access to Lake Tana and local attractions.",
-                "minPricePerNight": 0,
-                "numOfRooms": 0,
-                "avgRating": 4.5,
-                "id": "6724d0b462cd27952fce2bc2"
-            }
-        ]
- */
