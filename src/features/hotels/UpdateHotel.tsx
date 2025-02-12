@@ -4,9 +4,12 @@ import { useGetHotelByIdQuery, useUpdateHotelMutation } from "../../redux/api/ho
 import toast from "react-hot-toast";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
+import { useAuthContext } from "@/context/AuthContext";
+import { Role } from "@/enums/roleEnum";
 
 // IF THE MANAGER UPDATES HIS HOTEL, IT IS IN THE MANAGERS DASHBOARD | SETTINGS PART SO THE URL IS `/dashboard/settings` : IN THIS CASE THERE IS NO PARAMS SO WE PASS THE CURRENT HOTELS ID THROUGH PROP BECAUSE WE USE UPDATE HOTEL COMPONENT IN THAT SETTINGS PART
 function UpdateHotel() {
+  const { user } = useAuthContext()
   const { hotelId } = useParams() as { hotelId: string };
   const navigate = useNavigate();
 
@@ -26,7 +29,8 @@ function UpdateHotel() {
       }).unwrap().then(() => {
         toast.success("Hotel updated successfully");
 
-        navigate('/dashboard/' + hotelId);
+
+        navigate('/dashboard/' + (user?.role === Role.ADMIN ? "hotels/" : "/") + hotelId);
 
       }).catch((err) => {
         if ('data' in err)
