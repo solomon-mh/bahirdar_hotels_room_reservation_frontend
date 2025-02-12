@@ -3,6 +3,7 @@ import { ILogin, IUpdatePassword } from "../../types/authTypes";
 import { CreateResponse, ITimeStamp } from "../../types/general";
 import { BASE_URL } from "../../utils/url";
 import { ISignup, ISignupRes, IUser } from "../../types/userTypes";
+import { IResetPassword } from "@/features/auth/ResetMyPassword";
 
 enum Tags {
   AUTHS = "auths",
@@ -54,6 +55,16 @@ export const authApi = createApi({
         body: data,
       }),
     }),
+    resetPassword: builder.mutation<
+      { status: string; message: string },
+      { resetToken: string; data: IResetPassword }
+    >({
+      query: ({ resetToken, data }) => ({
+        url: `/reset-password/${resetToken}`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -63,4 +74,5 @@ export const {
   useSignupMutation,
   useUpdateMyPasswordMutation,
   useForgotPasswordMutation,
+  useResetPasswordMutation,
 } = authApi;
