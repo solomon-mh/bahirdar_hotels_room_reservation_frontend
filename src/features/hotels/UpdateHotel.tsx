@@ -28,9 +28,10 @@ function UpdateHotel() {
         id: hotelId || hotelId || '',
       }).unwrap().then(() => {
         toast.success("Hotel updated successfully");
-
-
-        navigate('/dashboard/' + (user?.role === Role.ADMIN ? "hotels/" : "/") + hotelId);
+        if (user?.role === Role.ADMIN)
+          navigate('/dashboard/hotels/' + hotelId);
+        else
+          navigate("/dashboard/" + hotelId);
 
       }).catch((err) => {
         if ('data' in err)

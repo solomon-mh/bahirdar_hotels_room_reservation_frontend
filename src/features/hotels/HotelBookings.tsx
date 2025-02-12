@@ -14,8 +14,10 @@ import { CustomPagination } from "../../components/Pagination";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { useClickOutside } from "../../components/lib/useClickOutSide";
+import { useAuthContext } from "@/context/AuthContext";
 const HotelBookings = () => {
 
+    const { user } = useAuthContext();
     const [openDropdown, setOpenDropdown] = useState(false);
     const modalRef = useClickOutside<HTMLDivElement>(() => setOpenDropdown(false));
     const [searchParams, setSearchParams] = useSearchParams();
@@ -29,11 +31,11 @@ const HotelBookings = () => {
         isLoading,
         error,
     } = useGetHotelBookingsQuery({
-        hotelId: hotelId as string,
+        hotelId: (hotelId || user?.hotel?._id) as string,
         params: searchParams.toString() || "",
     }, {
         refetchOnMountOrArgChange: true,
-
+        skip: !hotelId && !user?.hotel?._id,
     });
 
     const getStatusButtonColor = (status: BookingStatus) => {
@@ -130,7 +132,8 @@ const HotelBookings = () => {
                         <NotFoundPage>
                             <p>Bookings not found</p>
                         </NotFoundPage>
-                    ) : (
+                            ) : (
+                                    <>
                         <div className="max-h-[70vh] overflow-x-auto overflow-y-auto">
                             <table className="w-full table-auto border-collapse border border-gray-200">
                                 <thead>
@@ -215,7 +218,8 @@ const HotelBookings = () => {
                                     ))}
                                             </tbody>
                                         </table>
-                                        {pagination && (
+                                        </div>
+                                        {bookings.length > 5 && pagination && (
                                             <CustomPagination
                                                 totalPages={pagination.totalPages}
                                                 page={pagination?.page}
@@ -224,7 +228,7 @@ const HotelBookings = () => {
                                                 }}
                                             />
                                         )}
-                        </div>
+                                    </>
                     )}
                 </div>
             </div>

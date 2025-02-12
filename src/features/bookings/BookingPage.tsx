@@ -65,9 +65,7 @@ export default function BookingPage() {
             navigate("/account/complete-onboarding")
         }
     }, [navigate, user?.isVerified]);
-  if (fetchingRoom) {
-    return <LoadingPage />;
-  }
+
 
   if (roomFetchingError) {
     return (
@@ -104,7 +102,7 @@ export default function BookingPage() {
                         Book a Room
                     </span>
                     {fetchingHotel ? (
-                        "Loading..."
+                        <LoadingPage />
                     ) : (
                         <a
                             href={`/hotels/${hotelId}`}
@@ -162,7 +160,7 @@ export default function BookingPage() {
                 {/* Room Details Section */}
                 <div className="w-full md:w-[30%]">
                     {fetchingRoom ? (
-                        <p>Loading...</p>
+                        <LoadingPage />
                     ) : roomFetchingError ? (
                         <p>
                             <pre>{JSON.stringify(roomFetchingError, null, 2)}</pre>

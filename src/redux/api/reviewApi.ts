@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { CreateResponse, ITimeStamp } from "../../types/general";
 import { BASE_URL } from "../../utils/url";
-import { IReview } from "@/types/reviewType";
+import { IReview, IReviewResponse } from "@/types/reviewType";
 
 enum ReviewTags {
   REVIEWS = "reviews",
@@ -15,6 +15,10 @@ export const reviewApi = createApi({
     credentials: "include",
   }),
   endpoints: (builder) => ({
+    getAllReviews: builder.query<{ data: IReviewResponse[] }, void>({
+      query: () => "/",
+      providesTags: [ReviewTags.REVIEWS],
+    }),
     reviewRoom: builder.mutation<
       CreateResponse & { data: IReview & ITimeStamp },
       IReview
@@ -25,7 +29,22 @@ export const reviewApi = createApi({
         body: reviewData,
       }),
     }),
+    getHotelReviews: builder.query<
+      {
+        data: {
+          reviews: IReviewResponse[];
+        };
+      },
+      string
+    >({
+      query: (id) => `/hotel/${id}`,
+      providesTags: [ReviewTags.REVIEW],
+    }),
   }),
 });
 
-export const { useReviewRoomMutation } = reviewApi;
+export const {
+  useGetAllReviewsQuery,
+  useReviewRoomMutation,
+  useGetHotelReviewsQuery,
+} = reviewApi;

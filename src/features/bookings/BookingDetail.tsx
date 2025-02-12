@@ -9,32 +9,25 @@ import { ArrowLeft } from "lucide-react";
 import ImageSlider from "../../components/Slider";
 import DeleteFeature, { FeatureDeleteActionType } from "../../components/DeleteDialog";
 import ConfirmAction from "../../components/ConfirmDialog";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { BookingStatus } from "../../enums/bookingStatusEnum";
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "../../components/ui/select";
-import { getBookingStatusTextColor } from "./color-utils";
+import { getBookingStausBtnColor } from "./color-utils";
 import { createLabel } from "@/utils/text";
+import { useAuthContext } from "@/context/AuthContext";
+import { Role } from "@/enums/roleEnum";
 
 export default function BookingDetails() {
-    const bookingStatuses = Object.values(BookingStatus);
+  const { user } = useAuthContext()
+  const [status, setStatus] = useState<BookingStatus | null>(null);
   const { hotelId, userId } = useParams<{ hotelId: string, userId: string }>();
     const { bookingId } = useParams<{ bookingId: string }>();
     const { data: { data: booking } = {}, isLoading, error } = useGetBookingByIdQuery(bookingId as string);
     const [confirimAction, { isLoading: updating }] = useUpdateBookingStatusMutation();
-    const [isOpen, setIsOpen] = useState(false);
-    const [status, setStatus] = useState<BookingStatus | null>(booking?.status || null);
-    const onConfirm = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const onConfirm = () => {
         try
         {
-
             if (!status) return;
             confirimAction({
               bookingId: bookingId as string,
@@ -60,9 +53,6 @@ export default function BookingDetails() {
         }
     };
 
-    useEffect(() => {
-        setStatus(booking?.status || null);
-    }, [booking?.status]);
 
   const isHotelBookingDetail = !!hotelId
   const isUserBookingDetail = !!userId
@@ -82,35 +72,37 @@ export default function BookingDetails() {
 
           ) :
             <div className="flex"></div>}
-          <div className="flex flex-1  md:flex-none   justify-end items-center gap-2 px-2 w-full md:w-auto">
-            <div className="w-full md:w-[180px]">
-              <Select value={status as string || ""} onValueChange={(value) => setStatus(value as BookingStatus)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Change Status" className="p-2 rounded-lg text-slate-800 bg-gray-100" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {bookingStatuses.map((status, index) => (
-                      <SelectItem className={`${getBookingStatusTextColor(status)}`} key={index} value={status}>{createLabel(status)}</SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-            <ConfirmAction
-              feature="Booking"
-              featureId={bookingId || ""}
-              onConfirm={onConfirm}
-              confirming={updating}
-              isOpen={isOpen}
-              setIsOpen={setIsOpen}
-            />
-            <DeleteFeature
-              feature="Booking"
-              featureId={bookingId || ""}
-              useDelete={useDeleteBookingMutation as FeatureDeleteActionType}
-              redirectUrl={`/dashboard${hotelId ? "/hotels/" + hotelId : ""}/bookings`}
-            />
+          <div className="flex flex-1 flex-col items-stretch  md:flex-row  justify-end md:items-center gap-2 px-2 w-full md:w-auto">
+
+
+            {
+              booking && (user?.role === Role.CASHIER || user?.role === Role.MANAGER) && ([BookingStatus.PENDING, BookingStatus.CONFIRMED, BookingStatus.REJECTED, BookingStatus.CHECKED_IN, BookingStatus.CHECKED_OUT].filter(status => status !== booking.status).map(status => (
+                <ConfirmAction
+                  setStatus={setStatus}
+                  feature="Booking"
+                  featureId={bookingId || ""}
+                  status={status}
+                  onConfirm={onConfirm}
+                  confirming={updating}
+                  isOpen={isOpen}
+                  setIsOpen={setIsOpen}
+                  btnText={createLabel(status === BookingStatus.PENDING ? "Reset" : status)}
+                  btnColor={status !== BookingStatus.PENDING ? getBookingStausBtnColor(status) : undefined}
+                />
+              )
+              ))
+            }
+
+            {
+              booking && !booking?.isPaid && (
+                <DeleteFeature
+                  feature="Booking"
+                  featureId={bookingId || ""}
+                  useDelete={useDeleteBookingMutation as FeatureDeleteActionType}
+                  redirectUrl={`/dashboard${hotelId ? "/hotels/" + hotelId : ""}/bookings`}
+                />
+              )
+            }
           </div>
         </div>
 

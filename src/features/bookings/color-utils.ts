@@ -37,3 +37,22 @@ export const getBookingStatusBgColor = (status: BookingStatus) => {
       return "bg-gray-400/90 hover:bg-gray-400";
   }
 };
+
+export const getBookingStausBtnColor = (status: BookingStatus) => {
+  switch (status) {
+    case BookingStatus.PENDING:
+      return "slate-800";
+    case BookingStatus.CONFIRMED:
+      return "green-400";
+    case BookingStatus.CANCELLED:
+      return "red-400";
+    case BookingStatus.REJECTED:
+      return "red-500";
+    case BookingStatus.CHECKED_IN:
+      return "accent-400";
+    case BookingStatus.CHECKED_OUT:
+      return "slate-500";
+    default:
+      return "gray-400";
+  }
+};

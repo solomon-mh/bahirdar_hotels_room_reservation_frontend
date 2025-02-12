@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetBookingByIdQuery } from "@/redux/api/bookingApi";
 import { useReviewRoomMutation } from "@/redux/api/reviewApi";
 import toast from "react-hot-toast";
@@ -17,6 +17,7 @@ export interface IReview {
 
 export default function RoomReview() {
 
+    const navigate = useNavigate();
     const [rating, setRating] = useState(0);
     const { bookingId } = useParams<{ bookingId: string }>();
     const { data: { data: booking } = {}, } = useGetBookingByIdQuery(bookingId as string);
@@ -39,14 +40,20 @@ export default function RoomReview() {
             comment: data.comment,
         }).unwrap().then(() => {
             setSubmittedReview({
-                hotel: booking?.room.hotel._id as string,
+                hotel: booking?.hotel._id as string,
                 rating: rating,
                 comment: data.comment,
             });
             reset();
             toast.success("Review submitted successfully");
+            navigate('/bookings/' + bookingId);
         }).catch((error) => {
-            console.log(error)
+            if ('data' in error)
+            {
+                const { message } = error.data as { message: string }
+                toast.error(message || "Failed to submit review, try again later");
+            }
+            else
             toast.error("Failed to submit review, try again later");
         });
     };
@@ -55,7 +62,7 @@ export default function RoomReview() {
         <div className="flex flex-col items-stretch md:flex-row justify-center gap-4 min-h-[60vh] bg-gray-100 p-4">
             <Card className="w-full bg-white shadow-lg rounded-2xl p-6">
                 <CardHeader>
-                    <CardTitle className="text-2xl font-bold text-gray-800">Review a Room</CardTitle>
+                    <CardTitle className="text-2xl font-bold text-gray-800">Review a hotel</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

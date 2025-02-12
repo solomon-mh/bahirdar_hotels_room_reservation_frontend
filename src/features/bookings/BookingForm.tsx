@@ -68,9 +68,7 @@ export default function BookingForm({
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Reset to midnight for accurate comparisons
 
-  if (isLoading) {
-    return <div>Loading</div>;
-  }
+
 
 
 

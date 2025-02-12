@@ -1,3 +1,4 @@
+import { BookingStatus } from "@/enums/bookingStatusEnum";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../components/ui/dialog";
 
 
@@ -8,15 +9,20 @@ interface Props {
     featureId: string;
     btnText?: string;
     isOpen?: boolean;
+    status: BookingStatus;
+    setStatus: (status: BookingStatus | null) => void;
     setIsOpen?: (open: boolean) => void;
     confirming: boolean;
+    btnColor?: string;
 }
-export default function ConfirmAction({ btnText, onConfirm, isOpen, setIsOpen, confirming }: Props) {
+export default function ConfirmAction({ btnText, onConfirm, isOpen, status, setStatus, setIsOpen, btnColor = 'accent-500', confirming }: Props) {
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <button className="px-4 py-1  border bg-[#34343400] border-accent-500 text-accent-500 hover:bg-accent-500 rounded-md hover:text-slate-100">
+                <button
+                    onClick={() => setStatus(status)}
+                    className={`px-4 py-1  border bg-[#34343400] border-${btnColor} text-${btnColor} hover:bg-${btnColor} rounded-md hover:text-slate-100`}>
                     {btnText || `Confirm`}
                 </button>
             </DialogTrigger>

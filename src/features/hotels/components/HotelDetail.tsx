@@ -11,12 +11,16 @@ import { MdEdit } from "react-icons/md";
 import { Role } from "../../../enums/roleEnum";
 import MapComponent from "../../bookings/Map";
 import { useEffect, useState } from "react";
+import { useGetHotelReviewsQuery } from "@/redux/api/reviewApi";
+import HotelReview from "./HotelReview";
 
 export const HotelDetail = () => {
     const navigate = useNavigate();
     const { user } = useAuthContext();
     const [_, setHotelImages] = useState<string[]>([]);
     const { hotelId } = useParams<{ hotelId: string }>();
+    const { data: { data: { reviews } = {} } = {} } = useGetHotelReviewsQuery(hotelId as string, { skip: !hotelId });
+
     const {
         data: { data: { hotel } = {} } = {},
         isLoading,
@@ -128,6 +132,16 @@ export const HotelDetail = () => {
                                 </div>
                             )
                         }
+
+                        <div className="grid grid-cols-2">
+                            {
+                                reviews?.map((review) => (
+                                    <HotelReview key={review._id} review={review} />
+                                )
+                                )
+                            }
+                        </div>
+
 
                         <div className="mt-6 flex items-center justify-between">
                             <div className="text-gray-800">

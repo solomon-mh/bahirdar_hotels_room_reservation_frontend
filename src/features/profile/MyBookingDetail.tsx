@@ -1,17 +1,57 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar } from "@radix-ui/react-avatar";
-import { useGetBookingByIdQuery } from "../../redux/api/bookingApi";
+import { useGetBookingByIdQuery, useUpdateBookingStatusMutation } from "../../redux/api/bookingApi";
 import { useNavigate, useParams } from "react-router-dom";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
 import { Badge } from "../../components/ui/badge";
 import { ArrowLeft } from "lucide-react";
 import ImageSlider from "../../components/Slider";
+import ConfirmAction from "@/components/ConfirmDialog";
+import { BookingStatus } from "@/enums/bookingStatusEnum";
+import toast from "react-hot-toast";
+import { useState } from "react";
+import { createLabel } from "@/utils/text";
+import { getBookingStausBtnColor } from "../bookings/color-utils";
+import { useGetHotelReviewsQuery } from "@/redux/api/reviewApi";
+import { useAuthContext } from "@/context/AuthContext";
 export default function MyBookingDetail() {
+    const { user } = useAuthContext();
     const navigate = useNavigate();
     const { bookingId } = useParams<{ bookingId: string }>();
     const { data: { data: booking } = {}, isLoading, error } = useGetBookingByIdQuery(bookingId as string);
+    const { data: { data: { reviews } = {} } = {} } = useGetHotelReviewsQuery(booking?.hotel._id as string, { skip: !booking?.hotel._id });
+    const [confirimAction, { isLoading: updating }] = useUpdateBookingStatusMutation();
+    const [isOpen, setIsOpen] = useState(false);
+    const [status, setStatus] = useState<BookingStatus | null>(null);
 
+    const onConfirm = () => {
+        try
+        {
+            if (!status) return;
+            confirimAction({
+                bookingId: bookingId as string,
+                userId: booking?.user._id as string,
+                status: BookingStatus.CANCELLED
+            }).unwrap().then(() => {
+                toast.success(`Book  ${BookingStatus.CANCELLED} successfully`);
+                setIsOpen(false);
+            }).catch((err) => {
+                if ('data' in err)
+                {
+                    toast.error(err.data.message);
+                }
+                else
+                {
+                    toast.error(JSON.stringify(err, null, 2));
+                }
+            })
+        } catch (error)
+        {
+            toast.error(JSON.stringify(error, null, 2));
+
+        }
+    };
     return (
         <div className="flex max-w-[95vw] md:max-w-max flex-col gap-4 p-4">
             <div className="flex w-full shadow-lg p-2 items-center justify-between gap-1 md:gap-4 ">
@@ -83,7 +123,7 @@ export default function MyBookingDetail() {
                                                 )
                                             }
                                             {
-                                                !booking.isPaid && (
+                                                booking.isPaid && reviews?.every(review => review.user._id && review.user._id !== user?._id) && (
                                                     <button
                                                         onClick={() => {
                                                             navigate(`/account/bookings/${booking._id}/review`)
@@ -92,6 +132,22 @@ export default function MyBookingDetail() {
                                                     >
                                                         Review
                                                     </button>
+                                                )
+                                            }
+                                            {
+                                                !booking.isPaid && (
+                                                    <ConfirmAction
+                                                        setStatus={setStatus}
+                                                        feature="Booking"
+                                                        featureId={bookingId || ""}
+                                                        status={BookingStatus.CANCELLED}
+                                                        onConfirm={onConfirm}
+                                                        confirming={updating}
+                                                        isOpen={isOpen}
+                                                        setIsOpen={setIsOpen}
+                                                        btnText={createLabel(BookingStatus.CANCELLED)}
+                                                        btnColor={getBookingStausBtnColor(BookingStatus.CANCELLED)}
+                                                    />
                                                 )
                                             }
                                         </div>
