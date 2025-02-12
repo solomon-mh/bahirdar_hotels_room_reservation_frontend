@@ -4,7 +4,7 @@ import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
 import { createLabel } from "@/utils/text";
 import { getBookingStatusTextColor } from "../bookings/color-utils";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const MyBookings = () => {
 
@@ -37,8 +37,17 @@ const MyBookings = () => {
   if (!bookings?.length)
   {
     return (
-      <NotFoundPage>
-        <p className="text-red-400">No bookings found.</p>
+      <NotFoundPage >
+        <div className="flex flex-col items-center justify-center gap-4">
+          <div className="flex">
+            <button className="bg-accent-500/95 text-slate-100 bg-accent-500 text-slate-50 px-4 py-2 rounded-md">
+              <Link to="/hotels">Book now</Link>
+            </button>
+          </div>
+          <div className="flex ">
+            <p className="text-slate-800">No bookings found.</p>
+          </div>
+        </div>
       </NotFoundPage>
     )
   }
@@ -54,6 +63,7 @@ const MyBookings = () => {
             <TableHead className="border border-gray-300 p-2">Nights</TableHead>
             <TableHead className="border border-gray-300 p-2">Total Price</TableHead>
             <TableHead className="border border-gray-300 p-2">Status</TableHead>
+            <TableHead className="border border-gray-300 p-2">Payment Status</TableHead>
             <TableHead className="border border-gray-300 p-2">Action</TableHead>
           </TableRow>
         </TableHeader>
@@ -69,6 +79,12 @@ const MyBookings = () => {
               <TableCell className="border border-gray-300 p-2">{booking.numOfNights} night{booking?.numOfNights && booking.numOfNights > 1 && "s"} </TableCell>
               <TableCell className="border border-gray-300 p-2">${booking.totalPrice}</TableCell>
               <TableCell className={`border border-gray-300 p-2 capitalize ${getBookingStatusTextColor(booking.status)}`}>{createLabel(booking.status)}</TableCell>
+              <TableCell className="border border-gray-300 p-2 capitalize">
+                {booking.isPaid ?
+                  <span className="text-green-500">Paid</span> :
+                  <span className="text-red-500">Not Paid</span>
+                }
+              </TableCell>
               <TableCell className="border border-gray-300 p-2">
                 <button
                   onClick={() => navigate(`/account/bookings/${booking._id}`)}
