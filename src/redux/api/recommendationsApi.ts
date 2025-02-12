@@ -26,7 +26,7 @@ export const recommendationsApi = createApi({
       query: () => `/personal-recommendations`,
       providesTags: [RecommendationTags.PERSONALIZED_RECOMMENDATIONS],
     }),
-    getPopularHotels: builder.query<{ data: (IHotel & ITimeStamp)[] }, string>({
+    getPopularHotels: builder.query<{ data: (IHotel & ITimeStamp)[] }, void>({
       query: () => "/popular-hotels",
       providesTags: [RecommendationTags.POPULAR_HOTELS],
     }),
