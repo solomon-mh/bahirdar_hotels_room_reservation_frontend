@@ -6,29 +6,35 @@ import { IUser } from "@/types/userTypes";
 import Search from "@/ui/Search";
 import Spinner from "@/ui/Spinner";
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 interface Props {
     selectedCashier: IUser | null;
-    setSelectedCashier: (manager: IUser | null) => void;
+    setSelectedCashier: (cashier: IUser | null) => void;
 }
 
 export function AddCashier({ selectedCashier, setSelectedCashier }: Props) {
+    const [searchParams] = useSearchParams()
     const [open, setOpen] = useState(false);
 
-    const { data, isLoading, error } = useGetAllUsersQuery("");
+    const { data, isLoading, error } = useGetAllUsersQuery(searchParams.toString(), {
+        refetchOnMountOrArgChange: true,
+    });
 
     return (
         <Drawer open={open} onOpenChange={setOpen}>
             <DrawerTrigger asChild>
                 <button className="px-4 py-1 border bg-[#34343400] border-accent-500 text-accent-500 hover:bg-accent-500 rounded-md hover:text-slate-100">
-                    {selectedCashier ? "Change Cashier" : "Select manager"}
+                    {selectedCashier ? "Change Cashier" : "Add cashier"}
                 </button>
             </DrawerTrigger>
             <DrawerContent className="bg-slate-200 h-[60vh] pb-6 text-slate-900 dark:bg-slate-950 dark:text-slate-50">
-                <DrawerHeader>
-                    <DrawerTitle>List of hotel managers</DrawerTitle>
-                    <DrawerDescription>Select the hotel manager</DrawerDescription>
-                    <Search />
+                <DrawerHeader className="flex flex-col md:gap-20 md:flex-row items-stretch md:items-center p-4">
+                    <div className="flex flex-col  items-start">
+                        <DrawerTitle>User Lists</DrawerTitle>
+                        <DrawerDescription>Select the hotel cashier</DrawerDescription>
+                    </div>
+                    <Search className="rounded-md mb-4" />
                 </DrawerHeader>
 
                 {isLoading ? (

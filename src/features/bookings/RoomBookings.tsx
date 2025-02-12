@@ -11,7 +11,7 @@ interface Props {
 
 export default function RoomBookings({ bookings, pagination }: Props) {
   return (
-    <div className="overflow-x-auto h-[30vh] md:w-full max-w-[82vw]  overflow-y-auto">
+    <div className="overflow-x-auto h-fit py-4 md:w-full max-w-[82vw]  overflow-y-auto">
       <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
         <thead className="bg-gray-100 border-b border-gray-200">
           <tr>
@@ -54,7 +54,7 @@ export default function RoomBookings({ bookings, pagination }: Props) {
           )}
         </tbody>
       </table>
-      {pagination && <CustomPagination
+      {pagination && bookings.length > 5 && <CustomPagination
         totalPages={pagination.totalPages}
         page={pagination.page}
         onPageChange={() => {

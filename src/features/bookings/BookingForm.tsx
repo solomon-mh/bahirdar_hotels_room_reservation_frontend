@@ -12,11 +12,14 @@ import { ITimeStamp } from "@/types/general";
 import { getDateRange } from "@/utils/date";
 import { useParams } from "react-router-dom";
 import RoomBookings from "./RoomBookings";
+import { cn } from "@/utils/cn";
 
 export default function BookingForm({
   onSubmit,
   isBooking,
+  disabled = false,
 }: {
+    disabled?: boolean;
         room: IRoom & ITimeStamp
     onSubmit: (data: IBooking) => void;
     isBooking?: boolean;
@@ -202,9 +205,9 @@ export default function BookingForm({
 
             {/* Submit Button */}
             <button
-                disabled={isBooking}
+        disabled={isBooking || disabled}
                 type="submit"
-                className="w-full px-4 py-2 0 bg-accent-500 text-white rounded-md hover:bg-accent-500-dark mt-4"
+        className={cn("w-full px-4 py-2 0 bg-accent-500 text-white rounded-md hover:bg-accent-500-dark mt-4", (isBooking || disabled) && "cursor-not-allowed")}
             >
                 Book Room
             </button>

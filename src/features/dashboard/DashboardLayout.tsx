@@ -12,6 +12,7 @@ import { MdOutlineBookmarkAdded, MdSettings } from "react-icons/md";
 import { IoBedSharp } from "react-icons/io5";
 import { useAuthContext } from "../../context/AuthContext";
 import { useEffect } from "react";
+import { Role } from "@/enums/roleEnum";
 
 const adminMenus = [
   {
@@ -62,16 +63,6 @@ function DashboardLayout() {
       url: `/dashboard/${user?.hotel?._id}/bookings`,
       Icon: <MdOutlineBookmarkAdded size={20} />,
     },
-    {
-      title: "Cashiers",
-      url: "/dashboard/cashiers",
-      Icon: <HiOutlineUsers size={20} />,
-    },
-    {
-      title: "Settings",
-      url: "/dashboard/settings",
-      Icon: <MdSettings size={20} />,
-    },
   ];
 
   useEffect(() => {
@@ -85,8 +76,22 @@ function DashboardLayout() {
     <div className="bg-black mx-auto flex max-w-[120rem] gap-2">
       {role === "admin" ? (
         <SideBar menus={adminMenus} />
-      ) : role === "manager" ? (
-        <SideBar menus={managerMenus} />
+      ) : (role === Role.MANAGER || role === Role.CASHIER) ? (
+        <SideBar
+          menus={
+            [
+              ...managerMenus,
+              ...(role === Role.MANAGER ?
+                [{
+                  title: "Cashiers",
+                  url: "/dashboard/cashiers",
+                  Icon: <HiOutlineUsers size={20} />,
+                },
+                {
+                  title: "Settings",
+                  url: "/dashboard/settings",
+                  Icon: <MdSettings size={20} />,
+                }] : [])]} />
       ) : null}
       <div className="bg-slate-50 flex min-h-screen w-screen flex-col gap-2 text-gray-700 md:w-[calc(100vw-260px)]">
         <DashboardHeader />

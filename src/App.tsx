@@ -44,6 +44,7 @@ import UserBookings from "./features/users/UserBookings.js";
 import MyBookingDetail from "./features/profile/MyBookingDetail.js";
 import RoomReview from "./features/reviews/ReviewPage.js";
 import HotelCashiers from "./features/hotels/HotelCashiers.js";
+import { Role } from "./enums/roleEnum.js";
 
 function App() {
   const { role, isLoggedIn, user, } = useAuthContext();
@@ -172,23 +173,36 @@ function App() {
                     element={<UserDetailForVerification />}
                   />
                 </>
-              ) : role === "manager" ? (
+            ) : (role === Role.MANAGER || role === Role.CASHIER) ? (
                 <>
                   <Route path=":hotelId" element={<HotelDetailPage />}>
                     <Route index element={<HotelDetail />} />
                     <Route path="rooms" element={<HotelRoomsTable />} />
                     <Route path="rooms/:roomId" element={<RoomDetail />} />
-                    <Route path="add-room" element={<AddRoom />} />
-                    <Route path="rooms/:roomId/edit" element={<UpdateRoom />} />
+                    {
+                      role === Role.MANAGER ? (
+                        <>
+                          <Route path="add-room" element={<AddRoom />} />
+                          <Route path="rooms/:roomId/edit" element={<UpdateRoom />} /></>
+                      ) : null
+                    }
+
                     <Route path="bookings" element={<AllBookings />} />
                   </Route>
-                  <Route path="cashiers" element={<HotelCashiers />} />
+                  {
+                    role === Role.MANAGER &&
+                    <Route path="cashiers" element={<HotelCashiers />} />
+                  }
 
                   <Route
                     path="bookings/:bookingId"
                     element={<BookingDetails />}
                   />
-                    <Route path=":hotelId/edit" element={<UpdateHotel />} />
+                  {
+                    role === Role.MANAGER && (
+                      <Route path=":hotelId/edit" element={<UpdateHotel />} />
+                    )
+                  }
                     <Route path="bookings" element={<HotelBookings />} />
                 </>
               ) : null}

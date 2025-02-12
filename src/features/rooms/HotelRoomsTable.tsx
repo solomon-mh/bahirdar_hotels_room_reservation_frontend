@@ -22,12 +22,15 @@ function HotelRoomsTable() {
         <h1 className="p-4 uppercase">
           <Link to="/dashboard/bookings">All Rooms</Link>
         </h1>
-        <Link
-          to={`/dashboard${user?.role === Role.ADMIN ? "/hotels" : ""}/${hotelId}/add-room`}
-          className="mr-2 cursor-pointer rounded-md bg-accent-500  px-4 py-[6px] text-lg text-white transition-all duration-200 hover:scale-105"
-        >
-          Add Room
-        </Link>
+        {
+          (user?.role === Role.ADMIN || user?.role === Role.MANAGER) &&
+          <button
+            className="p-2 text-accent-500 rounded-md"
+            onClick={() => navigate(`/dashboard/hotels/${hotelId}/rooms/create`)}
+          >
+            Add Room
+          </button>
+        }
       </div>
 
       <div className="flex w-full p-4 shadow-md ">

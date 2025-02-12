@@ -123,6 +123,7 @@ export default function BookingPage() {
                 {/* Booking Form Section */}
                 <div className="flex flex-col px-0 md:px-20  items-stretch  gap-2 md:w-auto w-full">
                     <BookingForm
+                        disabled={!!booking}
                         room={room}
                         isBooking={isLoading}
                         onSubmit={handleBookingSubmit}

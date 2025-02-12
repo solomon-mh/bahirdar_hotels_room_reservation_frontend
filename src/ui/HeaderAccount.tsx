@@ -3,6 +3,7 @@ import { useAuthContext } from "../context/AuthContext";
 import { useRef, useState } from "react";
 import { CircleUserRound } from "lucide-react";
 import { useClickOutside } from "../components/lib/useClickOutSide";
+import { createLabel } from "@/utils/text";
 
 function HeaderAccount() {
   const { user } = useAuthContext();
@@ -19,7 +20,7 @@ function HeaderAccount() {
       >
 
         <span className="text-sm font-semibold text-black/50">
-          {user?.role}
+          {createLabel(user?.role || "")}
         </span>
         <div className="flex h-7 w-7 md:h-10 md:w-10 items-center justify-center overflow-hidden rounded-full bg-slate-50">
           {user?.profilePicture ? (

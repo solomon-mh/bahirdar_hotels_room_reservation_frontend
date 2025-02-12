@@ -43,14 +43,14 @@ export const HotelDetail = () => {
                     <div className="relative">
                         {user?.role && [Role.ADMIN, Role.MANAGER].includes(user?.role) && (
                             <div className="absolute right-4 top-4 z-20 flex items-center gap-2 bg-slate-100 p-2">
-                                <button
+                                {[Role.ADMIN, Role.MANAGER].includes(user.role) && <button
                                     className="bg-white rounded-lg p-2"
                                     onClick={() =>
                                         navigate(`/dashboard${user.role === Role.ADMIN ? "/hotels" : ""}/${hotelId}/edit`)
                                     }
                                 >
                                     <MdEdit size={24} />
-                                </button>
+                                </button>}
                                 {
                                     user.role === Role.ADMIN &&
                                     <DeleteFeature

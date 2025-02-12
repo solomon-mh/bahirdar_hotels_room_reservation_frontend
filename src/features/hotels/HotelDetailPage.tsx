@@ -39,10 +39,15 @@ const HotelDetailPage = () => {
             name: "Bookings",
             to: `/dashboard${user?.role === Role.ADMIN ? "/hotels" : ""}/${hotelId}/bookings`
         },
-        {
+        ...(
+            user?.role !== Role.CASHIER ?
+
+                [{
             name: "Add Room",
             to: `/dashboard${user?.role === Role.ADMIN ? "/hotels" : ""}/${hotelId}/add-room`
-        },
+                }]
+                : []
+        )
     ]
     return (
         <div className="md:w-[80vw] w-full md:mx-auto flex flex-col items-center">

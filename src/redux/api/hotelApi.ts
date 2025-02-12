@@ -3,6 +3,7 @@ import { IHotel } from "../../types/hotelTypes";
 import { CreateResponse, IPagination, ITimeStamp } from "../../types/general";
 import { BASE_URL } from "../../utils/url";
 import { IRoom } from "../../types/roomTypes";
+import { IUser } from "@/types/userTypes";
 
 export enum HotelTags {
   HOTELS = "hotels",
@@ -92,6 +93,13 @@ export const hotelApi = createApi({
       }),
       invalidatesTags: [HotelTags.HOTELS],
     }),
+    getHotelCashiers: builder.query<
+      { data: IUser[]; pagination: IPagination },
+      { hotelId: string; params: string }
+    >({
+      query: ({ params, hotelId }) =>
+        `/${hotelId}/all-cashiers${params ? `?${params}` : ""}`,
+    }),
   }),
 });
 
@@ -104,5 +112,6 @@ export const {
   useGetHotelRoomsQuery,
   useCreateCashierMutation,
   useDeleteCashierMutation,
+  useGetHotelCashiersQuery,
 } = hotelApi;
 

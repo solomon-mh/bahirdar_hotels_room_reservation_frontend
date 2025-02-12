@@ -1,28 +1,42 @@
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Search from "../../ui/Search";
-import { useGetAllUsersQuery } from "../../redux/api/userApi";
 import LoadingPage from "../../pages/utils/LoadingPage";
 import NotFoundPage from "../../pages/utils/NotFoundPage";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/table";
 import { CustomPagination } from "@/components/Pagination";
-import { useCreateCashierMutation } from "@/redux/api/hotelApi";
+import { useCreateCashierMutation, useGetHotelCashiersQuery } from "@/redux/api/hotelApi";
 import { useState } from "react";
 import { IUser } from "@/types/userTypes";
 import { useAuthContext } from "@/context/AuthContext";
 import { AddCashier } from "./components/AddCashier";
+import toast from "react-hot-toast";
 
 function HotelCashiers() {
     const navigate = useNavigate()
     const { user } = useAuthContext()
     const [selectedCashier, setSelectedCashier] = useState<IUser | null>(null)
     const [searchParams] = useSearchParams();
-    const { data: { data: cashiers, pagination } = {}, isLoading } = useGetAllUsersQuery(searchParams.toString(), { refetchOnMountOrArgChange: true });
+    const { data: { data: cashiers, pagination } = {}, isLoading } = useGetHotelCashiersQuery({ params: searchParams.toString(), hotelId: user?.hotel?._id || "" }, { refetchOnMountOrArgChange: true });
     const [addCashier, { isLoading: adding }] = useCreateCashierMutation();
 
     const handleAddCashier = () => {
         addCashier({
             hotelId: user?.hotel?._id as string,
             userId: selectedCashier?._id as string
+        }).unwrap().then(() => {
+            setSelectedCashier(null)
+            toast.success("Cashier added successfully")
+            navigate("/dashboard/cashiers")
+        }).catch((err) => {
+            if ('data' in err)
+            {
+                const { message } = err.data as { message: string }
+                toast.error(message || "Failed to add cashier")
+            }
+            else
+            {
+                toast.error("Failed to add cashier please try again")
+            }
         })
     }
     return (
@@ -40,6 +54,21 @@ function HotelCashiers() {
                         selectedCashier={selectedCashier}
                         setSelectedCashier={setSelectedCashier}
                     />
+                    {
+                        selectedCashier && (
+                            <div className="flex items-stretch gap-2 p-3 flex-col md:flex-row md:items-center">
+                                <span>
+                                    {selectedCashier?.firstName} {selectedCashier?.lastName}
+                                </span>
+                                <button
+                                    className="px-4 py-1 border bg-[#34343400] border-accent-500 text-accent-500 hover:bg-accent-500 rounded-md hover:text-slate-100"
+                                    onClick={() => setSelectedCashier(null)}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        )
+                    }
                     {selectedCashier && <button
                         disabled={!selectedCashier || adding}
                         className="px-4 py-1 border bg-[#34343400] border-accent-500 text-accent-500 hover:bg-accent-500 rounded-md hover:text-slate-100"
