@@ -8,7 +8,7 @@ import { Button } from "../../components/ui/button";
 import { UserRegistrationData } from "../../types/userTypes";
 import { completeOnboardingSchema } from "../../forms/schema/userSchema";
 import { useEffect, useState } from "react";
-import { useCompleteOnboardingMutation } from "@/redux/api/userApi";
+import { useCompleteOnboardingMutation, useUpdateUserMutation } from "@/redux/api/userApi";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/context/AuthContext";
 
@@ -22,6 +22,9 @@ function CompleteOnboarding() {
 
   const [completeOnboarding, { isLoading, isError, error, isSuccess }] =
     useCompleteOnboardingMutation();
+
+  const [updateUser, { isLoading: updating, error: updateError, isSuccess: updateSuccuss }] =
+    useUpdateUserMutation();
 
   const {
     register,
@@ -50,12 +53,29 @@ function CompleteOnboarding() {
     formData.append("address[street]", data.address.street);
     formData.append("address[woreda]", data.address.woreda || "");
 
-    if (data.profilePicture instanceof FileList) {
-      formData.append("profilePicture", data.profilePicture[0]);
-    } else if (data.profilePicture) {
-      formData.append("profilePicture", data.profilePicture);
+    if (!user?.isOnboarding)
+    {
+      if (data.profilePicture instanceof FileList)
+      {
+        formData.append("image", data.profilePicture[0]);
+      } else if (data.profilePicture)
+      {
+        formData.append("image", data.profilePicture);
+      }
+    }
+    else
+    {
+      if (data.profilePicture instanceof FileList)
+      {
+        formData.append("profilePicture", data.profilePicture[0]);
+      } else if (data.profilePicture)
+      {
+        formData.append("profilePicture", data.profilePicture);
+      }
     }
 
+    if (!user?.isOnboarding)
+    {
     if (data.idPhoto_back instanceof FileList) {
       formData.append("idPhoto_back", data.idPhoto_back[0]);
     } else if (data.idPhoto_back) {
@@ -66,9 +86,15 @@ function CompleteOnboarding() {
     } else if (data.idPhoto_front) {
       formData.append("idPhoto_front", data.idPhoto_front);
     }
-
+    }
     console.log("User Data:", data);
-    completeOnboarding(formData);
+    if (user?.isOnboarding)
+      completeOnboarding(formData);
+    else
+      updateUser({
+        id: user?._id || "",
+        data: formData
+      });
   };
 
   useEffect(() => {
@@ -77,6 +103,12 @@ function CompleteOnboarding() {
         "User data submitted successfully, You can now request for Identity verification",
       );
       navigate("/account/identity-verification");
+    }
+    if (updateSuccuss)
+    {
+      toast.success(
+        "Your date successfully",
+      );
     }
   }, [isSuccess]);
 
@@ -94,6 +126,13 @@ function CompleteOnboarding() {
       console.error("Error:", error);
       toast.error(
         "An error occurred When submitting the data. Please try again later.",
+      );
+    }
+    if (updateError)
+    {
+      console.error("Error:", updateError);
+      toast.error(
+        "An error occurred When updating your data the data. Please try again later.",
       );
     }
   }, [isError, error]);
@@ -234,7 +273,7 @@ function CompleteOnboarding() {
                       The front side of your National ID / Resident Card
                     </h3>
                     <div className="space-y-4">
-                      <div className="space-y-4">
+                      {user?.isOnboarding && <div className="space-y-4">
                         <label className="mb-2 cursor-pointer rounded-md bg-accent-500/95 hover:bg-accent-500 px-4 py-2 text-light-200 shadow-md transition-all ">
                           Upload The Front Side of Your ID
                           <input
@@ -255,7 +294,7 @@ function CompleteOnboarding() {
                             })}
                           />
                         </label>
-                      </div>
+                      </div>}
                       <div className="h-[200px] w-[250px] overflow-hidden sm:block">
                         <img
                           src={
@@ -283,7 +322,7 @@ function CompleteOnboarding() {
                       the back side of your National ID / Resident Card
                     </h3>
                     <div className="space-y-4">
-                      <div className="space-y-4">
+                      {user?.isOnboarding && <div className="space-y-4">
                         <label className="cursor-pointer rounded-md bg-accent-500/95 hover:bg-accent-500 px-4 py-2 text-light-200 shadow-md transition-all ">
                           Upload The Back Side of Your ID
                           <input
@@ -310,7 +349,7 @@ function CompleteOnboarding() {
                             {errors.idPhoto_back.message as string}
                           </p>
                         )}
-                      </div>{" "}
+                      </div>}
                       <div className="h-[200px] w-[250px] overflow-hidden sm:block">
                         <img
                           src={
@@ -487,10 +526,12 @@ function CompleteOnboarding() {
             </div>
             <Button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || updating}
               className="w-full bg-accent-500/95 hover:bg-accent-500 text-slate-100 disabled:cursor-not-allowed"
             >
-              Complete Onboarding
+              {
+                isLoading || updating ? "Submitting..." : "Submit"
+              }
             </Button>
           </form>
         </CardContent>

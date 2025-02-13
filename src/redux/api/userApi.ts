@@ -44,10 +44,13 @@ export const userApi = createApi({
       }),
       invalidatesTags: [UserTags.USERS],
     }),
-    updateUser: builder.mutation<CreateResponse, { id: string; data: IUser }>({
+    updateUser: builder.mutation<
+      CreateResponse,
+      { id: string; data: FormData }
+    >({
       query: ({ id, data }) => ({
         url: `/${id}`,
-        method: "PUT",
+        method: "PATCH",
         body: data,
       }),
       invalidatesTags: [UserTags.USERS, UserTags.USER],

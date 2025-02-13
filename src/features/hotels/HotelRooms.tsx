@@ -7,7 +7,10 @@ import { useGetHotelRoomsQuery } from "../../redux/api/hotelApi";
 const RoomList = () => {
     const navigate = useNavigate();
     const { hotelId } = useParams<{ hotelId: string }>();
-    const { data, isLoading, error } = useGetHotelRoomsQuery(hotelId as string);
+    const { data, isLoading, error } = useGetHotelRoomsQuery(hotelId as string, {
+        refetchOnMountOrArgChange: true,
+        refetchOnReconnect: true,
+    });
     const rooms = data?.data?.rooms || [];
 
     return (

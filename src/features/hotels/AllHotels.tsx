@@ -12,7 +12,10 @@ function AllHotels() {
 
   const [searchParams] = useSearchParams();
 
-  const { data: { data: hotels } = {}, isLoading, error } = useGetAllHotelsQuery(searchParams.toString());
+  const { data: { data: hotels } = {}, isLoading, error } = useGetAllHotelsQuery(searchParams.toString(), {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+  });
 
 
   useEffect(() => {

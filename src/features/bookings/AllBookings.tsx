@@ -128,7 +128,7 @@ const AllBookings = () => {
                               </td>
                               <td className="border border-gray-200 px-4 py-2 text-gray-600">{`${booking.user?.firstName} ${booking.user?.lastName}`}</td>
                               <td className="border border-gray-200 px-4 py-2 text-gray-600">
-                                {booking.user.phoneNumber}
+                                {booking.user?.phoneNumber}
                               </td>
                               <td className="border border-gray-200 px-4 py-2 text-gray-600">
                                 Room {booking?.room?.roomNumber}

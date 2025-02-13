@@ -14,7 +14,10 @@ function HotelRoomsTable() {
   const { hotelId } = useParams() as { hotelId: string }
   const navigate = useNavigate()
   const { data: { data: { rooms } = {}
-  } = {}, isLoading, error } = useGetHotelRoomsQuery(hotelId as string)
+  } = {}, isLoading, error } = useGetHotelRoomsQuery(hotelId as string, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+  })
 
   return (
     <div className=" h-[80vh]  w-full shadow-md flex flex-col items-center justify-start ">
@@ -26,7 +29,7 @@ function HotelRoomsTable() {
           (user?.role === Role.ADMIN || user?.role === Role.MANAGER) &&
           <button
             className="p-2 px-3 text-slate-100 bg-accent-500/90 hover:bg-accent-500 rounded-md"
-              onClick={() => navigate(`/dashboard/hotels/${hotelId}/add-room`)}
+              onClick={() => navigate(`/dashboard${user?.role === Role.ADMIN ? "/hotels/" : "/"}${hotelId}/add-room`)}
           >
             Add Room
           </button>

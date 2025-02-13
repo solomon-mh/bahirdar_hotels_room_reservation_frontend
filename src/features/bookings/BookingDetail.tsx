@@ -76,7 +76,7 @@ export default function BookingDetails() {
 
 
             {
-              booking && (user?.role === Role.CASHIER || user?.role === Role.MANAGER) && ([BookingStatus.PENDING, BookingStatus.CONFIRMED, BookingStatus.REJECTED, BookingStatus.CHECKED_IN, BookingStatus.CHECKED_OUT].filter(status => status !== booking.status).map(status => (
+              booking && (user?.role === Role.CASHIER || user?.role === Role.MANAGER) && ([BookingStatus.CONFIRMED, BookingStatus.REJECTED, BookingStatus.CHECKED_IN, BookingStatus.CHECKED_OUT].filter(status => status !== booking.status).map(status => (
                 <ConfirmAction
                   setStatus={setStatus}
                   feature="Booking"

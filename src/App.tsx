@@ -48,6 +48,7 @@ import ForgotMyPassword from "./features/auth/ForgotMyPassword.js";
 import ResetMyPassword from "./features/auth/ResetMyPassword.js";
 import { Role } from "./enums/roleEnum.js";
 import HotelsTobeReviewd from "./features/reviews/HotelsTobeReviewed.js";
+import ToBePayed from "./features/payments/TobePayed.js";
 
 function App() {
   const { role, isLoggedIn, user } = useAuthContext();
@@ -148,6 +149,7 @@ function App() {
             <Route index element={<Dashboard />} />
             {role === "admin" ? (
               <>
+
                 <Route path="hotels" element={<HotelsPage />}>
                   <Route index element={<AllHotels />} />
                   <Route path="add-hotel" element={<AddHotel />} />
@@ -166,6 +168,7 @@ function App() {
                   <Route path=":hotelId/edit" element={<UpdateHotel />} />
                 </Route>
                 <Route path="bookings" element={<AllBookings />} />
+                <Route path="to-be-payed" element={<ToBePayed />} />
                 <Route
                   path="bookings/:bookingId"
                   element={<BookingDetails />}
@@ -194,6 +197,7 @@ function App() {
                   <Route path=":hotelId" element={<HotelDetailPage />}>
                     <Route index element={<HotelDetail />} />
                     <Route path="rooms" element={<HotelRoomsTable />} />
+                    <Route path="add-room" element={<AddRoom />} />
                     <Route path="rooms/:roomId" element={<RoomDetail />} />
                     {
                       role === Role.MANAGER ? (

@@ -26,13 +26,8 @@ class ErrorBoundary extends Component<Props, State> {
         if (this.state.hasError)
         {
             return <div className="flex flex-col items-center justify-center h-screen bg-gray-100 text-center p-6">
-                <h1 className="text-6xl font-bold text-red-600">Oops!</h1>
+                <h1 className="text-2xl font-bold text-accent-600">Oops!</h1>
                 <p className="text-xl text-gray-700 mt-4">Something went wrong.</p>
-                <pre>
-                    <code className="text-left mt-4">
-                        {JSON.stringify(this.state, null, 2)}
-                    </code>
-                </pre>
                 <p className="text-gray-500 mt-2">Please try refreshing the page or contact support.</p>
                 <button
                     onClick={() => window.location.reload()}
