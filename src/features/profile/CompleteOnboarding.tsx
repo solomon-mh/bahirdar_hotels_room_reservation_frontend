@@ -107,10 +107,10 @@ function CompleteOnboarding() {
     if (updateSuccuss)
     {
       toast.success(
-        "Your date successfully",
+        "Your data updated successfully",
       );
     }
-  }, [isSuccess]);
+  }, [isSuccess, updateSuccuss]);
 
   useEffect(() => {
     if (user && user._id)
@@ -135,7 +135,7 @@ function CompleteOnboarding() {
         "An error occurred When updating your data the data. Please try again later.",
       );
     }
-  }, [isError, error]);
+  }, [isError, error, updateError]);
 
 
   if (user?.isVerificationRequested && !user.isVerified)
