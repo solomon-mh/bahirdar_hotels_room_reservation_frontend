@@ -32,6 +32,12 @@ function ToBePayed() {
     })
 
 
+    if (isLoading)
+    {
+        return (
+            <LoadingPage />
+        )
+    }
 
     return (
         <div className="w-full bg-white h-[80vh] text-gray-600 shadow-md">
