@@ -74,7 +74,7 @@ function CompleteOnboarding() {
       }
     }
 
-    if (!user?.isOnboarding)
+    if (user?.isOnboarding)
     {
     if (data.idPhoto_back instanceof FileList) {
       formData.append("idPhoto_back", data.idPhoto_back[0]);
