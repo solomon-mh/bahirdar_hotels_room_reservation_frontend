@@ -7,6 +7,7 @@ import { paymentsApi } from "./api/paymentsApi";
 import { authApi } from "./api/authApi";
 import { reviewApi } from "./api/reviewApi";
 import { recommendationsApi } from "./api/recommendationsApi";
+import { favoritesApi } from "./api/favoriteApi";
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [reviewApi.reducerPath]: reviewApi.reducer,
     [recommendationsApi.reducerPath]: recommendationsApi.reducer,
+    [favoritesApi.reducerPath]: favoritesApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -28,7 +30,8 @@ export const store = configureStore({
       .concat(paymentsApi.middleware)
       .concat(authApi.middleware)
       .concat(reviewApi.middleware)
-      .concat(recommendationsApi.middleware),
+      .concat(recommendationsApi.middleware)
+      .concat(favoritesApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

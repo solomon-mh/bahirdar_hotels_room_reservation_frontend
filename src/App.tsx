@@ -49,6 +49,7 @@ import ResetMyPassword from "./features/auth/ResetMyPassword.js";
 import { Role } from "./enums/roleEnum.js";
 import HotelsTobeReviewd from "./features/reviews/HotelsTobeReviewed.js";
 import ToBePayed from "./features/payments/TobePayed.js";
+import MyFavoriteGotels from "./features/reviews/FavoriteHotels.js";
 
 function App() {
   const { role, isLoggedIn, user } = useAuthContext();
@@ -105,6 +106,7 @@ function App() {
                 <Route path="profile" index element={<Profile />} />
                 <Route path="settings" element={<AccountSettings />} />
                 <Route path="bookings" element={<MyBookings />} />
+                <Route path="favorites" element={<MyFavoriteGotels />} />
                 <Route
                   path="bookings/:bookingId"
                   element={<MyBookingDetail />}

@@ -44,6 +44,11 @@ const Account = () => {
             pathname: user?.isVerified ? "/account/edit-profile" : "/account/complete-onboarding",
             text: user?.isVerified ? "Edit Profile" : "Complete Onboarding",
           },
+          {
+            to: "favorites",
+            pathname: "/account/favorites",
+            text: "Favorite hotels",
+          }
         ]
       }
       />
