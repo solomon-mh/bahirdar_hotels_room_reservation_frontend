@@ -75,7 +75,7 @@ The Room Reservation System is a web-based application designed to streamline ho
 - **State Management:** Redux Toolkit (RTK)
 - **Authentication:** JWT
 - **Database:** MongoDb
-- **API Integration:** Leaflet
+- **Map API Integration:** Leaflet
 
 ## Contributing
 Contributions are welcome! Feel free to submit a pull request or report issues.
