@@ -13,6 +13,9 @@ The Room Reservation System is a web-based application designed to streamline ho
 - Booking history and details
 
 ## Screenshots
+
+#### Landing Page
+![Landing Page](public/screenshots/landing-page.png)
 ### Admin Panel
 #### Dashboard
 ![Admin Dashboard](public/screenshots/admin-dashboard.png)
@@ -45,8 +48,7 @@ The Room Reservation System is a web-based application designed to streamline ho
 ![Hotel Rooms](public/screenshots/hotel-rooms.png)
 
 ### User Interface
-#### Landing Page
-![Landing Page](public/screenshots/landing-page.png)
+
 
 #### Login
 ![Login](public/screenshots/login.png)
