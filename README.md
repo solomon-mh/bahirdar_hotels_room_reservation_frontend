@@ -70,12 +70,12 @@ The Room Reservation System is a web-based application designed to streamline ho
 ![User Detail](public/screenshots/user-detail.png)
 
 ## Technologies Used
-- **Frontend:** React.js, Tailwind CSS
-- **Backend:** Django Rest Framework
+- **Frontend:** React.js, Tailwind CSS, Shadcn ui librarue
+- **Backend:** Node with express
 - **State Management:** Redux Toolkit (RTK)
-- **Authentication:** OAuth
-- **Database:** PostgreSQL
-- **API Integration:** Google Maps API
+- **Authentication:** JWT
+- **Database:** MongoDb
+- **API Integration:** Leaflet
 
 ## Contributing
 Contributions are welcome! Feel free to submit a pull request or report issues.
