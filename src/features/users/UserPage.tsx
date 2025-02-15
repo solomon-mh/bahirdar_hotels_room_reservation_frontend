@@ -14,10 +14,7 @@ const UserPage = () => {
             title: "User Bookings",
             href: "/dashboard/users/" + userId + "/bookings",
         },
-        {
-            title: "User Reviews",
-            href: "/dashboard/users/:userId/reviews",
-        }
+
     ]
 
     return (

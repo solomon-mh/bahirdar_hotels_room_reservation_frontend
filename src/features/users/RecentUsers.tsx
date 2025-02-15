@@ -33,7 +33,7 @@ function RecentUsers() {
     <section className="bg-black/2 w-full overflow-y-auto rounded-sm shadow-lg">
       <div className="flex flex-col w-full  items-center gap-5">
         <h2 className="w-full text-slate-900 p-4 text-2xl">Recent Users</h2>
-        <div className="flex w-full flex-col items-center gap-x-12 gap-y-5">
+        <div className=" grid grid-cols-1 md:grid-cols-2 w-full flex-col items-center gap-x-12 gap-y-5">
           {users?.slice(0, 5).map((user) => (
             <User key={user._id} user={user} />
           ))}

@@ -21,7 +21,7 @@ const UserBookings = () => {
 
 
     return (
-        <div className="p-4 bg-white w-full flex flex-col ">
+        <div className="py-8 bg-white w-full flex flex-col ">
             <div className="flex items-center justify-between">
                 <h3 className="mb-4 text-2xl font-semibold text-gray-800">
                     Booking History

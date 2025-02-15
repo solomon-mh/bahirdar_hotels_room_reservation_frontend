@@ -67,7 +67,7 @@ export const HotelDetail = () => {
                     <div className="relative">
                         {
 
-                            hotels?.length && !hotels.every(hotel => hotel.hotel._id === hotelId && hotel.user === user?._id) && user?.role === Role.USER && (
+                            !!hotels?.length && !hotels.every(hotel => hotel.hotel._id === hotelId && hotel.user === user?._id) && user?.role === Role.USER && (
                                 <button
                                     disabled={updating}
                                     onClick={handleFavorite}
@@ -78,7 +78,7 @@ export const HotelDetail = () => {
                             )
                         }
                         {user?.role && [Role.ADMIN, Role.MANAGER].includes(user?.role) && (
-                            <div className="absolute right-4 top-4 z-20 flex items-center gap-2 bg-slate-100 p-2">
+                            <div className="absolute right-4 top-6 z-20 flex items-center gap-2 bg-slate-100 p-2">
                                 {[Role.ADMIN, Role.MANAGER].includes(user.role) && <button
                                     className="bg-white rounded-lg p-2"
                                     onClick={() =>

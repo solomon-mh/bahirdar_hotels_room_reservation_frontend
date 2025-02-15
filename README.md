@@ -1,50 +1,103 @@
-# React + TypeScript + Vite
+# Room Reservation System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
+The Room Reservation System is a web-based application designed to streamline hotel room bookings. It provides an intuitive interface for users to browse hotels, book rooms, and manage reservations, while administrators can oversee hotel details, user accounts, and booking requests.
 
-Currently, two official plugins are available:
+## Features
+- User authentication (Sign-up/Login)
+- Hotel and room management
+- Booking management (Pending, Approved, Completed bookings)
+- User role management (Admin, Cashier, User)
+- Dashboard for admin to manage the system
+- Payment processing for bookings
+- Booking history and details
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Screenshots
+### Admin Panel
+#### Dashboard
+![Admin Dashboard](/client/public/screenshots/admin-dashboard.png)
 
-## Expanding the ESLint configuration
+#### Manage Hotels
+![Admin Hotels](/client/public/screenshots/admin-hotels.png)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+#### View All Bookings
+![All Bookings](/client/public/screenshots/all-bookings.png)
 
-- Configure the top-level `parserOptions` property like this:
+#### Manage Users
+![All Users](/client/public/screenshots/all-users.png)
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+#### Booking Details
+![Booking Detail](/client/public/screenshots/booking-detail.png)
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+#### Cashier Page
+![Cashier Page](/client/public/screenshots/cashier-page.png)
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+#### Completed Bookings
+![Completed](/client/public/screenshots/compelete.png)
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+#### Hotel Bookings
+![Hotel Bookings](/client/public/screenshots/hotel-bookings.png)
+
+#### Hotel Details
+![Hotel Detail](/client/public/screenshots/hotel-detail.png)
+
+#### Hotel Rooms
+![Hotel Rooms](/client/public/screenshots/hotel-rooms.png)
+
+### User Interface
+#### Landing Page
+![Landing Page](/client/public/screenshots/landing-page.png)
+
+#### Login
+![Login](/client/public/screenshots/login.png)
+
+#### Pending Bookings
+![Pending](/client/public/screenshots/pending.png)
+
+#### Booking Requests
+![Requests](/client/public/screenshots/requests.png)
+
+#### Room Details
+![Room Detail](/client/public/screenshots/room-detail.png)
+
+#### Sign Up
+![Sign Up](/client/public/screenshots/sign-up.png)
+
+#### Unverified Users
+![Unverified](/client/public/screenshots/unverified.png)
+
+#### User Details
+![User Detail](/client/public/screenshots/user-detail.png)
+
+## Technologies Used
+- **Frontend:** React.js, Tailwind CSS
+- **Backend:** Django Rest Framework
+- **State Management:** Redux Toolkit (RTK)
+- **Authentication:** OAuth
+- **Database:** PostgreSQL
+- **API Integration:** Google Maps API
+
+## Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-repo/room-reservation.git
+   cd room-reservation
+   ```
+2. Install dependencies:
+   ```bash
+   npm install  # For frontend
+   pip install -r requirements.txt  # For backend
+   ```
+3. Set up environment variables.
+4. Start the development servers:
+   ```bash
+   npm start  # For frontend
+   python manage.py runserver  # For backend
+   ```
+
+## Contributing
+Contributions are welcome! Feel free to submit a pull request or report issues.
+
+## License
+This project is licensed under the MIT License.
+

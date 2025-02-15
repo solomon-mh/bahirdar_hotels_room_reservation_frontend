@@ -3,6 +3,7 @@ import LoadingPage from "@/pages/utils/LoadingPage";
 import NotFoundPage from "@/pages/utils/NotFoundPage";
 import { useDeleteUserMutation, useGetUserByIdQuery } from "@/redux/api/userApi";
 import { useParams } from "react-router-dom";
+import UserBookings from "./UserBookings";
 
 const UserDetail = () => {
     const { userId } = useParams<{ userId: string }>();
@@ -88,7 +89,8 @@ const UserDetail = () => {
                                 </div>
                             </div>
 
-          )}
+            )}
+            <UserBookings />
       </div>
   );
 };

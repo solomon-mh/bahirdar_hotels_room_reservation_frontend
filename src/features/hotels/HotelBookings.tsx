@@ -79,7 +79,7 @@ const HotelBookings = () => {
             <div className="mx-auto overflow-hidden rounded-lg bg-white">
                 <div className="flex  items-center justify-between gap-4 border-b border-gray-200 md:p-6">
                     <h2 className="w-full text-3xl font-bold text-slate-800 md:w-auto">
-                        All Bookings
+                        Hotel Bookings
                     </h2>
                     <div className="hidden md:flex w-full items-center justify-end gap-1 md:w-auto">
                         {bookingStatuses.map((status) => (

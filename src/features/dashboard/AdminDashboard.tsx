@@ -12,8 +12,6 @@ import {
   hotelUserBookingMonthlyStatusData,
   lineChartData,
 } from "../../data/stat-data";
-import { BsBookmarksFill } from "react-icons/bs";
-import { MdOutlineRateReview } from "react-icons/md";
 import { useGetAllHotelsQuery } from "@/redux/api/hotelApi";
 import LoadingPage from "@/pages/utils/LoadingPage";
 import NotFoundPage from "@/pages/utils/NotFoundPage";
@@ -35,7 +33,7 @@ function AdminDashboard() {
       number: numHotels,
       Icon: <img
         src="/icons/hotels.png"
-        alt="booking"
+        alt="hotels"
         className="w-16 h-16"
       />,
     },
@@ -44,29 +42,37 @@ function AdminDashboard() {
       number: numUsers,
       Icon: <img
         src="/icons/customers.png"
-        alt="booking"
+        alt="users"
         className="w-16 h-16"
       />,
     },
     {
       title: "Bookings",
       number: numBookings,
-      Icon: <BsBookmarksFill className="size-8" />,
+      Icon: <img
+        src="/icons/bookings.png"
+        alt="bookings"
+        className="w-16 h-16"
+      />,
     },
     {
       title: "Reviews",
       number: numReviews,
-      Icon: <MdOutlineRateReview className="size-8" />,
+      Icon: <img
+        src="/icons/reviews1.png"
+        alt="reviews"
+        className="w-16 h-16"
+      />,
     },
   ];
 
   return (
     <div className="flex w-full flex-col">
-      <section className="m-3 mb-8 grid grid-cols-1 justify-between gap-4 gap-x-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 lg:gap-x-10">
+      <section className="m-3 mb-8 grid grid-cols-1 justify-between gap-4 gap-x-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-10">
         {countData.map(({ title, Icon, number }, i) => (
           <div
             key={i}
-            className="text-slate-800 justify-between p-4 flex flex-row items-center rounded  shadow-xl"
+            className="text-slate-800 justify-between p-4 md:px-6 flex flex-row items-center rounded  shadow-xl"
           >
             {Icon}
             <div className="flex items-center   flex-col justify-center  p-4">
@@ -79,10 +85,10 @@ function AdminDashboard() {
 
       <section className="bg-white m-3 my-6 flex flex-col w-full justify-between p-4">
         <RecentUsers />
-        <BookingPieChart />
       </section>
 
-      <section className="bg-white m-3 my-6 flex h-[500px] p-8">
+      <section className="bg-white flex justify-between m-3 my-6 h-[500px] p-8">
+        <BookingPieChart />
         <AreaChartBox
           title="Monthly Registered Number of Hotels and Users "
           data={hotelUserBookingMonthlyStatusData}
