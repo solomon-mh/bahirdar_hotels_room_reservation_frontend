@@ -15,59 +15,59 @@ The Room Reservation System is a web-based application designed to streamline ho
 ## Screenshots
 ### Admin Panel
 #### Dashboard
-![Admin Dashboard](/client/public/screenshots/admin-dashboard.png)
+![Admin Dashboard](public/screenshots/admin-dashboard.png)
 
 #### Manage Hotels
-![Admin Hotels](/client/public/screenshots/admin-hotels.png)
+![Admin Hotels](public/screenshots/admin-hotels.png)
 
 #### View All Bookings
-![All Bookings](/client/public/screenshots/all-bookings.png)
+![All Bookings](public/screenshots/all-bookings.png)
 
 #### Manage Users
-![All Users](/client/public/screenshots/all-users.png)
+![All Users](public/screenshots/all-users.png)
 
 #### Booking Details
-![Booking Detail](/client/public/screenshots/booking-detail.png)
+![Booking Detail](public/screenshots/booking-detail.png)
 
 #### Cashier Page
-![Cashier Page](/client/public/screenshots/cashier-page.png)
+![Cashier Page](public/screenshots/cashier-page.png)
 
 #### Completed Bookings
-![Completed](/client/public/screenshots/compelete.png)
+![Completed](public/screenshots/compelete.png)
 
 #### Hotel Bookings
-![Hotel Bookings](/client/public/screenshots/hotel-bookings.png)
+![Hotel Bookings](public/screenshots/hotel-bookings.png)
 
 #### Hotel Details
-![Hotel Detail](/client/public/screenshots/hotel-detail.png)
+![Hotel Detail](public/screenshots/hotel-detail.png)
 
 #### Hotel Rooms
-![Hotel Rooms](/client/public/screenshots/hotel-rooms.png)
+![Hotel Rooms](public/screenshots/hotel-rooms.png)
 
 ### User Interface
 #### Landing Page
-![Landing Page](/client/public/screenshots/landing-page.png)
+![Landing Page](public/screenshots/landing-page.png)
 
 #### Login
-![Login](/client/public/screenshots/login.png)
+![Login](public/screenshots/login.png)
 
 #### Pending Bookings
-![Pending](/client/public/screenshots/pending.png)
+![Pending](public/screenshots/pending.png)
 
 #### Booking Requests
-![Requests](/client/public/screenshots/requests.png)
+![Requests](public/screenshots/requests.png)
 
 #### Room Details
-![Room Detail](/client/public/screenshots/room-detail.png)
+![Room Detail](public/screenshots/room-detail.png)
 
 #### Sign Up
-![Sign Up](/client/public/screenshots/sign-up.png)
+![Sign Up](public/screenshots/sign-up.png)
 
 #### Unverified Users
-![Unverified](/client/public/screenshots/unverified.png)
+![Unverified](public/screenshots/unverified.png)
 
 #### User Details
-![User Detail](/client/public/screenshots/user-detail.png)
+![User Detail](public/screenshots/user-detail.png)
 
 ## Technologies Used
 - **Frontend:** React.js, Tailwind CSS
