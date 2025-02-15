@@ -77,24 +77,6 @@ The Room Reservation System is a web-based application designed to streamline ho
 - **Database:** PostgreSQL
 - **API Integration:** Google Maps API
 
-## Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-repo/room-reservation.git
-   cd room-reservation
-   ```
-2. Install dependencies:
-   ```bash
-   npm install  # For frontend
-   pip install -r requirements.txt  # For backend
-   ```
-3. Set up environment variables.
-4. Start the development servers:
-   ```bash
-   npm start  # For frontend
-   python manage.py runserver  # For backend
-   ```
-
 ## Contributing
 Contributions are welcome! Feel free to submit a pull request or report issues.
 
