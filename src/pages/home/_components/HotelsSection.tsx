@@ -56,8 +56,10 @@ export const PopularSection = () => {
   } = useGetPopularHotelsQuery();
 
   if (isLoading) return <LoadingPage />;
-  console.log(hotels);
-
+  if (isError || !hotels)
+    return <p className="text-center">Failed to load hotels.</p>;
+  if (!hotels || hotels.length === 0)
+    return <p className="text-center text-gray-500">No hotel results found.</p>;
   return (
     <section className="">
       {hotels?.length && !isError && (
