@@ -9,6 +9,11 @@ function HomePageMap() {
     isError,
   } = useGetAllHotelsQuery("");
 
+  if (isLoading) return <LoadingPage />;
+  if (isError || !hotels)
+    return <p className="text-center">Failed to load hotels.</p>;
+  if (!hotels || hotels.length === 0) return null;
+
   const markers: LocationProps[] = [];
   if (hotels?.length)
     hotels.forEach((hotel, index) => {
