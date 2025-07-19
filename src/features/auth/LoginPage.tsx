@@ -21,6 +21,10 @@ function SigninPage() {
 
   const formMethods = useForm<ILogin>({
     resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
   const { handleSubmit } = formMethods;
 
