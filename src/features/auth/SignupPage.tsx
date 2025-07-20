@@ -28,7 +28,6 @@ function SignupPage() {
     return signup(data)
       .unwrap()
       .then((response) => {
-        console.log(response);
         toast.success(response.message);
         navigate("/login");
       })
