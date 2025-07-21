@@ -56,7 +56,7 @@ function AdminDashboard() {
   ];
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="w-full bg-red-400">
       <section className="m-3 mb-8 grid grid-cols-1 justify-between gap-4 gap-x-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-10">
         {countData.map(({ title, Icon, number }, i) => (
           <div
