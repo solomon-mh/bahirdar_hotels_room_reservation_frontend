@@ -16,16 +16,18 @@ import { useGetAllHotelsQuery } from "@/redux/api/hotelApi";
 import LoadingPage from "@/pages/utils/LoadingPage";
 import NotFoundPage from "@/pages/utils/NotFoundPage";
 import { useGetAllUsersQuery } from "@/redux/api/userApi";
+import { useGetAllBookingsQuery } from "@/redux/api/bookingApi";
 
 function AdminDashboard() {
   const { data: { data: hotels } = {} } = useGetAllHotelsQuery("");
+  const { data: { data: bookings } = {} } = useGetAllBookingsQuery("");
   const {
     data: { data: users } = {},
     isLoading,
     error,
   } = useGetAllUsersQuery("");
 
-  const { numBookings = 38, numReviews = 123 } = {};
+  const { numReviews = 123 } = {};
 
   const countData = [
     {
@@ -35,14 +37,14 @@ function AdminDashboard() {
     },
     {
       title: "Users",
-      number: users?.length,
+      number: users?.length ?? 0,
       Icon: (
         <img src="/icons/customers.png" alt="users" className="h-16 w-16" />
       ),
     },
     {
       title: "Bookings",
-      number: numBookings,
+      number: bookings?.length ?? 0,
       Icon: (
         <img src="/icons/bookings.png" alt="bookings" className="h-16 w-16" />
       ),
