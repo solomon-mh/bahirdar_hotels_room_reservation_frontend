@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { useAuthContext } from "@/context/AuthContext";
+import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 
 const UserProfile = () => {
   const { user } = useAuthContext();
@@ -28,9 +29,9 @@ const UserProfile = () => {
               <p className="text-gray-500">@{user?.username}</p>
             </div>
           </div>
-          <div className="mt-6 p-4 shadow-lg shadow-slate-100">
+          <div className="mt-6 p-4">
             <h3 className="text-lg font-semibold text-gray-700">User Info</h3>
-            <ul className="mt-2 text-gray-600">
+            <ul className="mt-2 space-y-2 text-gray-600">
               <li>
                 <strong>Email:</strong> {user?.email}
               </li>
@@ -42,19 +43,30 @@ const UserProfile = () => {
               </li>
               <li>
                 <strong>Date of Birth:</strong>{" "}
-                {new Date(user?.dateOfBirth || "").toDateString()}
+                {user?.dateOfBirth
+                  ? new Date(user.dateOfBirth).toDateString()
+                  : " "}
               </li>
+
               <li>
                 <strong>Role:</strong> {user?.role}
               </li>
-              <li>
-                <strong>Verified:</strong>{" "}
-                {user?.isVerified ? "Verfied✅" : "Not Verfied❌"}
+              <li className="flex items-center gap-2">
+                <strong>Verified:</strong>
+                {user?.isVerified ? (
+                  <span className="flex items-center gap-1 text-green-600">
+                    Verified <FaCheckCircle />
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-1 text-red-600">
+                    Not Verified <FaTimesCircle />
+                  </span>
+                )}
               </li>
             </ul>
           </div>
           {user?.address && (
-            <div className="mt-6 p-4 shadow-lg shadow-slate-100">
+            <div className="mt-6 p-4">
               <h3 className="text-lg font-semibold text-gray-700">
                 Address information
               </h3>
@@ -78,7 +90,7 @@ const UserProfile = () => {
             </div>
           )}
         </div>
-        <div className="mt-6 flex flex-col items-center justify-start gap-4 shadow-lg shadow-slate-200 md:flex-row">
+        <div className="mt-6 flex flex-col items-center justify-start gap-4 md:flex-row">
           {user?.idPhoto_front && (
             <div className="flex flex-col-reverse items-center gap-2 p-4">
               <h2 className="italic text-slate-700">Front Side of the ID</h2>
