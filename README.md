@@ -75,8 +75,8 @@ The Room Reservation System is a web-based application designed to streamline ho
 
 #### Login
 
-![Login](public/screenshots/login.png)
 ![Login](public/screenshots/google-signin.png)
+![Login](public/screenshots/login.png)
 
 #### Pending Bookings
 
