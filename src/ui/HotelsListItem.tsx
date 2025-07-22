@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import { IHotel } from "../types/hotelTypes";
 import { ITimeStamp } from "../types/general";
 
-function HotelsListItem({ hotel }: { hotel: (IHotel & ITimeStamp) }) {
+function HotelsListItem({ hotel }: { hotel: IHotel & ITimeStamp }) {
   return (
-    <div className="mx-auto mb-4 w-[95%] overflow-hidden rounded border p-3 shadow-xl transition-all duration-300 hover:translate-x-1 hover:scale-[1.02]">
-      <div className="flex flex-col md:flex-row gap-4">
+    <div className="mx-auto mb-4 w-[95%] overflow-hidden p-3 transition-all duration-300 hover:translate-x-1 hover:scale-[1.02]">
+      <div className="flex flex-col gap-4 md:flex-row">
         {/* HOTEL IMAGE */}
-        <div className="h-[200px] w-full md:w-[250px] overflow-hidden rounded shadow-xl">
+        <div className="h-[200px] w-full overflow-hidden rounded shadow-xl md:w-[250px]">
           <img
             src={hotel.imageCover}
             alt="hotel cover"
@@ -22,7 +22,7 @@ function HotelsListItem({ hotel }: { hotel: (IHotel & ITimeStamp) }) {
           <div className="flex flex-col gap-2">
             <Link
               to={`/hotels/${hotel._id}`}
-              className="text-xl md:text-2xl font-bold text-accent-500"
+              className="text-xl font-bold text-accent-500 md:text-2xl"
             >
               {hotel.name}
             </Link>
@@ -46,17 +46,27 @@ function HotelsListItem({ hotel }: { hotel: (IHotel & ITimeStamp) }) {
         </div>
 
         {/* HOTEL RATINGS & PRICE */}
-        <div className="flex flex-col md:w-[25%] items-end md:items-end justify-evenly p-2">
-          <div className="flex flex-col md:items-end gap-1">
+        <div className="flex flex-col items-end justify-evenly p-2 md:w-[25%] md:items-end">
+          <div className="flex flex-col gap-1 md:items-end">
             {/* Star Ratings */}
             <div className="flex items-center gap-2">
               <span className="flex gap-1">
                 {[1, 2, 3, 4, 5].map((val, i) =>
                   Math.floor(hotel.avgRating) >= val ? (
-                    <FaStar key={i} color="#fcc419" fill="#fcc419" size={"20px"} />
+                    <FaStar
+                      key={i}
+                      color="#fcc419"
+                      fill="#fcc419"
+                      size={"20px"}
+                    />
                   ) : (
-                      <FaRegStar key={i} color="#fcc419" fill="#fcc419" size={"20px"} />
-                    )
+                    <FaRegStar
+                      key={i}
+                      color="#fcc419"
+                      fill="#fcc419"
+                      size={"20px"}
+                    />
+                  ),
                 )}
               </span>
               <span className="font-bold tracking-tighter text-yellow-400">
@@ -71,7 +81,7 @@ function HotelsListItem({ hotel }: { hotel: (IHotel & ITimeStamp) }) {
                   {hotel.numOfRatings} reviews
                 </span>
               ) : (
-                  "No Reviews Yet"
+                "No Reviews Yet"
               )}
             </h3>
           </div>
@@ -89,7 +99,7 @@ function HotelsListItem({ hotel }: { hotel: (IHotel & ITimeStamp) }) {
           {/* See Details Button */}
           <Link
             to={`/hotels/${hotel._id}`}
-            className="mt-2 w-full md:w-auto text-center rounded bg-accent-500 p-2 text-white"
+            className="mt-2 w-full rounded bg-accent-500 p-2 text-center text-white md:w-auto"
           >
             See Details
           </Link>
@@ -100,4 +110,3 @@ function HotelsListItem({ hotel }: { hotel: (IHotel & ITimeStamp) }) {
 }
 
 export default HotelsListItem;
-

@@ -18,6 +18,7 @@ import toast from "react-hot-toast";
 function SignupPage() {
   const formMethods = useForm<ISignup>({
     resolver: zodResolver(SignupSchema),
+    shouldUnregister: false,
   });
   const { handleSubmit } = formMethods;
   const [signup, { isLoading }] = useSignupMutation();
@@ -27,7 +28,6 @@ function SignupPage() {
     return signup(data)
       .unwrap()
       .then((response) => {
-        console.log(response);
         toast.success(response.message);
         navigate("/login");
       })
@@ -59,7 +59,10 @@ function SignupPage() {
           <div>
             <CardDescription>
               have an account?{" "}
-              <Link to="/login" className="cursor-pointer text-accent-500 hover:underline ">
+              <Link
+                to="/login"
+                className="cursor-pointer text-accent-500 hover:underline"
+              >
                 Sign in
               </Link>
             </CardDescription>

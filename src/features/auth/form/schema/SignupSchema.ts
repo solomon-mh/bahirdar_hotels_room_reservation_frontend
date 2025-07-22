@@ -14,6 +14,7 @@ export const SignupSchema = z
     password: z
       .string({ message: "password is required" })
       .min(8, { message: "password should be at least 8 characters" }),
+    phoneNumber: z.string().optional(),
     passwordConfirm: z.string({ message: "password confirm is required" }),
   })
   .superRefine(({ password, passwordConfirm }, ctx) => {

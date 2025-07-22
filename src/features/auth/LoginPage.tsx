@@ -15,12 +15,17 @@ import { LoginSchema } from "@/features/auth/form/schema/LoginSchema";
 import { useLoginMutation } from "@/redux/api/authApi";
 import { useAuthContext } from "@/context/AuthContext";
 import toast from "react-hot-toast";
+import GoogleLoginButton from "@/components/GoogleLogin";
 
 function SigninPage() {
   const { setUser } = useAuthContext();
 
   const formMethods = useForm<ILogin>({
     resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
   const { handleSubmit } = formMethods;
 
@@ -63,6 +68,7 @@ function SigninPage() {
             />
           </FormProvider>
         </CardContent>
+        <GoogleLoginButton />
         <CardFooter className="flex flex-col">
           {/* <Button variant="outline">Cancel</Button> */}
           <div>
